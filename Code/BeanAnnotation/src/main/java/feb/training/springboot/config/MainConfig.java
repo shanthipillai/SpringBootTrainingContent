@@ -20,6 +20,7 @@ import feb.training.springboot.config.condition.ServerMaintenanceCheck;
 
 
 @Configuration
+//"file:D:/path/to/your/config.properties"
 @PropertySource("classpath:dbprops.properties")
 
 public class MainConfig {
