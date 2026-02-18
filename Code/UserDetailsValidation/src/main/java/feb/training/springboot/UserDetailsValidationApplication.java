@@ -2,6 +2,7 @@ package feb.training.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 
 import feb.training.springboot.components.UserDetails;
@@ -22,7 +23,9 @@ public class UserDetailsValidationApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(UserDetailsValidationApplication.class, args);
+		ApplicationContext context=SpringApplication.run(UserDetailsValidationApplication.class, args);
+		UserDetails user=(UserDetails) context.getBean("userdetails");
+		System.out.println(user);
 	}
 
 }

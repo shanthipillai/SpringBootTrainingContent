@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-@Component
+@Component("userdetails")
 @Validated
 @ConfigurationProperties(prefix="user")
 public class UserDetails {
@@ -60,6 +60,9 @@ public class UserDetails {
 	
 	
 	
-	
+	public void printDetails()
+	{
+		
+	}
 	
 }

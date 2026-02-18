@@ -31,6 +31,11 @@ public class Address {
 	long pincode;
    
 	String city;
+
+	@Override
+	public String toString() {
+		return "Address [streename=" + streename + ", pincode=" + pincode + ", city=" + city + "]";
+	}
 	
 	
 }
