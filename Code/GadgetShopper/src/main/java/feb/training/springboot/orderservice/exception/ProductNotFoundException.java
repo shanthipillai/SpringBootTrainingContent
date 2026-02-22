@@ -1,0 +1,7 @@
+package feb.training.springboot.orderservice.exception;
+public class ProductNotFoundException extends RuntimeException {
+
+    public ProductNotFoundException(String productName) {
+        super("Product not found: " + productName);
+    }
+}
