@@ -3,13 +3,13 @@ package feb.training.springboot.services;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-@Component
+@Component("upi")
 @Primary
-public class EmailService implements NotificationService {
+public class UPI implements PaymentMode {
 
 	@Override
-	public void sendNotification() {
-		System.out.println("Email : Order has been placed");
+	public void pay(double amount) {
+		// TODO Auto-generated method stub
 
 	}
 

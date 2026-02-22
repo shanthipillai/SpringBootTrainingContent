@@ -1,20 +1,31 @@
 package feb.training.springboot.services;
 
-import org.springframework.beans.factory.ObjectProvider;
+
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
 
 @Component("order")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class OrderSer {
-	public PaymentMode pay;
-	public ObjectProvider<NotificationService> notification;
+	public final PaymentMode pay;
+	//NotificationService notificationservice;
+	//public ObjectProvider<NotificationService> notification;
 
+	@Lookup
+	
+	public NotificationService getService()
+	{
+		return null;
+	}
 	public void placeOrder(double amount) {
 		pay.pay(5000);
+		getService().sendNotification();
 		
-		notification.forEach(notify->notify.sendNotification());
+		
 
 	}
+	
 }
