@@ -1,53 +1,42 @@
 # 📚 Spring Boot Training – Documentation Index
 
-Click on any topic below to open (download) the corresponding document.
+Click on any topic below to download the corresponding document.
 
 ---
 
 ## 🚀 Spring Boot Core
-- 📄 **[Spring vs Spring Boot – IoC Containers](Spring_vs_SpringBoot_IoC_Containers.pptx?raw=1)**
-- 📄 **[Spring Boot Application Annotation](SpringBootApplicationAnnotation.pptx?raw=1)**
-- 📄 **[Spring Component & Bean](SpringComponent_Bean.pptx?raw=1)**
-- 📄 **[Spring Bean Exceptions (With Fixes)](Spring_Bean_Exceptions_With_Fixes.pptx?raw=1)**
-- 📄 **[Spring Boot Startup Hooks – Notes](Spring_Boot_Startup_Hooks_-_Ppt_Notes.pdf?raw=1)**
+- 📄 **[Spring vs Spring Boot – IoC Containers](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_vs_SpringBoot_IoC_Containers.pptx)**
+- 📄 **[Spring Boot Application Annotation](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/SpringBootApplicationAnnotation.pptx)**
+- 📄 **[Spring Component & Bean](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/SpringComponent_Bean.pptx)**
+- 📄 **[Spring Bean Exceptions (With Fixes)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_Bean_Exceptions_With_Fixes.pptx)**
+- 📄 **[Spring Boot Startup Hooks – Notes](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_Boot_Startup_Hooks_-_Ppt_Notes.pdf)**
 
 ---
 
 ## 🌱 Dependency Injection
-- 📄 **[Spring Boot Dependency Injection – Notes (PDF)](spring-boot-dependency-injection-notes.pdf?raw=1)**
+- 📄 **[Spring Boot Dependency Injection – Notes](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/spring-boot-dependency-injection-notes.pdf)**
 
 ---
 
 ## 🪵 Logging
-- 📊 **[Spring Boot Starter Logging](spring_boot_starter_logging.pptx?raw=1)**
-- 📊 **[Log4j Presentation](Log4j_Presentation.pptx?raw=1)**
+- 📊 **[Spring Boot Starter Logging](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/spring_boot_starter_logging.pptx)**
+- 📊 **[Log4j Presentation](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Log4j_Presentation.pptx)**
 
 ---
 
 ## 🧩 Lombok
-- 📕 **[Lombok – One Page Cheat Sheet](Lombok_One_Page_Cheat_Sheet.pdf?raw=1)**
+- 📕 **[Lombok – One Page Cheat Sheet](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Lombok_One_Page_Cheat_Sheet.pdf)**
 
 ---
 
 ## 🛠️ Maven
-- 📄 **[Maven Basics](Maven.docx?raw=1)**
-- 📄 **[Maven Private Remote Repository Configuration](Maven_Private_Remote_Repository_Config.docx?raw=1)**
+- 📄 **[Maven Basics](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Maven.docx)**
+- 📄 **[Maven Private Remote Repository Configuration](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Maven_Private_Remote_Repository_Config.docx)**
 
 ---
 
 ## 🏗️ Deployment & Architecture
-- 📊 **[Deployment Approaches (With Diagram)](Deployment_Approaches_With_Diagram.pptx?raw=1)**
-
----
-
-## ℹ️ Misc
-- 📄 **[Docs Info](docsinfo.txt)**
-
----
-
-### 🧠 Usage Tip
-> For **PPTX / PDF / DOCX** files, GitHub downloads the file directly.  
-> If your browser blocks downloads, right-click → **Open in new tab**.
+- 📊 **[Deployment Approaches (With Diagram)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Deployment_Approaches_With_Diagram.pptx)**
 
 ---
 
