@@ -23,3 +23,8 @@ SpringBootTrainingContent/
 ├── Code/              ← Sample projects and demo applications
 ├── Assignments/       ← Practice exercises for learners
 └── pom.xml            ← Maven configuration (if applicable)
+
+
+---
+© **Maradpilli Shanthi**  
+Spring Boot Training Repository
