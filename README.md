@@ -1,25 +1,25 @@
-# Assignment 2 - Spring Boot Validation with Property Injection
+# 🚀 Spring Boot Training Repository
 
-## What this project shows
-- Property binding using `@ConfigurationProperties`
-- Startup validation using `@Validated`
-- Bean Validation annotations like `@NotBlank`, `@Pattern`, `@Email`, and `@NotNull`
+Welcome to the **Spring Boot Training Repository**.  
+This repository is used to organize and share **training materials, notes, presentations, sample code, and assignments** related to Spring Boot.
 
-## Main class
-- `src/main/java/com/training/assignment2/PropertyInjectionValidationApplication.java`
+---
 
-## Run the project
-From `SpringBootTrainingContent` root:
+## 👩‍🏫 About Me
 
-```powershell
-.\Code\SpringBootFirstApplication\mvnw.cmd -f "assignment 2/pom.xml" spring-boot:run
-```
+Hi, I’m **Shanthi**, an IT professional with **9 years of industry experience** in software development.
 
-## Test validation failure
-Run with an invalid email:
 
-```powershell
-java -jar "assignment 2/target/property-injection-validation-0.0.1-SNAPSHOT.jar" --assignment2.user.email=invalid-email
-```
+I enjoy **teaching and mentoring**, and my focus is on explaining concepts with **real-world examples**, best practices, and common pitfalls seen in enterprise projects.
 
-Spring Boot should fail at startup and show the validation message.
+
+## 📂 Repository Structure
+
+```text
+SpringBootTrainingContent/
+├── README.md          ← Repository overview (this file)
+├── Docs/              ← Training documents (PPT, PDF, DOC)
+│   └── README.md      ← Documentation index (auto-rendered)
+├── Code/              ← Sample projects and demo applications
+├── Assignments/       ← Practice exercises for learners
+└── pom.xml            ← Maven configuration (if applicable)
