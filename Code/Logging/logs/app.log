@@ -1,0 +1,45 @@
+2026-02-25T00:20:02.265+05:30  INFO 44740 --- [Logging] [main] f.t.springboot.LoggingApplication        : Starting LoggingApplication using Java 17.0.9 with PID 44740 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T00:20:02.268+05:30 DEBUG 44740 --- [Logging] [main] f.t.springboot.LoggingApplication        : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T00:20:02.269+05:30  INFO 44740 --- [Logging] [main] f.t.springboot.LoggingApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T00:20:02.707+05:30  INFO 44740 --- [Logging] [main] f.t.springboot.LoggingApplication        : Started LoggingApplication in 0.855 seconds (process running for 1.54)
+2026-02-25T00:20:02.713+05:30 DEBUG 44740 --- [Logging] [main] feb.training.springboot.OrderService     : Fetching Payment Details
+2026-02-25T00:20:02.714+05:30  INFO 44740 --- [Logging] [main] feb.training.springboot.OrderService     : Amount =-1.0
+2026-02-25T00:20:02.714+05:30  WARN 44740 --- [Logging] [main] feb.training.springboot.OrderService     : User entered insufficient funds
+2026-02-25T00:20:02.714+05:30 ERROR 44740 --- [Logging] [main] feb.training.springboot.OrderService     : Insufficient Funds
+2026-02-25T15:46:39.914+05:30  INFO 41524 --- [Logging] [main] f.t.s.LoggingApplication                 : Starting LoggingApplication using Java 17.0.9 with PID 41524 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T15:46:39.916+05:30 DEBUG 41524 --- [Logging] [main] f.t.s.LoggingApplication                 : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T15:46:39.918+05:30  INFO 41524 --- [Logging] [main] f.t.s.LoggingApplication                 : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T15:46:40.562+05:30  INFO 41524 --- [Logging] [main] f.t.s.LoggingApplication                 : Started LoggingApplication in 1.181 seconds (process running for 2.029)
+2026-02-25T15:46:40.566+05:30 DEBUG 41524 --- [Logging] [main] f.t.s.OrderService                       : Fetching Payment Details
+2026-02-25T15:46:40.567+05:30  INFO 41524 --- [Logging] [main] f.t.s.OrderService                       : Amount =-1.0
+2026-02-25T15:46:40.567+05:30  WARN 41524 --- [Logging] [main] f.t.s.OrderService                       : User entered insufficient funds
+2026-02-25T15:46:40.568+05:30 ERROR 41524 --- [Logging] [main] f.t.s.OrderService                       : Insufficient Funds
+2026-02-25T15:47:37.459+05:30  INFO 42780 --- [Logging] [main] f.t.s.LoggingApplication                 : Starting LoggingApplication using Java 17.0.9 with PID 42780 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T15:47:37.462+05:30 DEBUG 42780 --- [Logging] [main] f.t.s.LoggingApplication                 : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T15:47:37.463+05:30  INFO 42780 --- [Logging] [main] f.t.s.LoggingApplication                 : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T15:47:38.355+05:30  INFO 42780 --- [Logging] [main] f.t.s.LoggingApplication                 : Started LoggingApplication in 1.427 seconds (process running for 2.313)
+2026-02-25T15:47:38.362+05:30 DEBUG 42780 --- [Logging] [main] f.t.s.OrderService                       : Fetching Payment Details
+2026-02-25T15:47:38.363+05:30  INFO 42780 --- [Logging] [main] f.t.s.OrderService                       : Amount =-1.0
+2026-02-25T15:47:38.363+05:30  WARN 42780 --- [Logging] [main] f.t.s.OrderService                       : User entered insufficient funds
+2026-02-25T15:47:38.364+05:30 ERROR 42780 --- [Logging] [main] f.t.s.OrderService                       : Insufficient Funds
+2026-02-25T15:48:18.157+05:30  INFO 44324 --- [Logging] [main] f.t.s.LoggingApplication                 : Starting LoggingApplication using Java 17.0.9 with PID 44324 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T15:48:18.159+05:30 DEBUG 44324 --- [Logging] [main] f.t.s.LoggingApplication                 : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T15:48:18.161+05:30  INFO 44324 --- [Logging] [main] f.t.s.LoggingApplication                 : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T15:48:18.704+05:30  INFO 44324 --- [Logging] [main] f.t.s.LoggingApplication                 : Started LoggingApplication in 1.099 seconds (process running for 2.049)
+2026-02-25T15:48:18.708+05:30 DEBUG 44324 --- [Logging] [main] f.t.s.OrderService                       : Fetching Payment Details
+2026-02-25T15:48:18.709+05:30  INFO 44324 --- [Logging] [main] f.t.s.OrderService                       : Amount =-1.0
+2026-02-25T15:48:18.709+05:30  WARN 44324 --- [Logging] [main] f.t.s.OrderService                       : User entered insufficient funds
+2026-02-25T15:48:18.710+05:30 ERROR 44324 --- [Logging] [main] f.t.s.OrderService                       : Insufficient Fundsfeb.training.springboot.InSufficientFundsException
+2026-02-25T15:49:45.074+05:30  INFO 40748 --- [Logging] [main] f.t.s.LoggingApplication                 : Starting LoggingApplication using Java 17.0.9 with PID 40748 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T15:49:45.076+05:30 DEBUG 40748 --- [Logging] [main] f.t.s.LoggingApplication                 : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T15:49:45.077+05:30  INFO 40748 --- [Logging] [main] f.t.s.LoggingApplication                 : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T15:49:45.539+05:30  INFO 40748 --- [Logging] [main] f.t.s.LoggingApplication                 : Started LoggingApplication in 0.969 seconds (process running for 1.974)
+2026-02-25T15:49:45.543+05:30 DEBUG 40748 --- [Logging] [main] f.t.s.OrderService                       : Fetching Payment Details
+2026-02-25T15:49:45.544+05:30  INFO 40748 --- [Logging] [main] f.t.s.OrderService                       : Amount =-1.0
+2026-02-25T15:49:45.544+05:30  WARN 40748 --- [Logging] [main] f.t.s.OrderService                       : User entered insufficient funds
+2026-02-25T15:49:45.544+05:30 ERROR 40748 --- [Logging] [main] f.t.s.OrderService                       : Insufficient Funds
+
+feb.training.springboot.InSufficientFundsException
+	at feb.training.springboot.OrderService.getDetails(OrderService.java:30) [classes/:?]
+	at feb.training.springboot.LoggingApplication.main(LoggingApplication.java:13) [classes/:?]
+
