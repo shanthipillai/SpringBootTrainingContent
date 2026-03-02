@@ -16,23 +16,34 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.AccessLevel;
 @Component("customer")
-//@ConfigurationProperties(prefix="customer")
+@ConfigurationProperties(prefix="customer")
 @Data
 public class Customer implements InitializingBean, DisposableBean, BeanNameAware
 {
     @Autowired
 	ApplicationContext context;
 	
+    
+    //Field Injection
 	@Value("${customer.customerId}")
 	private int customerId;
 	@Value("${customer.customerName}")
 	private String customerName;
+	
 	 @Setter(AccessLevel.NONE)
 	Cards cards;
 	
-	public Customer(@Lazy Cards cards) {
+	 
+	
+	 //Constructor Dependency Injection
+	public Customer( Cards cards) {
 		super();
 		this.cards = cards;
+		System.out.println("Start of Customer Constructor");
+		System.out.println("Customer Object Created");
+		System.out.println(customerId);
+		System.out.println(customerName);
+		System.out.println("End of Customer Constructor");
 	}
 
 	@Override
@@ -43,30 +54,28 @@ public class Customer implements InitializingBean, DisposableBean, BeanNameAware
 	@PostConstruct
 	public void postConstruct()
 	{
-		System.out.println("After construct");
+		System.out.println("Post construct of Customer");
 		System.out.println(cards.typeOfCard);
 		System.out.println("object created");
+		
 		System.out.println(context.containsBeanDefinition("cards"));
+		System.out.println(context.containsBeanDefinition("customer"));
 		System.out.println(context.containsBean("cards"));
-		System.out.println(System.identityHashCode(cards));
+		
+		
 		
 	}
 	
-	@PreDestroy
-	public void preDestroy()
-	{
-		System.out.println("Pre destroyed");
-	}
-
+	
 	@Override
 	public void destroy() throws Exception {
-		System.out.println("Bean to garbage");
+		System.out.println("Destroy method executed");
 		
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		System.out.println("afterPropertiesSet()");
+		System.out.println("afterPropertiesSet() from Customer");
 		System.out.println(customerId);
 		System.out.println(customerName);
 		
@@ -78,6 +87,11 @@ public class Customer implements InitializingBean, DisposableBean, BeanNameAware
 	}
 	
 	
+	@PreDestroy
+	public void preDestroy()
+	{
+		System.out.println("Customer ::Pre destroyed");
+	}
 	
 	
 }

@@ -1,56 +1,94 @@
 # 📚 Spring Boot Training – Documentation Index
 
-Click on any topic below to access the corresponding document.
+This folder contains **HTML notes, PPTs, and reference documents** used during Spring Boot training sessions.  
+All materials are **trainer-curated**, **hands-on**, and **interview-oriented**.
 
-> ℹ️ **Note for students**  
-> - 👀 **Preview** → opens in browser (PDF only)  
-> - 📥 **Download** → file will download first (PPT / DOC / PDF)
+👉 HTML files open directly in the browser  
+👉 PPT files download automatically
 
 ---
 
 ## 🚀 Spring Boot Core
 
-- 📥 **[Spring vs Spring Boot – IoC Containers (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_vs_SpringBoot_IoC_Containers.pptx)**  
-- 📥 **[Spring Boot Application Annotation (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/SpringBootApplicationAnnotation.pptx)**  
-- 📥 **[Spring Component & Bean (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/SpringComponent_Bean.pptx)**  
-- 📥 **[Spring Bean Exceptions – With Fixes (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_Bean_Exceptions_With_Fixes.pptx)**  
-- 👀 **[Spring Boot Startup Hooks – Notes (PDF Preview)](Spring_Boot_Startup_Hooks_-_Ppt_Notes.pdf)**  
-- 📥 **[Spring Boot Startup Hooks – Notes (PDF Download)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Spring_Boot_Startup_Hooks_-_Ppt_Notes.pdf)**  
+- 🌐 **Spring Boot Application – Annotation Notes**  
+  `SpringBootApplicationContext_Annotation.html`
+
+- 🌐 **Spring Boot Application – Formatted Notes**  
+  `SpringBootApplication_Annotation_Notes_Formatted.html`
+
+- 🌐 **Spring Boot Application Context – Deep Explanation**  
+  `SpringBootApplicationContext_Annotation.html`
+
+- 🌐 **Spring Bean Scopes**  
+  `Spring_Boot_Bean_Scopes.html`
 
 ---
 
 ## 🌱 Dependency Injection
 
-- 👀 **[Spring Boot Dependency Injection – Notes (PDF Preview)](spring-boot-dependency-injection-notes.pdf)**  
-- 📥 **[Spring Boot Dependency Injection – Notes (PDF Download)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/spring-boot-dependency-injection-notes.pdf)**  
+- 🌐 **Spring Boot Dependency Injection – Detailed Notes**  
+  `spring-boot-dependency-injection.html`
 
 ---
 
-## 🪵 Logging
+## 🪵 Bean Lifecycle & Exceptions
 
-- 📥 **[Spring Boot Starter Logging (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/spring_boot_starter_logging.pptx)**  
-- 📥 **[Log4j Presentation (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Log4j_Presentation.pptx)**  
+- 🌐 **Spring Bean Exceptions – Dark Theme Notes**  
+  `spring-bean-exceptions-dark-soft.html`
+
+---
+
+## ▶️ Application Startup Hooks
+
+- 🌐 **CommandLineRunner vs ApplicationRunner**  
+  `CommandLineRunner_ApplicationRunner.html`
 
 ---
 
 ## 🧩 Lombok
 
-- 👀 **[Lombok – One Page Cheat Sheet (PDF Preview)](Lombok_One_Page_Cheat_Sheet.pdf)**  
-- 📥 **[Lombok – One Page Cheat Sheet (PDF Download)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Lombok_One_Page_Cheat_Sheet.pdf)**  
+- 🌐 **Lombok in Spring Boot – Notes**  
+  `Lombok_in_Spring_Boot_Notes.html`
 
 ---
 
 ## 🛠️ Maven
 
-- 📥 **[Maven Basics (DOC)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Maven.docx)**  
-- 📥 **[Maven Private Remote Repository Configuration (DOC)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Maven_Private_Remote_Repository_Config.docx)**  
+- 🌐 **Maven Notes (Lifecycle + Repositories)**  
+  `Maven_Notes (1).html`
 
 ---
 
-## 🏗️ Deployment & Architecture
+## 🏗️ Spring vs Spring Boot
 
-- 📥 **[Deployment Approaches – With Diagram (PPT)](https://raw.githubusercontent.com/shanthipillai/SpringBootTrainingContent/master/Docs/Deployment_Approaches_With_Diagram.pptx)**  
+- 📥 **Spring vs Spring Boot – IoC Containers (PPT)**  
+  `Spring_vs_SpringBoot_IoC_Containers.pptx`
 
 ---
 
-✍️ *Maintained for Spring Boot Training*
+## 🧱 Components & Beans
+
+- 📥 **Spring Component & Bean (PPT)**  
+  `SpringComponent_Bean.pptx`
+
+---
+
+## 🚀 Deployment & Architecture
+
+- 📥 **Deployment Approaches – With Diagrams & Key Points (PPT)**  
+  `Deployment_Approaches_With_Diagrams_And_KeyPoints.pptx`
+
+---
+
+## 📎 Miscellaneous
+
+- 🖼️ `Capture.JPG`
+- 📄 `docsinfo.txt`
+
+---
+
+✍️ **Maintained for Spring Boot Training**
+
+- Repository: **SpringBootTrainingContent**
+- Focus: **Real-world Spring Boot**, **Git-safe workflows**, **Interview readiness**
+- Trainer-managed & regularly updated

@@ -9,9 +9,13 @@ public class SpringBootLifeCycleApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext context=SpringApplication.run(SpringBootLifeCycleApplication.class, args);
-		//Customer customer=(Customer) context.getBean("customer");
+		
+		Customer customer=(Customer) context.getBean("customer");
 		//customer.showDetails();
+		
+		
 		System.out.println("Done from App side");
+		
 	}
 
 }
