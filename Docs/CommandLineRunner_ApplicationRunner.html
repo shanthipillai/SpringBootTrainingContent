@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CommandLineRunner and ApplicationRunner - Spring Boot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1 { font-size: 28px; }
+        h2 { font-size: 22px; }
+        h3 { font-size: 18px; }
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #333;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CommandLineRunner and ApplicationRunner in Spring Boot</h1>
+
+<h2>1️⃣ Introduction</h2>
+
+<p>In a <strong>Spring Boot</strong> application, sometimes you need to execute some logic <strong>right after the application starts</strong>.</p>
+
+<ul>
+<li>Preloading data into the database</li>
+<li>Validating configuration</li>
+<li>Logging startup information</li>
+<li>Running background initialization tasks</li>
+<li>Setting up cache</li>
+<li>Running migration scripts</li>
+</ul>
+
+<p>Spring Boot provides two interfaces for this purpose:</p>
+
+<ul>
+<li><code>CommandLineRunner</code></li>
+<li><code>ApplicationRunner</code></li>
+</ul>
+
+<p>Both are executed <strong>after the Spring ApplicationContext is fully loaded</strong>.</p>
+
+<h2>2️⃣ Execution Lifecycle Position</h2>
+
+<pre>
+Application Starts
+        ↓
+Spring Context Initialization
+        ↓
+Beans Created & Dependencies Injected
+        ↓
+CommandLineRunner / ApplicationRunner Executed
+        ↓
+Application Ready
+</pre>
+
+<ul>
+<li>They run after all beans are created</li>
+<li>They run before the application starts serving requests</li>
+</ul>
+
+<h2>3️⃣ CommandLineRunner</h2>
+
+<h3>📌 Definition</h3>
+
+<p><code>CommandLineRunner</code> is a functional interface provided by Spring Boot.</p>
+
+<pre>
+@FunctionalInterface
+public interface CommandLineRunner {
+    void run(String... args) throws Exception;
+}
+</pre>
+
+<h3>📌 Example: Basic Usage</h3>
+
+<pre>
+@Component
+public class MyCommandLineRunner implements CommandLineRunner {
+
+    @Override
+    public void run(String... args) throws Exception {
+
+        System.out.println("Application started successfully!");
+
+        for (String arg : args) {
+            System.out.println("Argument: " + arg);
+        }
+    }
+}
+</pre>
+
+<h3>📌 Real-World Example: Preloading Data</h3>
+
+<pre>
+@Component
+public class DataLoader implements CommandLineRunner {
+
+    private final UserRepository userRepository;
+
+    public DataLoader(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Override
+    public void run(String... args) {
+        userRepository.save(new User("Admin", "admin@example.com"));
+        System.out.println("Default user created");
+    }
+}
+</pre>
+
+<h2>4️⃣ ApplicationRunner</h2>
+
+<h3>📌 Definition</h3>
+
+<pre>
+@FunctionalInterface
+public interface ApplicationRunner {
+    void run(ApplicationArguments args) throws Exception;
+}
+</pre>
+
+<h3>📌 Example Implementation</h3>
+
+<pre>
+@Component
+public class MyApplicationRunner implements ApplicationRunner {
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+
+        System.out.println("ApplicationRunner executed");
+
+        if (args.containsOption("name")) {
+            System.out.println("Name: " + args.getOptionValues("name"));
+        }
+
+        System.out.println("Non-option args: " + args.getNonOptionArgs());
+    }
+}
+</pre>
+
+<h2>5️⃣ CommandLineRunner vs ApplicationRunner</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>CommandLineRunner</th>
+<th>ApplicationRunner</th>
+</tr>
+<tr>
+<td>Argument Type</td>
+<td>String... args</td>
+<td>ApplicationArguments</td>
+</tr>
+<tr>
+<td>Structured Parsing</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Access Option Names</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Access Non-option Args</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+</table>
+
+<h2>6️⃣ Execution Order</h2>
+
+<pre>
+@Component
+@Order(1)
+public class FirstRunner implements CommandLineRunner {
+
+    @Override
+    public void run(String... args) {
+        System.out.println("First Runner");
+    }
+}
+</pre>
+
+<h2>7️⃣ Important Notes</h2>
+
+<ul>
+<li>Runs only once during application startup</li>
+<li>If exception is thrown → Application startup fails</li>
+<li>Long-running code delays startup</li>
+</ul>
+
+<h2>8️⃣ Best Practices</h2>
+
+<ul>
+<li>Keep logic lightweight</li>
+<li>Avoid long blocking operations</li>
+<li>Handle exceptions properly</li>
+<li>Use @Order if multiple runners exist</li>
+</ul>
+
+<h2>9️⃣ Internal Working</h2>
+
+<pre>
+1. Creates ApplicationContext
+2. Loads all Beans
+3. Identifies CommandLineRunner & ApplicationRunner
+4. Sorts them (if ordered)
+5. Executes run() method
+</pre>
+
+<h2>🔟 Summary</h2>
+
+<table>
+<tr>
+<th>Use Case</th>
+<th>Recommended</th>
+</tr>
+<tr>
+<td>Simple startup task</td>
+<td>CommandLineRunner</td>
+</tr>
+<tr>
+<td>Argument-based startup</td>
+<td>ApplicationRunner</td>
+</tr>
+</table>
+
+<h2>📌 Final Takeaway</h2>
+
+<ul>
+<li>Both interfaces are used for startup logic</li>
+<li>Both run after the application context is ready</li>
+<li>Choose based on argument handling needs</li>
+</ul>
+
+</body>
+</html>
