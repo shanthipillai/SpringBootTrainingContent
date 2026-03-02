@@ -1,0 +1,61 @@
+[33m1da7d09[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mstudents[m[33m, [m[1;31morigin/students[m[33m)[m HEAD@{0}: commit: 2march
+[33mea77f4d[m HEAD@{1}: pull origin students: Fast-forward
+[33m7b0d225[m HEAD@{2}: commit: commit march2026
+[33mce7ee40[m HEAD@{3}: commit: bean scopes changes
+[33m8356753[m HEAD@{4}: commit: v8
+[33m03d4c97[m HEAD@{5}: commit: v7
+[33m10ccee3[m HEAD@{6}: commit: v6
+[33me3e5d17[m HEAD@{7}: commit: v5
+[33m007f1d7[m HEAD@{8}: commit: v4
+[33m63c07f3[m HEAD@{9}: commit: v3
+[33mcd97d64[m HEAD@{10}: commit: v2
+[33m76e2fbc[m HEAD@{11}: commit: v1
+[33m512308c[m HEAD@{12}: commit: 25thfeb
+[33ma54f424[m HEAD@{13}: commit: commit changes
+[33m10be6f2[m HEAD@{14}: checkout: moving from students to students
+[33m10be6f2[m HEAD@{15}: commit: 22feb
+[33m48e63e5[m HEAD@{16}: pull origin students: Merge made by the 'ort' strategy.
+[33m38e28d3[m HEAD@{17}: commit: 18th feb
+[33mcebcb2f[m HEAD@{18}: checkout: moving from master to students
+[33mcc84219[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{19}: commit: 18feb
+[33mc3fb38c[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{20}: commit: changes
+[33mb25db59[m HEAD@{21}: commit: changes
+[33mae0f515[m HEAD@{22}: pull origin master: Merge made by the 'ort' strategy.
+[33m0f07587[m HEAD@{23}: commit: changes
+[33m177c0e3[m HEAD@{24}: checkout: moving from trainer to master
+[33md3f270b[m[33m ([m[1;31morigin/trainer[m[33m, [m[1;32mtrainer[m[33m)[m HEAD@{25}: commit: changes
+[33ma8d27e7[m HEAD@{26}: checkout: moving from master to trainer
+[33m177c0e3[m HEAD@{27}: commit: all
+[33m7e729fd[m HEAD@{28}: checkout: moving from master to master
+[33m7e729fd[m HEAD@{29}: pull origin master: Fast-forward
+[33mb9e8395[m HEAD@{30}: checkout: moving from trainer to master
+[33ma8d27e7[m HEAD@{31}: checkout: moving from students to trainer
+[33mcebcb2f[m HEAD@{32}: commit: test
+[33maf35699[m HEAD@{33}: commit: test
+[33m23119e0[m HEAD@{34}: rebase (finish): returning to refs/heads/students
+[33m23119e0[m HEAD@{35}: rebase (continue): commit changes
+[33m3113ae6[m HEAD@{36}: commit: commit changesnew
+[33m83ea8c8[m HEAD@{37}: pull --rebase origin students (start): checkout 83ea8c84d11595267ea10daa63508b7fee704f70
+[33m32805d2[m HEAD@{38}: commit: commit changes
+[33mb7bb14d[m HEAD@{39}: commit: commit changes
+[33ma8d27e7[m HEAD@{40}: checkout: moving from trainer to students
+[33ma8d27e7[m HEAD@{41}: checkout: moving from students to trainer
+[33ma8d27e7[m HEAD@{42}: commit: commit changes
+[33m2a75a1d[m HEAD@{43}: checkout: moving from master to students
+[33mb9e8395[m HEAD@{44}: commit: commit changes
+[33m8dc69cd[m HEAD@{45}: checkout: moving from students to master
+[33m2a75a1d[m HEAD@{46}: commit: commit changes
+[33m6722025[m HEAD@{47}: checkout: moving from students to students
+[33m6722025[m HEAD@{48}: commit: commit changes
+[33m8dc69cd[m HEAD@{49}: checkout: moving from master to students
+[33m8dc69cd[m HEAD@{50}: pull: Merge made by the 'ort' strategy.
+[33m70dd616[m HEAD@{51}: commit: 18febcommits
+[33m581bb0a[m HEAD@{52}: commit: 13febchangescommited
+[33m17d8f67[m HEAD@{53}: commit: commit all
+[33me521786[m HEAD@{54}: commit: commit all
+[33m705b8f7[m HEAD@{55}: commit: commit on 10thfeb
+[33mb7fb786[m HEAD@{56}: commit: commit on 10thfeb
+[33m07dac21[m HEAD@{57}: commit: commit on 10thfeb
+[33m87e5cf2[m HEAD@{58}: commit: commit on 10thfeb
+[33m7223cca[m HEAD@{59}: commit: commit on 10thfeb
+[33m5c3b89b[m HEAD@{60}: clone: from https://github.com/shanthipillai/SpringBootTrainingContent.git
