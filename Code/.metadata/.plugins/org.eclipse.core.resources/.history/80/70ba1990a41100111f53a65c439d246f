@@ -1,0 +1,16 @@
+package feb.training.springboot;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+public class Default implements PaymentMode {
+
+	@Override
+	public void pay(double amount) {
+		//System.out.println("Payment done by UPI");
+		log.info("Default Mode Selected");
+		log.debug("Payment done throught Default");
+
+	}
+
+}

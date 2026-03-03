@@ -1,0 +1,263 @@
+2026-02-19 21:29:21 INFO  [main] feb.training.springboot.GadgetShopperApplication - Starting GadgetShopperApplication using Java 17.0.9 with PID 6892 (E:\SpringBootFebBatch\GadgetShopper\target\classes started by Admin in E:\SpringBootFebBatch\GadgetShopper)
+2026-02-19 21:29:21 INFO  [main] feb.training.springboot.GadgetShopperApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-19 21:29:21 INFO  [main] feb.training.springboot.GadgetShopperApplication - Started GadgetShopperApplication in 1.357 seconds (process running for 2.253)
+2026-02-19 21:29:21 INFO  [main] feb.training.springboot.orderservice.Order - Fetching product catalog
+2026-02-19 21:29:21 INFO  [main] feb.training.springboot.GadgetShopperApplication - Fetched 4 products
+2026-02-19 21:29:26 INFO  [main] feb.training.springboot.GadgetShopperApplication - Product selected by user: list
+2026-02-19 21:30:59 INFO  [main] feb.training.springboot.GadgetShopperApplication - Starting GadgetShopperApplication using Java 17.0.9 with PID 8392 (E:\SpringBootFebBatch\GadgetShopper\target\classes started by Admin in E:\SpringBootFebBatch\GadgetShopper)
+2026-02-19 21:30:59 DEBUG [main] feb.training.springboot.GadgetShopperApplication - Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-19 21:30:59 INFO  [main] feb.training.springboot.GadgetShopperApplication - No active profile set, falling back to 1 default profile: "default"
+2026-02-19 21:30:59 DEBUG [main] org.springframework.boot.SpringApplication - Loading source class feb.training.springboot.GadgetShopperApplication
+2026-02-19 21:30:59 DEBUG [main] org.springframework.context.annotation.AnnotationConfigApplicationContext - Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@d4ab71a
+2026-02-19 21:30:59 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalConfigurationAnnotationProcessor'
+2026-02-19 21:30:59 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.internalCachingMetadataReaderFactory'
+2026-02-19 21:30:59 DEBUG [main] org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [E:\SpringBootFebBatch\GadgetShopper\target\classes\feb\training\springboot\orderservice\Order.class]
+2026-02-19 21:30:59 DEBUG [main] org.springframework.context.annotation.ClassPathBeanDefinitionScanner - Identified candidate component class: file [E:\SpringBootFebBatch\GadgetShopper\target\classes\feb\training\springboot\paymentservice\UpiPayment.class]
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'propertySourcesPlaceholderConfigurer'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'forceAutoProxyCreatorToUseClassProxying'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'bootstrapExecutorAliasPostProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.event.internalEventListenerFactory'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalAutowiredAnnotationProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.context.annotation.internalCommonAnnotationProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.context.properties.ConfigurationPropertiesBindingPostProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.context.internalConfigurationPropertiesBinder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.aop.config.internalAutoProxyCreator'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.aop.framework.autoproxy.defaultProxyConfig'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'applicationTaskExecutor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$TaskExecutorConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'threadPoolTaskExecutorBuilder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$ThreadPoolTaskExecutorBuilderConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.task.execution-org.springframework.boot.autoconfigure.task.TaskExecutionProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.context.properties.BoundConfigurationProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'threadPoolTaskExecutorBuilder' via factory method to bean named 'spring.task.execution-org.springframework.boot.autoconfigure.task.TaskExecutionProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'applicationTaskExecutor' via factory method to bean named 'threadPoolTaskExecutorBuilder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'gadgetShopperApplication'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'order'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'upiPayment'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.AutoConfigurationPackages'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.jmx-org.springframework.boot.autoconfigure.jmx.JmxProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration' via constructor to bean named 'spring.jmx-org.springframework.boot.autoconfigure.jmx.JmxProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'mbeanExporter'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'objectNamingStrategy'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'mbeanExporter' via factory method to bean named 'objectNamingStrategy'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'mbeanExporter' via factory method to bean named 'org.springframework.beans.factory.support.DefaultListableBeanFactory@2d7e1102'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'mbeanServer'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.jmx.support.JmxUtils - Found MBeanServer: com.sun.jmx.mbeanserver.JmxMBeanServer@5ec0a365
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.context.properties.EnableConfigurationPropertiesRegistrar.methodValidationExcludeFilter'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.admin.SpringApplicationAdminJmxAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'springApplicationAdminRegistrar'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'springApplicationAdminRegistrar' via factory method to bean named 'environment'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar$SpringApplicationAdmin - Application Admin MBean registered with name 'org.springframework.boot:type=Admin,name=SpringApplication'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration$ClassProxyingConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.aop.AopAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'applicationAvailability'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'lifecycleProcessor'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.lifecycle-org.springframework.boot.autoconfigure.context.LifecycleProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'lifecycleProcessor' via factory method to bean named 'spring.lifecycle-org.springframework.boot.autoconfigure.context.LifecycleProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.info-org.springframework.boot.autoconfigure.info.ProjectInfoProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration' via constructor to bean named 'spring.info-org.springframework.boot.autoconfigure.info.ProjectInfoProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.ssl-org.springframework.boot.autoconfigure.ssl.SslProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration' via constructor to bean named 'org.springframework.context.annotation.AnnotationConfigApplicationContext@d4ab71a'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration' via constructor to bean named 'spring.ssl-org.springframework.boot.autoconfigure.ssl.SslProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'fileWatcher'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'sslPropertiesSslBundleRegistrar'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'sslPropertiesSslBundleRegistrar' via factory method to bean named 'fileWatcher'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'sslBundleRegistry'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$SimpleAsyncTaskExecutorBuilderConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$SimpleAsyncTaskExecutorBuilderConfiguration' via constructor to bean named 'spring.task.execution-org.springframework.boot.autoconfigure.task.TaskExecutionProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'simpleAsyncTaskExecutorBuilder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$AsyncConfigurerConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'applicationTaskExecutorAsyncConfigurer'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'applicationTaskExecutorAsyncConfigurer' via factory method to bean named 'org.springframework.beans.factory.support.DefaultListableBeanFactory@2d7e1102'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutorConfigurations$BootstrapExecutorConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskSchedulingConfigurations$ThreadPoolTaskSchedulerBuilderConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'threadPoolTaskSchedulerBuilder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'spring.task.scheduling-org.springframework.boot.autoconfigure.task.TaskSchedulingProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'threadPoolTaskSchedulerBuilder' via factory method to bean named 'spring.task.scheduling-org.springframework.boot.autoconfigure.task.TaskSchedulingProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskSchedulingConfigurations$SimpleAsyncTaskSchedulerBuilderConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Autowiring by type from bean name 'org.springframework.boot.autoconfigure.task.TaskSchedulingConfigurations$SimpleAsyncTaskSchedulerBuilderConfiguration' via constructor to bean named 'spring.task.scheduling-org.springframework.boot.autoconfigure.task.TaskSchedulingProperties'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'simpleAsyncTaskSchedulerBuilder'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.beans.factory.support.DefaultListableBeanFactory - Creating shared instance of singleton bean 'org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Registering beans for JMX exposure on startup
+2026-02-19 21:31:00 DEBUG [main] org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Auto-detecting user-defined JMX MBeans
+2026-02-19 21:31:00 DEBUG [main] org.springframework.context.support.DefaultLifecycleProcessor - Starting beans in phase -2147483647
+2026-02-19 21:31:00 DEBUG [main] org.springframework.context.support.DefaultLifecycleProcessor - Successfully started bean 'springBootLoggingLifecycle'
+2026-02-19 21:31:00 DEBUG [main] org.springframework.context.support.DefaultLifecycleProcessor - Starting beans in phase 1073741823
+2026-02-19 21:31:00 DEBUG [main] org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLogger - 
+
+
+============================
+CONDITIONS EVALUATION REPORT
+============================
+
+
+Positive matches:
+-----------------
+
+   AopAutoConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.aop.auto=true) matched (OnPropertyCondition)
+
+   AopAutoConfiguration.ClassProxyingConfiguration matched:
+      - @ConditionalOnMissingClass did not find unwanted class 'org.aspectj.weaver.Advice' (OnClassCondition)
+      - @ConditionalOnBooleanProperty (spring.aop.proxy-target-class=true) matched (OnPropertyCondition)
+
+   ApplicationAvailabilityAutoConfiguration#applicationAvailability matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.availability.ApplicationAvailability; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JmxAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.jmx.export.MBeanExporter' (OnClassCondition)
+      - @ConditionalOnBooleanProperty (spring.jmx.enabled=true) matched (OnPropertyCondition)
+
+   JmxAutoConfiguration#mbeanExporter matched:
+      - @ConditionalOnMissingBean (types: org.springframework.jmx.export.MBeanExporter; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   JmxAutoConfiguration#mbeanServer matched:
+      - @ConditionalOnMissingBean (types: javax.management.MBeanServer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   JmxAutoConfiguration#objectNamingStrategy matched:
+      - @ConditionalOnMissingBean (types: org.springframework.jmx.export.naming.ObjectNamingStrategy; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   LifecycleAutoConfiguration#defaultLifecycleProcessor matched:
+      - @ConditionalOnMissingBean (names: lifecycleProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   PropertyPlaceholderAutoConfiguration#propertySourcesPlaceholderConfigurer matched:
+      - @ConditionalOnMissingBean (types: org.springframework.context.support.PropertySourcesPlaceholderConfigurer; SearchStrategy: current) did not find any beans (OnBeanCondition)
+
+   SpringApplicationAdminJmxAutoConfiguration matched:
+      - @ConditionalOnBooleanProperty (spring.application.admin.enabled=true) matched (OnPropertyCondition)
+
+   SpringApplicationAdminJmxAutoConfiguration#springApplicationAdminRegistrar matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.admin.SpringApplicationAdminMXBeanRegistrar; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   SslAutoConfiguration#sslBundleRegistry matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.ssl.SslBundleRegistry,org.springframework.boot.ssl.SslBundles; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutionAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor' (OnClassCondition)
+
+   TaskExecutorConfigurations.AsyncConfigurerConfiguration matched:
+      - @ConditionalOnMissingBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration matched:
+      - AnyNestedCondition 1 matched 1 did not; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ModelCondition @ConditionalOnProperty (spring.task.execution.mode=force) did not find property 'spring.task.execution.mode'; NestedCondition on TaskExecutorConfigurations.OnExecutorCondition.ExecutorBeanCondition @ConditionalOnMissingBean (types: java.util.concurrent.Executor; SearchStrategy: all) did not find any beans (TaskExecutorConfigurations.OnExecutorCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutor matched:
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskExecutorConfigurations.ThreadPoolTaskExecutorBuilderConfiguration#threadPoolTaskExecutorBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.ThreadPoolTaskExecutorBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+   TaskSchedulingAutoConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler' (OnClassCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+      - @ConditionalOnThreading found PLATFORM (OnThreadingCondition)
+
+   TaskSchedulingConfigurations.ThreadPoolTaskSchedulerBuilderConfiguration#threadPoolTaskSchedulerBuilder matched:
+      - @ConditionalOnMissingBean (types: org.springframework.boot.task.ThreadPoolTaskSchedulerBuilder; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+   AopAutoConfiguration.AspectJAutoProxyingConfiguration:
+      Did not match:
+         - @ConditionalOnClass did not find required class 'org.aspectj.weaver.Advice' (OnClassCondition)
+
+   MessageSourceAutoConfiguration:
+      Did not match:
+         - ResourceBundle did not find bundle with basename messages (MessageSourceAutoConfiguration.ResourceBundleCondition)
+
+   ProjectInfoAutoConfiguration#buildProperties:
+      Did not match:
+         - @ConditionalOnResource did not find resource '${spring.info.build.location:classpath:META-INF/build-info.properties}' (OnResourceCondition)
+
+   ProjectInfoAutoConfiguration#gitProperties:
+      Did not match:
+         - GitResource did not find git info at classpath:git.properties (ProjectInfoAutoConfiguration.GitResourceAvailableCondition)
+
+   TaskExecutorConfigurations.AsyncConfigurerWrapperConfiguration:
+      Did not match:
+         - @ConditionalOnBean (types: org.springframework.scheduling.annotation.AsyncConfigurer; SearchStrategy: all) did not find any beans of type org.springframework.scheduling.annotation.AsyncConfigurer (OnBeanCondition)
+
+   TaskExecutorConfigurations.SimpleAsyncTaskExecutorBuilderConfiguration#simpleAsyncTaskExecutorBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskExecutorBuilder' simpleAsyncTaskExecutorBuilder (OnBeanCondition)
+
+   TaskExecutorConfigurations.TaskExecutorConfiguration#applicationTaskExecutorVirtualThreads:
+      Did not match:
+         - @ConditionalOnThreading did not find VIRTUAL (OnThreadingCondition)
+
+   TaskSchedulingAutoConfiguration#scheduledBeanLazyInitializationExcludeFilter:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.scheduling.config.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.scheduling.config.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+   TaskSchedulingConfigurations.SimpleAsyncTaskSchedulerBuilderConfiguration#simpleAsyncTaskSchedulerBuilderVirtualThreads:
+      Did not match:
+         - @ConditionalOnMissingBean (types: org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder; SearchStrategy: all) found beans of type 'org.springframework.boot.task.SimpleAsyncTaskSchedulerBuilder' simpleAsyncTaskSchedulerBuilder (OnBeanCondition)
+
+   TaskSchedulingConfigurations.TaskSchedulerConfiguration:
+      Did not match:
+         - @ConditionalOnBean (names: org.springframework.scheduling.config.internalScheduledAnnotationProcessor; SearchStrategy: all) did not find any beans named org.springframework.scheduling.config.internalScheduledAnnotationProcessor (OnBeanCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    org.springframework.boot.autoconfigure.context.ConfigurationPropertiesAutoConfiguration
+
+    org.springframework.boot.autoconfigure.ssl.SslAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.LifecycleAutoConfiguration
+
+    org.springframework.boot.autoconfigure.context.PropertyPlaceholderAutoConfiguration
+
+    org.springframework.boot.autoconfigure.availability.ApplicationAvailabilityAutoConfiguration
+
+    org.springframework.boot.autoconfigure.info.ProjectInfoAutoConfiguration
+
+
+
+2026-02-19 21:31:00 INFO  [main] feb.training.springboot.GadgetShopperApplication - Started GadgetShopperApplication in 1.83 seconds (process running for 2.771)
+2026-02-19 21:31:00 DEBUG [main] org.springframework.boot.availability.ApplicationAvailabilityBean - Application availability state LivenessState changed to CORRECT
+2026-02-19 21:31:00 DEBUG [main] org.springframework.boot.availability.ApplicationAvailabilityBean - Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2026-02-19 21:31:00 DEBUG [main] feb.training.springboot.GadgetShopperApplication - Fetching Order and Payment beans from ApplicationContext
+2026-02-19 21:31:00 INFO  [main] feb.training.springboot.orderservice.Order - Fetching product catalog
+2026-02-19 21:31:00 DEBUG [main] feb.training.springboot.orderservice.Order - Product catalog contents: {Headset=3000, Laptop=50000, Keyboard=2000, Mouse=1000}
+2026-02-19 21:31:00 INFO  [main] feb.training.springboot.GadgetShopperApplication - Fetched 4 products
+2026-02-19 21:31:00 DEBUG [main] feb.training.springboot.GadgetShopperApplication - Displaying available products
+2026-02-19 21:31:04 INFO  [main] feb.training.springboot.GadgetShopperApplication - Product selected by user: Laptop
+2026-02-19 21:31:07 DEBUG [main] feb.training.springboot.GadgetShopperApplication - User choice to continue: no
+2026-02-19 21:31:07 INFO  [main] feb.training.springboot.GadgetShopperApplication - Final total calculated: ₹50000
+2026-02-19 21:31:07 INFO  [main] feb.training.springboot.GadgetShopperApplication - Initiating payment
+2026-02-19 21:31:07 DEBUG [main] feb.training.springboot.paymentservice.UpiPayment - Payment of ₹50000 completed using UPI
+2026-02-19 21:31:07 INFO  [main] feb.training.springboot.paymentservice.UpiPayment - Done
+2026-02-19 21:31:07 INFO  [main] feb.training.springboot.GadgetShopperApplication - ShoppingApplication finished successfully
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.context.annotation.AnnotationConfigApplicationContext - Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@d4ab71a, started on Thu Feb 19 21:30:59 IST 2026
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.context.support.DefaultLifecycleProcessor - Stopping beans in phase 1073741823
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.context.support.DefaultLifecycleProcessor - Bean 'applicationTaskExecutor' completed its stop procedure
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.context.support.DefaultLifecycleProcessor - Stopping beans in phase -2147483647
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.context.support.DefaultLifecycleProcessor - Bean 'springBootLoggingLifecycle' completed its stop procedure
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.jmx.export.annotation.AnnotationMBeanExporter - Unregistering JMX-exposed beans on shutdown
+2026-02-19 21:31:07 DEBUG [SpringApplicationShutdownHook] org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'

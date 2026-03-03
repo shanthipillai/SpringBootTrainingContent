@@ -1,0 +1,9 @@
+package feb.training.springboot;
+
+public class InSufficientFundsException extends RuntimeException {
+
+	InSufficientFundsException()
+	{
+		System.out.println("Insufficient funds in your account!!!");
+	}
+}

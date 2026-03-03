@@ -1,0 +1,19 @@
+package feb.training.springboot.lazyannotate;
+
+import org.springframework.stereotype.Component;
+
+@Component("order")
+public class OrderService {
+
+	private Payment payment;
+	public OrderService()
+	{
+		System.out.println("Order Service created"+this.hashCode());
+		System.out.println("Payment Service"+payment);
+	}
+	
+	public void getDetails()
+	{
+		
+	}
+}

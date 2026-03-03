@@ -1,0 +1,13 @@
+package feb.training.springboot;
+
+import org.springframework.context.ApplicationContextInitializer;
+
+public class MyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+	@Override
+	public void initialize(ConfigurableApplicationContext applicationContext) {
+	System.out.println("Application Context object is created");
+		
+	}
+
+}

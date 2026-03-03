@@ -1,0 +1,20 @@
+package feb.training.springboot;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+@SpringBootApplication
+public class SpringBootLifeCycleApplication {
+
+	public static void main(String[] args) {
+		SpringApplication app=(SpringApplication) SpringApplication.run(SpringBootLifeCycleApplication.class, args);
+		app.addInitializers(new MyInitializer());
+	    ApplicationContext context = app.run(args);
+		Customer customer=(Customer) context.getBean("customer");
+		customer.showDetails();
+		System.out.println("Done from App side");
+		
+	}
+
+}

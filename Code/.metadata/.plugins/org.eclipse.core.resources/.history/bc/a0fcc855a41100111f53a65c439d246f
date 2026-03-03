@@ -1,0 +1,13 @@
+package feb.training.springboot;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class UPI implements PaymentMode {
+
+	@Override
+	public void pay(double amount) {
+		System.out.println("Payment done by UPI");
+	}
+
+}

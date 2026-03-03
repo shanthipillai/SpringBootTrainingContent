@@ -1,0 +1,8 @@
+package test.objects.refs;
+
+public class CompareObjects {
+public static void main(String[] args) {
+	CompareObjects obj1=new CompareObjects();
+	CompareObjects obj2=new CompareObjects();
+}
+}

@@ -1,0 +1,14 @@
+package feb.training.springboot.singletontest;
+
+import org.springframework.stereotype.Component;
+
+@Component("singletontest")
+public class OrderService {
+	public OrderService()
+	{
+		//OrderService obj=new OrderService(); //this
+		//current class object
+		//System.out.println(this);
+		System.out.println(this.hashCode());
+	}
+}

@@ -1,0 +1,11 @@
+package feb.training.springboot.prototype;
+
+import org.springframework.stereotype.Component;
+
+@Component("prototypebean")
+public class OrderService {
+	public OrderService()
+	{
+		System.out.println(this.hashCode());
+	}
+}

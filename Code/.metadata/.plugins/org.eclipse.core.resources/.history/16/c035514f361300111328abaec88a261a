@@ -1,0 +1,11 @@
+package feb.training.springboot.singleton;
+
+import org.springframework.stereotype.Component;
+
+@Component("orderservice")
+public class OrderService {
+	public OrderService()
+	{
+		System.out.println(this.hashCode());
+	}
+}

@@ -1,0 +1,7 @@
+package test.objects.refs;
+
+public class CompareObjects {
+public static void main(String[] args) {
+	
+}
+}

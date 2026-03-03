@@ -1,0 +1,10 @@
+package feb.training.springboot.disingletoninproto;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("orders")
+@Scope("prototype")
+public class Orders {
+
+}

@@ -1,0 +1,6 @@
+package feb.training.springboot.diprototypeinsingleton;
+
+public class OrderService {
+	
+	PaymentService paymentService;
+}

@@ -3,6 +3,11 @@ package feb.training.springboot;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
@@ -10,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 @ConfigurationProperties(prefix = "assignment2.user")
 @Component("user")
+
+@Data
 public class UserDetails {
 
 	@NotBlank(message = "name should not be blank")
@@ -26,38 +33,23 @@ public class UserDetails {
 	@Valid
 	private Address address;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
+	
+	  public String getName() { return name; }
+	  
+	  public void setName(String name) { this.name = name; }
+	  
+	  public String getContact() { return contact; }
+	  
+	  public void setContact(String contact) { this.contact = contact; }
+	  
+	  public String getEmail() { return email; }
+	  
+	  public void setEmail(String email) { this.email = email; }
+	  
+	  public Address getAddress() { return address; }
+	  
+	  public void setAddress(Address address) { this.address = address; }
+	
 	@Override
 	public String toString() {
 		return "UserDetails{" +
@@ -67,4 +59,5 @@ public class UserDetails {
 				", address=" + address +
 				'}';
 	}
+	
 }

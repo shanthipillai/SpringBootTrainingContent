@@ -1,0 +1,18 @@
+package feb.training.springboot.diprototypeinsingleton;
+
+import org.springframework.stereotype.Component;
+
+@Component
+public class OrderService {
+	
+	PaymentService paymentService;
+
+	public OrderService(PaymentService paymentService) {
+		super();
+		this.paymentService = paymentService;
+		
+		System.out.println("Order Service"+this.hashCode());
+		
+	}
+	
+}

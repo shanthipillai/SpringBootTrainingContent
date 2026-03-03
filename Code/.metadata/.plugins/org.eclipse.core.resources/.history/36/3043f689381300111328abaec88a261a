@@ -1,0 +1,22 @@
+package feb.training.springboot.diprototypeinsingleton;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component("protoinsigl")
+@Scope("singleton")
+public class OrderService {
+	
+	PaymentService paymentService;
+
+	@Autowired
+	public OrderService(PaymentService paymentService) {
+		super();
+		this.paymentService = paymentService;
+		
+		System.out.println("Order Service"+this.hashCode());
+		
+	}
+	
+}

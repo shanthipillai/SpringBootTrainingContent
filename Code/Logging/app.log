@@ -1,0 +1,16 @@
+2026-02-25T00:05:31.379+05:30  INFO 35828 --- [Logging] [main] f.t.springboot.LoggingApplication        : Starting LoggingApplication using Java 17.0.9 with PID 35828 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T00:05:31.383+05:30 DEBUG 35828 --- [Logging] [main] f.t.springboot.LoggingApplication        : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T00:05:31.383+05:30  INFO 35828 --- [Logging] [main] f.t.springboot.LoggingApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T00:05:32.124+05:30  INFO 35828 --- [Logging] [main] f.t.springboot.LoggingApplication        : Started LoggingApplication in 1.161 seconds (process running for 1.847)
+2026-02-25T00:05:32.130+05:30 DEBUG 35828 --- [Logging] [main] feb.training.springboot.OrderService     : Fetching Payment Details
+2026-02-25T00:05:32.131+05:30  INFO 35828 --- [Logging] [main] feb.training.springboot.OrderService     : Amount =-1.0
+2026-02-25T00:05:32.132+05:30  WARN 35828 --- [Logging] [main] feb.training.springboot.OrderService     : User entered insufficient funds
+2026-02-25T00:05:32.132+05:30 ERROR 35828 --- [Logging] [main] feb.training.springboot.OrderService     : Insufficient Funds
+2026-02-25T00:17:38.395+05:30  INFO 37552 --- [Logging] [main] f.t.springboot.LoggingApplication        : Starting LoggingApplication using Java 17.0.9 with PID 37552 (E:\SpringBootFebBatch\Logging\target\classes started by Admin in E:\SpringBootFebBatch\Logging)
+2026-02-25T00:17:38.398+05:30 DEBUG 37552 --- [Logging] [main] f.t.springboot.LoggingApplication        : Running with Spring Boot v4.0.3, Spring v7.0.5
+2026-02-25T00:17:38.398+05:30  INFO 37552 --- [Logging] [main] f.t.springboot.LoggingApplication        : No active profile set, falling back to 1 default profile: "default"
+2026-02-25T00:17:38.860+05:30  INFO 37552 --- [Logging] [main] f.t.springboot.LoggingApplication        : Started LoggingApplication in 0.861 seconds (process running for 1.589)
+2026-02-25T00:17:38.864+05:30 DEBUG 37552 --- [Logging] [main] feb.training.springboot.OrderService     : Fetching Payment Details
+2026-02-25T00:17:38.864+05:30  INFO 37552 --- [Logging] [main] feb.training.springboot.OrderService     : Amount =-1.0
+2026-02-25T00:17:38.865+05:30  WARN 37552 --- [Logging] [main] feb.training.springboot.OrderService     : User entered insufficient funds
+2026-02-25T00:17:38.865+05:30 ERROR 37552 --- [Logging] [main] feb.training.springboot.OrderService     : Insufficient Funds

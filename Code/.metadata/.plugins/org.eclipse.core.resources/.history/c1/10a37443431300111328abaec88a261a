@@ -1,0 +1,24 @@
+package feb.training.springboot.lookup;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
+import org.springframework.stereotype.Component;
+
+@Component("orderserv")
+public class OrderServ {
+
+	Payment payment;
+	Audit audit;
+	
+	@Autowired
+	public OrderServ(Payment payment)
+	{
+		this.payment=payment;
+	}
+	@Lookup
+	public Audit getAudit() {
+		return null;
+		
+	}
+	
+}

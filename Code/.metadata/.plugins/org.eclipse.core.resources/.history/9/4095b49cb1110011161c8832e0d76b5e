@@ -1,0 +1,5 @@
+spring.application.name=Logging
+#explicitly enable debug logs by default debug is disabled
+#logging.level.feb.training.springboot.payment==debug
+logging.level.feb.training.springboot=debug
+logging.file.name=app.log 

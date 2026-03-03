@@ -1,0 +1,16 @@
+package feb.training.springboot.diprototypeinsingleton;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
+public class PaymentService {
+	public PaymentService() {
+		System.out.println("Payment Service=" + this.hashCode());
+	}
+
+	public void pay() {
+       System.out.println(this.hashCode());
+	}
+}

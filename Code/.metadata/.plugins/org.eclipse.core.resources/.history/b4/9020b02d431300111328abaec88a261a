@@ -1,0 +1,11 @@
+package feb.training.springboot.lookup;
+
+import org.springframework.stereotype.Component;
+
+@Component("orderserv")
+public class OrderServ {
+
+	Payment payment;
+	Audit audit;
+	
+}

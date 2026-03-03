@@ -1,0 +1,11 @@
+package feb.training.springboot;
+
+public class Default implements PaymentMode {
+
+	@Override
+	public void pay(double amount) {
+		// TODO Auto-generated method stub
+
+	}
+
+}
