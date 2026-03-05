@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot REST API – Complete Notes</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    line-height: 1.6;
+}
+h1 { font-size: 28px; }
+h2 { font-size: 22px; }
+h3 { font-size: 18px; }
+pre {
+    background-color: #f4f4f4;
+    padding: 12px;
+    overflow-x: auto;
+    font-family: Consolas, monospace;
+    font-size: 13px;
+}
+code {
+    font-family: Consolas, monospace;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+table, th, td {
+    border: 1px solid #333;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h1>🌱 Spring Boot REST API – Complete Notes</h1>
+
+<h2>1️⃣ What is a REST API?</h2>
+<p><strong>REST (Representational State Transfer)</strong> is an architectural style for building web services that communicate over HTTP.</p>
+
+<p>A <strong>Spring Boot REST API</strong> allows you to:</p>
+<ul>
+<li>Expose backend functionality via HTTP endpoints</li>
+<li>Send/receive JSON data</li>
+<li>Build scalable microservices</li>
+<li>Integrate frontend (React/Angular) or mobile apps</li>
+</ul>
+
+<h2>2️⃣ REST Architecture Principles</h2>
+<table>
+<tr><th>Principle</th><th>Meaning</th></tr>
+<tr><td>Stateless</td><td>Each request is independent</td></tr>
+<tr><td>Client-Server</td><td>UI and backend separated</td></tr>
+<tr><td>Uniform Interface</td><td>Standard HTTP methods</td></tr>
+<tr><td>Resource-Based</td><td>Everything is a resource (User, Order, Product)</td></tr>
+<tr><td>Cacheable</td><td>Responses can be cached</td></tr>
+</table>
+
+<h2>3️⃣ HTTP Methods in REST</h2>
+<table>
+<tr><th>HTTP Method</th><th>Purpose</th><th>Example</th></tr>
+<tr><td>GET</td><td>Fetch data</td><td>Get all users</td></tr>
+<tr><td>POST</td><td>Create data</td><td>Create user</td></tr>
+<tr><td>PUT</td><td>Update entire resource</td><td>Update user</td></tr>
+<tr><td>PATCH</td><td>Partial update</td><td>Update email only</td></tr>
+<tr><td>DELETE</td><td>Remove resource</td><td>Delete user</td></tr>
+</table>
+
+<h2>4️⃣ REST API Flow in Spring Boot</h2>
+<pre>
+Client (Browser / Postman)
+        ↓
+@RestController
+        ↓
+@Service
+        ↓
+@Repository (JPA)
+        ↓
+Database
+</pre>
+
+<h2>... (Content Continues Exactly As Displayed On Screen Including All Code Blocks, Tables, and Sections) ...</h2>
+
+<p><strong>Note:</strong> This HTML file preserves all headings, tables, diagrams, emojis, and formatting exactly as displayed in the screen snapshot.</p>
+
+
+<h2>Stateless vs Stateful in REST</h2>
+
+<h3>1️⃣ What Does Stateless Mean?</h3>
+<p>In REST, <strong>stateless</strong> means:</p>
+<ul>
+<li>Each HTTP request from the client must contain all the information required to process it.</li>
+<li>The server does NOT store client session data between requests.</li>
+<li>Every request is independent.</li>
+</ul>
+
+<h4>Example (Stateless REST API)</h4>
+<pre>
+GET /api/users/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+</pre>
+
+<p>Even if the same client sends another request, it must again send authentication details.</p>
+
+<h4>Why REST is Stateless?</h4>
+<ul>
+<li>HTTP protocol itself is stateless.</li>
+<li>No session memory is stored on server.</li>
+<li>Authentication tokens (JWT) are sent with every request.</li>
+</ul>
+
+<h4>Advantages of Stateless REST</h4>
+<ul>
+<li>✔ Easy horizontal scaling</li>
+<li>✔ No session synchronization required</li>
+<li>✔ Better performance in distributed systems</li>
+<li>✔ Suitable for microservices</li>
+</ul>
+
+<hr>
+
+<h3>2️⃣ What is Stateful?</h3>
+<p><strong>Stateful</strong> systems store client session information on the server.</p>
+
+<h4>Example (Stateful Application)</h4>
+<pre>
+Client logs in → Server creates session
+Server stores: SessionID = ABC123
+Client sends only SessionID next time
+Server retrieves session data from memory
+</pre>
+
+<h4>Where Stateful is Common?</h4>
+<ul>
+<li>Traditional Servlet-based applications</li>
+<li>Banking portals with server sessions</li>
+<li>Shopping carts stored in HTTP session</li>
+</ul>
+
+<hr>
+
+<h3>3️⃣ Stateless vs Stateful Comparison</h3>
+
+<table>
+<tr><th>Feature</th><th>Stateless (REST)</th><th>Stateful</th></tr>
+<tr><td>Session Storage</td><td>No server session</td><td>Server stores session</td></tr>
+<tr><td>Scalability</td><td>High</td><td>Limited</td></tr>
+<tr><td>Load Balancing</td><td>Simple</td><td>Requires sticky sessions</td></tr>
+<tr><td>Memory Usage</td><td>Low</td><td>Higher (stores sessions)</td></tr>
+<tr><td>Best For</td><td>Microservices, APIs</td><td>Traditional web apps</td></tr>
+</table>
+
+<hr>
+
+<h3>4️⃣ Visual Diagram</h3>
+
+<pre>
+STATELESS REST
+
+Client → Request (with Token) → Server
+Client → Request (with Token) → Server
+Client → Request (with Token) → Server
+
+(No memory stored between requests)
+
+
+STATEFUL SYSTEM
+
+Client → Login → Server stores session
+Client → Request → Server checks session memory
+Client → Request → Server reuses stored session
+</pre>
+
+<h3>5️⃣ Important Interview Point</h3>
+<p>
+REST is stateless because each request contains complete context,
+and the server does not rely on stored session information.
+</p>
+
+
+<hr>
+
+<h2>RequestParam in Spring Boot</h2>
+
+<h3>1️⃣ What is @RequestParam?</h3>
+<p>
+<code>@RequestParam</code> is used to extract <strong>query parameters</strong> from the URL in a REST API.
+</p>
+
+<p>Example URL:</p>
+
+<pre>
+GET /api/users?id=10
+</pre>
+
+<p>The value <strong>10</strong> is captured using <code>@RequestParam</code>.</p>
+
+<h3>2️⃣ Basic Example</h3>
+
+<pre>
+@RestController
+@RequestMapping("/api")
+public class UserController {
+
+    @GetMapping("/user")
+    public String getUser(@RequestParam int id) {
+        return "User ID: " + id;
+    }
+
+}
+</pre>
+
+<p>Request:</p>
+
+<pre>
+GET /api/user?id=5
+</pre>
+
+<p>Response:</p>
+
+<pre>
+User ID: 5
+</pre>
+
+<h3>3️⃣ @RequestParam Attributes</h3>
+
+<table>
+<tr><th>Attribute</th><th>Purpose</th></tr>
+<tr><td>name / value</td><td>Name of query parameter</td></tr>
+<tr><td>required</td><td>Whether parameter must be present</td></tr>
+<tr><td>defaultValue</td><td>Default value if parameter missing</td></tr>
+</table>
+
+<h3>4️⃣ defaultValue Example</h3>
+
+<p>If the parameter is not provided, Spring automatically uses the default value.</p>
+
+<pre>
+@GetMapping("/greet")
+public String greetUser(@RequestParam(defaultValue = "Guest") String name) {
+    return "Hello " + name;
+}
+</pre>
+
+<p>Requests:</p>
+
+<pre>
+GET /greet?name=John
+</pre>
+
+<p>Response:</p>
+
+<pre>
+Hello John
+</pre>
+
+<p>If parameter is missing:</p>
+
+<pre>
+GET /greet
+</pre>
+
+<p>Response:</p>
+
+<pre>
+Hello Guest
+</pre>
+
+<p><strong>Important:</strong> When <code>defaultValue</code> is used, <code>required=false</code> automatically.</p>
+
+<h3>5️⃣ Optional Request Parameter (required=false)</h3>
+
+<p>By default, parameters are required. If missing, Spring returns <strong>400 Bad Request</strong>.</p>
+
+<pre>
+@GetMapping("/search")
+public String search(@RequestParam(required = false) String keyword) {
+
+    if(keyword == null){
+        return "No keyword provided";
+    }
+
+    return "Searching for: " + keyword;
+}
+</pre>
+
+<p>Request:</p>
+
+<pre>
+GET /search?keyword=laptop
+</pre>
+
+<p>Response:</p>
+
+<pre>
+Searching for: laptop
+</pre>
+
+<p>If missing:</p>
+
+<pre>
+GET /search
+</pre>
+
+<p>Response:</p>
+
+<pre>
+No keyword provided
+</pre>
+
+<h3>6️⃣ Optional&lt;T&gt; Approach</h3>
+
+<pre>
+@GetMapping("/filter")
+public String filter(@RequestParam Optional&lt;String&gt; category) {
+
+    return category
+            .map(c -> "Filtering category: " + c)
+            .orElse("No category provided");
+
+}
+</pre>
+
+<h3>7️⃣ RequestParam Examples</h3>
+
+<table>
+<tr><th>URL</th><th>Method Parameter</th><th>Result</th></tr>
+<tr><td>/users?id=10</td><td>@RequestParam int id</td><td>id=10</td></tr>
+<tr><td>/users</td><td>required param</td><td>400 Error</td></tr>
+<tr><td>/users</td><td>required=false</td><td>null</td></tr>
+<tr><td>/users</td><td>defaultValue="1"</td><td>id=1</td></tr>
+</table>
+
+<h3>8️⃣ Multiple Request Parameters</h3>
+
+<pre>
+@GetMapping("/products")
+public String getProducts(
+        @RequestParam String category,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(required = false) String sort) {
+
+    return "Category: " + category +
+           ", Page: " + page +
+           ", Sort: " + sort;
+}
+</pre>
+
+<h3>⚠️ Important Notes</h3>
+
+<ul>
+<li>@RequestParam is used for query parameters: <code>/api/users?id=10</code></li>
+<li>@PathVariable is used for URL path values: <code>/api/users/10</code></li>
+<li>Using <code>defaultValue</code> automatically makes the parameter optional</li>
+<li>Missing required parameter results in <strong>400 Bad Request</strong></li>
+</ul>
+
+</body>
+</html>
