@@ -1,2 +1,4 @@
 ## 📘 Spring Boot Documentation
-[![View Documentation](https://img.shields.io/badge/View-Documentation-blue?style=for-the-badge)](https://shanthipillai.github.io/SpringBootTrainingContent/index.html)
+<a href="https://shanthipillai.github.io/SpringBootTrainingContent/index.html" target="_blank">
+📚 View Spring Boot Training Documentation
+</a>
