@@ -1,4 +1,4 @@
-# 🚀 Spring Boot Training Repository
+# 🚀 Spring Boot Training Repository (Docs @ https://shanthipillai.github.io/SpringBootTrainingContent/index.html)
 
 Welcome to the **Spring Boot Training Repository**.  
 This repository is used to organize and share **training materials, notes, presentations, sample code, and assignments** related to Spring Boot.
