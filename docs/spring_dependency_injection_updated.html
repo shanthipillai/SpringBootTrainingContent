@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Dependency Injection Guide</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; line-height: 1.6; margin: 40px; }
+h1 { font-size: 28px; }
+h2 { font-size: 22px; margin-top: 30px; }
+h3 { font-size: 18px; margin-top: 20px; }
+pre {
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:6px;
+    overflow-x:auto;
+    font-family: Consolas, monospace;
+    font-size:14px;
+}
+table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+th { background:#eee; }
+</style>
+</head>
+
+<body>
+
+<h1>Dependency Injection in Spring Boot</h1>
+<h2>Field Injection vs Setter Injection vs Constructor Injection</h2>
+
+<p>
+Dependency Injection (DI) is the process where the Spring Container creates objects (beans)
+and injects their dependencies automatically instead of the class creating them itself.
+</p>
+
+<pre>
+OrderService  --->  PaymentService
+</pre>
+
+<p>OrderService depends on PaymentService.</p>
+
+<pre>
+Spring will:
+1. Create PaymentService
+2. Create OrderService
+3. Inject PaymentService into OrderService
+</pre>
+
+<h2>Object Creation and Dependency Injection Flow</h2>
+
+<pre>
+Application Start
+       │
+       ▼
+Spring Boot ApplicationContext Created
+       │
+       ▼
+Component Scan
+       │
+       ▼
+Bean Definitions Registered
+       │
+       ▼
+Spring Container Creates Beans
+       │
+       ▼
+Dependencies Identified
+       │
+       ▼
+Dependencies Injected
+       │
+       ▼
+Bean Ready to Use
+</pre>
+
+<h2>Field Injection</h2>
+
+<pre>
+@Service
+public class OrderService {
+
+    @Autowired
+    private PaymentService paymentService;
+
+}
+</pre>
+
+<h3>Flow</h3>
+
+<pre>
+Step 1: Spring creates PaymentService
+Step 2: Spring creates OrderService
+Step 3: Spring uses reflection to set field
+</pre>
+
+<pre>
+OrderService orderService = new OrderService();
+
+Reflection
+↓
+
+orderService.paymentService = paymentService
+</pre>
+
+<h3>Advantages</h3>
+
+<pre>
+✔ Simple
+✔ Less code
+</pre>
+
+<h3>Problems</h3>
+
+<pre>
+❌ Hard to test
+❌ Hidden dependency
+❌ Breaks immutability
+❌ Uses reflection
+</pre>
+
+<h2>Setter Injection</h2>
+
+<pre>
+@Service
+public class OrderService {
+
+    private PaymentService paymentService;
+
+    @Autowired
+    public void setPaymentService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+</pre>
+
+<h3>Flow</h3>
+
+<pre>
+Step 1: Spring creates PaymentService
+Step 2: Spring creates OrderService
+Step 3: Spring calls setter method
+</pre>
+
+<pre>
+OrderService orderService = new OrderService();
+orderService.setPaymentService(paymentService);
+</pre>
+
+<h3>Advantages</h3>
+
+<pre>
+✔ Optional dependencies
+✔ Can modify dependency later
+✔ Allows validation logic
+</pre>
+
+<h3>Problems</h3>
+
+<pre>
+❌ Dependency may remain null
+❌ Object can be in invalid state
+</pre>
+
+<h2>Constructor Injection</h2>
+
+<pre>
+@Service
+public class OrderService {
+
+    private final PaymentService paymentService;
+
+    public OrderService(PaymentService paymentService) {
+        this.paymentService = paymentService;
+    }
+}
+</pre>
+
+<h3>Flow</h3>
+
+<pre>
+Step 1: Spring creates PaymentService
+Step 2: Spring calls constructor
+</pre>
+
+<pre>
+OrderService orderService =
+        new OrderService(paymentService);
+</pre>
+
+<h3>Advantages</h3>
+
+<pre>
+✔ Immutable
+✔ Clear dependencies
+✔ Best for unit testing
+✔ Recommended by Spring
+</pre>
+
+<h2>Comparison Table</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Field Injection</th>
+<th>Setter Injection</th>
+<th>Constructor Injection</th>
+</tr>
+
+<tr>
+<td>Dependency visibility</td>
+<td>Hidden</td>
+<td>Visible</td>
+<td>Very clear</td>
+</tr>
+
+<tr>
+<td>Immutability</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Testing</td>
+<td>Hard</td>
+<td>Medium</td>
+<td>Easy</td>
+</tr>
+
+<tr>
+<td>Optional dependency</td>
+<td>No</td>
+<td>Yes</td>
+<td>Possible</td>
+</tr>
+
+<tr>
+<td>Spring recommendation</td>
+<td>Avoid</td>
+<td>Sometimes</td>
+<td>Best</td>
+</tr>
+
+</table>
+
+<h2>Difference Between Field Injection and Setter Injection</h2>
+
+<h3>Field Injection</h3>
+
+<pre>
+@Autowired
+private PaymentService paymentService;
+</pre>
+
+<pre>
+Spring injects dependency directly into the field using reflection.
+No method is involved.
+</pre>
+
+<h3>Setter Injection</h3>
+
+<pre>
+@Autowired
+public void setPaymentService(PaymentService paymentService) {
+    this.paymentService = paymentService;
+}
+</pre>
+
+<pre>
+Spring injects dependency by calling a setter method.
+You can add validation or logic inside the method.
+</pre>
+
+<h3>Key Differences</h3>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Field Injection</th>
+<th>Setter Injection</th>
+</tr>
+
+<tr>
+<td>Injection Method</td>
+<td>Reflection</td>
+<td>Method Call</td>
+</tr>
+
+<tr>
+<td>Encapsulation</td>
+<td>Breaks encapsulation</td>
+<td>Preserves encapsulation</td>
+</tr>
+
+<tr>
+<td>Testing</td>
+<td>Hard</td>
+<td>Easier</td>
+</tr>
+
+<tr>
+<td>Custom Logic</td>
+<td>Not possible</td>
+<td>Possible</td>
+</tr>
+
+</table>
+
+<h2>Industry Best Practice</h2>
+
+<pre>
+Constructor Injection
++ final fields
++ Lombok @RequiredArgsConstructor
+</pre>
+
+<pre>
+@Service
+@RequiredArgsConstructor
+public class OrderService {
+
+    private final PaymentService paymentService;
+
+}
+</pre>
+
+<pre>
+Field Injection   → Avoid
+Setter Injection  → Optional dependencies
+Constructor       → Recommended
+</pre>
+
+</body>
+</html>
