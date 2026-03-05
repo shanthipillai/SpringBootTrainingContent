@@ -1,6 +1,6 @@
 # 🚀 Spring Boot Training Repository 
 [![Docs](https://img.shields.io/badge/View-Documentation-blue?style=for-the-badge)](https://shanthipillai.github.io/SpringBootTrainingContent/index.html)
-[![Source Code](https://img.shields.io/badge/View-Documentation-blue?style=for-the-badge)](https://github.com/shanthipillai/SpringBootTrainingContent/tree/master/Code)
+[![Source Code](https://img.shields.io/badge/View-Code-blue?style=for-the-badge)](https://github.com/shanthipillai/SpringBootTrainingContent/tree/master/Code)
 
 Welcome to the **Spring Boot Training Repository**.  
 This repository is used to organize and share **training materials, notes, presentations, sample code, and assignments** related to Spring Boot.
