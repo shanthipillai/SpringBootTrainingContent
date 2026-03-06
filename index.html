@@ -44,6 +44,11 @@ button{
     cursor:pointer;
 }
 
+button:disabled{
+    background:#ccc;
+    cursor:not-allowed;
+}
+
 footer{
     text-align:center;
     margin-top:20px;
@@ -59,10 +64,6 @@ tr:hover{
     width:320px;
     border:1px solid #ccc;
     border-radius:4px;
-}
-
-.center{
-    text-align:center;
 }
 
 </style>
@@ -173,8 +174,8 @@ onkeyup="searchDocs()">
 </table>
 
 <div class="pagination">
-<button onclick="prevPage()">Previous</button>
-<button onclick="nextPage()">Next</button>
+<button id="prevBtn" onclick="prevPage()">Previous</button>
+<button id="nextBtn" onclick="nextPage()">Next</button>
 </div>
 
 <hr>
@@ -200,30 +201,34 @@ let rows = document.querySelectorAll("#tableBody tr");
 
 function displayRows(){
 
-    rows.forEach((row)=>{
-        row.style.display="none";
-    });
+rows.forEach(row => row.style.display="none");
 
-    let start = (currentPage-1)*rowsPerPage;
-    let end = start + rowsPerPage;
+let start = (currentPage-1)*rowsPerPage;
+let end = start + rowsPerPage;
 
-    for(let i=start;i<end && i<rows.length;i++){
-        rows[i].style.display="";
-    }
+for(let i=start;i<end && i<rows.length;i++){
+rows[i].style.display="";
+}
+
+updateButtons();
+
+}
+
+function updateButtons(){
+
+document.getElementById("prevBtn").disabled = currentPage === 1;
+document.getElementById("nextBtn").disabled = currentPage * rowsPerPage >= rows.length;
+
 }
 
 function nextPage(){
-    if(currentPage * rowsPerPage < rows.length){
-        currentPage++;
-        displayRows();
-    }
+currentPage++;
+displayRows();
 }
 
 function prevPage(){
-    if(currentPage>1){
-        currentPage--;
-        displayRows();
-    }
+currentPage--;
+displayRows();
 }
 
 displayRows();
@@ -243,7 +248,7 @@ window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + bo
 function searchDocs(){
 
 let input = document.getElementById("searchBox").value.toLowerCase();
-let rows = document.querySelectorAll("#tableBody tr");
+rows = document.querySelectorAll("#tableBody tr");
 
 rows.forEach(function(row){
 
