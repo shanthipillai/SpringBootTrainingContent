@@ -5,6 +5,13 @@
 Welcome to the **Spring Boot Training Repository**.  
 This repository is used to organize and share **training materials, notes, presentations, sample code, and assignments** related to Spring Boot.
 
+## 📢 Upcoming Training Sessions
+
+- ⚙️ **Spring Boot Actuator**  
+  Monitoring and managing Spring Boot applications.
+
+- 🗄️ **Spring Data JPA**  
+  Database integration and repository layer.
 ---
 
 ## 👩‍🏫 About Me
