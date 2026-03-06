@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Lifecycle</title>
+<style>
+body { font-family: Arial, sans-serif; margin:40px; line-height:1.6; }
+h1 { font-size:28px; }
+h2 { font-size:22px; margin-top:28px; }
+h3 { font-size:18px; margin-top:20px; }
+pre { background:#f4f4f4; padding:12px; overflow:auto; }
+code { font-family: Consolas, monospace; }
+table { border-collapse: collapse; width:100%; margin:15px 0; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+</style>
+</head>
+<body>
+
+<h1>Spring Boot Lifecycle</h1>
+
+<h2>1. Introduction</h2>
+<p>The <b>Spring Boot Lifecycle</b> describes the sequence of stages that occur from the moment a Spring Boot application starts until it shuts down.</p>
+
+<ul>
+<li>Application Startup</li>
+<li>Spring Container Initialization</li>
+<li>Bean Lifecycle Management</li>
+<li>Application Ready State</li>
+<li>Application Shutdown</li>
+</ul>
+
+<h2>2. High-Level Lifecycle Flow</h2>
+
+<pre>
+Application Start
+       │
+       ▼
+SpringApplication.run()
+       │
+       ▼
+Environment Prepared
+       │
+       ▼
+ApplicationContext Created
+       │
+       ▼
+Beans Instantiated
+       │
+       ▼
+Dependency Injection
+       │
+       ▼
+Bean Initialization
+       │
+       ▼
+Application Ready
+       │
+       ▼
+Application Running
+       │
+       ▼
+Shutdown Triggered
+       │
+       ▼
+Bean Destruction
+</pre>
+
+<h2>3. Application Entry Point</h2>
+
+<pre><code>
+@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+</code></pre>
+
+<h2>4. Application Types</h2>
+
+<table>
+<tr><th>Type</th><th>Description</th></tr>
+<tr><td>Servlet</td><td>Traditional web application</td></tr>
+<tr><td>Reactive</td><td>Reactive web application</td></tr>
+<tr><td>None</td><td>Non‑web application</td></tr>
+</table>
+
+<h2>5. Bean Lifecycle</h2>
+
+<pre>
+Bean Definition Loaded
+        │
+        ▼
+Bean Instantiation
+        │
+        ▼
+Dependency Injection
+        │
+        ▼
+@PostConstruct
+        │
+        ▼
+Bean Ready
+        │
+        ▼
+PreDestroy
+        │
+        ▼
+Bean Destroyed
+</pre>
+
+<h2>6. Bean Example</h2>
+
+<pre><code>
+@Component
+public class UserService {
+
+    public UserService() {
+        System.out.println("Bean Created");
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("Bean Initialized");
+    }
+
+    @PreDestroy
+    public void destroy() {
+        System.out.println("Cleaning resources...");
+    }
+}
+</code></pre>
+
+<h2>7. Startup Hooks</h2>
+
+<h3>CommandLineRunner</h3>
+
+<pre><code>
+@Component
+public class MyRunner implements CommandLineRunner {
+
+    @Override
+    public void run(String... args) {
+        System.out.println("CommandLineRunner executed");
+    }
+}
+</code></pre>
+
+<h3>ApplicationRunner</h3>
+
+<pre><code>
+@Component
+public class MyAppRunner implements ApplicationRunner {
+
+    @Override
+    public void run(ApplicationArguments args) {
+        System.out.println("ApplicationRunner executed");
+    }
+}
+</code></pre>
+
+<h2>8. Lifecycle Events</h2>
+
+<table>
+<tr><th>Event</th><th>Description</th></tr>
+<tr><td>ApplicationStartingEvent</td><td>Application starting</td></tr>
+<tr><td>ApplicationEnvironmentPreparedEvent</td><td>Environment ready</td></tr>
+<tr><td>ApplicationContextInitializedEvent</td><td>Context initialized</td></tr>
+<tr><td>ApplicationPreparedEvent</td><td>Context prepared</td></tr>
+<tr><td>ApplicationStartedEvent</td><td>Application started</td></tr>
+<tr><td>ApplicationReadyEvent</td><td>Application ready</td></tr>
+<tr><td>ApplicationFailedEvent</td><td>Startup failure</td></tr>
+</table>
+
+<h2>9. Shutdown Lifecycle</h2>
+
+<pre>
+Shutdown Triggered
+        │
+        ▼
+Context Closing
+        │
+        ▼
+PreDestroy Methods
+        │
+        ▼
+Disposable Beans Destroyed
+        │
+        ▼
+Embedded Server Shutdown
+</pre>
+
+<h2>10. Summary</h2>
+
+<table>
+<tr><th>Stage</th><th>Description</th></tr>
+<tr><td>Start</td><td>SpringApplication.run() executed</td></tr>
+<tr><td>Environment</td><td>Properties loaded</td></tr>
+<tr><td>Context Creation</td><td>Spring container initialized</td></tr>
+<tr><td>Bean Creation</td><td>Beans instantiated</td></tr>
+<tr><td>Dependency Injection</td><td>Dependencies injected</td></tr>
+<tr><td>Initialization</td><td>@PostConstruct</td></tr>
+<tr><td>Ready</td><td>ApplicationReadyEvent</td></tr>
+<tr><td>Running</td><td>Application serving requests</td></tr>
+<tr><td>Shutdown</td><td>@PreDestroy methods</td></tr>
+</table>
+
+</body>
+</html>

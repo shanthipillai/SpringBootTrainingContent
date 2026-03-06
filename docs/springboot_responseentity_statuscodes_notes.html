@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot HTTP & Response Notes</title>
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:40px;
+    line-height:1.6;
+}
+h1{font-size:28px;}
+h2{font-size:22px;margin-top:30px;}
+h3{font-size:18px;margin-top:20px;}
+pre{
+    background:#f4f4f4;
+    padding:12px;
+    border-radius:6px;
+    overflow-x:auto;
+    font-family: Consolas, monospace;
+}
+code{
+    font-family: Consolas, monospace;
+}
+table{
+    border-collapse: collapse;
+    width:100%;
+    margin:15px 0;
+}
+table, th, td{
+    border:1px solid #ccc;
+}
+th, td{
+    padding:10px;
+    text-align:left;
+}
+ul{
+    margin-left:20px;
+}
+hr{
+    margin:30px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Spring Boot Notes: ResponseEntity, RequestEntity & HTTP Status Codes</h1>
+
+<hr>
+
+<h2>1. What is ResponseEntity?</h2>
+
+<p><b>ResponseEntity</b> represents the complete HTTP response returned by a Spring Boot controller.</p>
+
+<p>It allows you to control:</p>
+
+<ul>
+<li>Response Body</li>
+<li>HTTP Status Code</li>
+<li>HTTP Headers</li>
+</ul>
+
+<p>Package:</p>
+
+<pre>
+org.springframework.http.ResponseEntity
+</pre>
+
+<h3>Structure</h3>
+
+<pre>
+ResponseEntity&lt;T&gt;
+   ├── Body
+   ├── Headers
+   └── Status Code
+</pre>
+
+<hr>
+
+<h2>2. Basic ResponseEntity Example</h2>
+
+<pre>
+@RestController
+public class UserController {
+
+    @GetMapping("/user")
+    public ResponseEntity&lt;String&gt; getUser() {
+
+        return new ResponseEntity&lt;&gt;(
+                "User Found",
+                HttpStatus.OK
+        );
+    }
+}
+</pre>
+
+<hr>
+
+<h2>3. Recommended Builder Style</h2>
+
+<p>Cleaner and commonly used in Spring Boot projects:</p>
+
+<pre>
+return ResponseEntity.ok("User Data");
+</pre>
+
+Response:
+
+<pre>
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 9
+
+User Data
+</pre>
+
+<hr>
+
+<h2>4. Adding One Custom Header</h2>
+
+<p>If you want to add <b>one user-defined header</b> while keeping default headers:</p>
+
+<pre>
+@GetMapping("/user")
+public ResponseEntity&lt;String&gt; getUser() {
+
+    return ResponseEntity
+            .ok()
+            .header("X-User-Type", "Premium")
+            .body("User Data");
+}
+</pre>
+
+Response Example:
+
+<pre>
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Content-Length: 9
+X-User-Type: Premium
+
+User Data
+</pre>
+
+Default headers remain automatically.
+
+<hr>
+
+<h2>5. Alternative Constructor Approach</h2>
+
+<pre>
+HttpHeaders headers = new HttpHeaders();
+headers.add("X-User-Type", "Premium");
+
+return new ResponseEntity&lt;&gt;(
+        "User Data",
+        headers,
+        HttpStatus.OK
+);
+</pre>
+
+<hr>
+
+<h2>6. What is RequestEntity?</h2>
+
+<p><b>RequestEntity</b> represents a full HTTP request.</p>
+
+It contains:
+
+<ul>
+<li>Request Body</li>
+<li>Request Headers</li>
+<li>HTTP Method</li>
+<li>Request URL</li>
+</ul>
+
+Package:
+
+<pre>
+org.springframework.http.RequestEntity
+</pre>
+
+Structure:
+
+<pre>
+RequestEntity
+   ├── Method
+   ├── URL
+   ├── Headers
+   └── Body
+</pre>
+
+<hr>
+
+<h2>7. RequestEntity Example</h2>
+
+<pre>
+RestTemplate restTemplate = new RestTemplate();
+
+HttpHeaders headers = new HttpHeaders();
+headers.set("Authorization", "Bearer token");
+
+RequestEntity&lt;String&gt; request =
+        new RequestEntity&lt;&gt;(
+                "Request Body",
+                headers,
+                HttpMethod.POST,
+                URI.create("http://localhost:8080/users")
+        );
+
+ResponseEntity&lt;String&gt; response =
+        restTemplate.exchange(request, String.class);
+</pre>
+
+<hr>
+
+<h2>8. HTTP Status Codes</h2>
+
+<p>HTTP status codes indicate the result of a client request.</p>
+
+<table>
+<tr>
+<th>Range</th>
+<th>Category</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>1xx</td>
+<td>Informational</td>
+<td>Request received</td>
+</tr>
+
+<tr>
+<td>2xx</td>
+<td>Success</td>
+<td>Request successful</td>
+</tr>
+
+<tr>
+<td>3xx</td>
+<td>Redirection</td>
+<td>Resource moved</td>
+</tr>
+
+<tr>
+<td>4xx</td>
+<td>Client Error</td>
+<td>Problem in request</td>
+</tr>
+
+<tr>
+<td>5xx</td>
+<td>Server Error</td>
+<td>Server failed</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>9. Common Status Codes in REST APIs</h2>
+
+<table>
+<tr>
+<th>Status Code</th>
+<th>Meaning</th>
+<th>Usage</th>
+</tr>
+
+<tr>
+<td>200</td>
+<td>OK</td>
+<td>Request successful</td>
+</tr>
+
+<tr>
+<td>201</td>
+<td>Created</td>
+<td>Resource created</td>
+</tr>
+
+<tr>
+<td>204</td>
+<td>No Content</td>
+<td>Success without body</td>
+</tr>
+
+<tr>
+<td>400</td>
+<td>Bad Request</td>
+<td>Invalid input</td>
+</tr>
+
+<tr>
+<td>401</td>
+<td>Unauthorized</td>
+<td>Authentication required</td>
+</tr>
+
+<tr>
+<td>403</td>
+<td>Forbidden</td>
+<td>Access denied</td>
+</tr>
+
+<tr>
+<td>404</td>
+<td>Not Found</td>
+<td>Resource not found</td>
+</tr>
+
+<tr>
+<td>500</td>
+<td>Internal Server Error</td>
+<td>Server failure</td>
+</tr>
+
+</table>
+
+<hr>
+
+<h2>10. Using Status Codes in Spring Boot</h2>
+
+<p>Spring Boot provides the <b>HttpStatus</b> enum.</p>
+
+<pre>
+org.springframework.http.HttpStatus
+</pre>
+
+Example:
+
+<pre>
+@GetMapping("/users/{id}")
+public ResponseEntity&lt;String&gt; getUser(@PathVariable int id) {
+
+    if(id != 1)
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("User Not Found");
+
+    return ResponseEntity.ok("User Found");
+}
+</pre>
+
+<hr>
+
+<h2>11. Using @ResponseStatus</h2>
+
+<pre>
+@ResponseStatus(HttpStatus.CREATED)
+@PostMapping("/users")
+public String createUser() {
+
+    return "User Created";
+}
+</pre>
+
+<hr>
+
+<h2>12. Best Practices</h2>
+
+<ul>
+<li>Use ResponseEntity for REST APIs</li>
+<li>Use builder methods like ResponseEntity.ok()</li>
+<li>Return proper HTTP status codes</li>
+<li>Add custom headers only when required</li>
+<li>Use @ResponseStatus for fixed responses</li>
+</ul>
+
+</body>
+</html>

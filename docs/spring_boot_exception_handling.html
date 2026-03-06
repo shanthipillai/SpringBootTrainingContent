@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Exception Handling – Complete Notes</title>
+<style>
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  margin:40px;
+  line-height:1.6;
+}
+h1{font-size:28px;}
+h2{font-size:22px;margin-top:30px;}
+h3{font-size:18px;margin-top:20px;}
+pre{
+  background:#f5f5f5;
+  padding:12px;
+  border-radius:6px;
+  overflow-x:auto;
+  font-family: Consolas, monospace;
+}
+code{
+  font-family: Consolas, monospace;
+}
+table{
+  border-collapse: collapse;
+  width:100%;
+  margin:15px 0;
+}
+table, th, td{
+  border:1px solid #ccc;
+}
+th, td{
+  padding:10px;
+  text-align:left;
+}
+hr{
+  margin:30px 0;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Spring Boot Exception Handling – Complete Notes</h1>
+
+<hr>
+
+<h2>1. Introduction to Exception Handling</h2>
+
+<p>
+Exception handling in <b>Spring Boot</b> is the mechanism used to manage runtime errors
+and provide meaningful responses to the client instead of exposing internal errors.
+</p>
+
+<b>Without proper exception handling:</b>
+<ul>
+<li>Applications may crash</li>
+<li>Clients receive unclear error messages</li>
+<li>Sensitive information might be exposed</li>
+</ul>
+
+<b>With proper exception handling:</b>
+<ul>
+<li>Errors are controlled</li>
+<li>Clean API responses are returned</li>
+<li>Logging and debugging become easier</li>
+</ul>
+
+<hr>
+
+<h2>2. Types of Exceptions in Spring Boot</h2>
+
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+
+<tr>
+<td>Checked Exception</td>
+<td>Must be handled at compile time</td>
+<td>IOException</td>
+</tr>
+
+<tr>
+<td>Unchecked Exception</td>
+<td>Occurs at runtime</td>
+<td>NullPointerException</td>
+</tr>
+
+<tr>
+<td>Custom Exception</td>
+<td>User-defined exceptions</td>
+<td>ResourceNotFoundException</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>3. Default Exception Handling in Spring Boot</h2>
+
+<p>Spring Boot automatically provides a <b>Basic Error Controller</b>.</p>
+
+<p>If an exception occurs, Spring Boot returns a default JSON response like:</p>
+
+<pre>
+{
+  "timestamp": "2026-03-06T10:30:20.123+00:00",
+  "status": 500,
+  "error": "Internal Server Error",
+  "path": "/users"
+}
+</pre>
+
+<p>This is handled internally by:</p>
+
+<ul>
+<li>BasicErrorController</li>
+<li>ErrorAttributes</li>
+<li>ErrorController</li>
+</ul>
+
+<hr>
+
+<h2>4. Exception Handling Approaches in Spring Boot</h2>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Annotation</th>
+<th>Usage</th>
+</tr>
+
+<tr>
+<td>Method Level</td>
+<td>@ExceptionHandler</td>
+<td>Handle exceptions inside controller</td>
+</tr>
+
+<tr>
+<td>Global Handler</td>
+<td>@ControllerAdvice</td>
+<td>Handle exceptions globally</td>
+</tr>
+
+<tr>
+<td>REST Global Handler</td>
+<td>@RestControllerAdvice</td>
+<td>Used for REST APIs</td>
+</tr>
+
+<tr>
+<td>Custom Exceptions</td>
+<td>Extend RuntimeException</td>
+<td>Business-specific errors</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>5. Using @ExceptionHandler</h2>
+
+<p>This annotation handles exceptions <b>inside a controller class</b>.</p>
+
+<h3>Example Controller</h3>
+
+<pre>
+@RestController
+@RequestMapping("/users")
+public class UserController {
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable int id) {
+
+        if(id == 10) {
+            throw new RuntimeException("User not found");
+        }
+
+        return "User Found";
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity&lt;String&gt; handleException(RuntimeException ex) {
+        return new ResponseEntity&lt;&gt;(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+}
+</pre>
+
+<h3>Flow</h3>
+
+<pre>
+Client Request
+      ↓
+Controller Method
+      ↓
+Exception Occurs
+      ↓
+@ExceptionHandler Method
+      ↓
+Custom Response Returned
+</pre>
+
+<hr>
+
+<h2>6. Using @ControllerAdvice (Global Exception Handling)</h2>
+
+<p>
+<code>@ControllerAdvice</code> allows handling exceptions across multiple controllers globally.
+</p>
+
+<b>Advantages</b>
+
+<ul>
+<li>Centralized exception handling</li>
+<li>Cleaner controllers</li>
+<li>Reusable logic</li>
+</ul>
+
+<pre>
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity&lt;String&gt; handleRuntimeException(RuntimeException ex) {
+
+        return new ResponseEntity&lt;&gt;(
+                "Error: " + ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+</pre>
+
+<hr>
+
+<h2>7. @RestControllerAdvice</h2>
+
+<p>
+<code>@RestControllerAdvice</code> is similar to <code>@ControllerAdvice</code>
+but automatically applies <code>@ResponseBody</code>.
+</p>
+
+<p>This is ideal for <b>REST APIs</b>.</p>
+
+<pre>
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String&gt; handleException(Exception ex) {
+
+        return new ResponseEntity&lt;&gt;(
+                ex.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+}
+</pre>
+
+<hr>
+
+<h2>8. Creating Custom Exceptions</h2>
+
+<b>Example business exceptions:</b>
+
+<ul>
+<li>User Not Found</li>
+<li>Order Not Found</li>
+<li>Payment Failed</li>
+</ul>
+
+<h3>Create Custom Exception</h3>
+
+<pre>
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+</pre>
+
+<h3>Use Custom Exception</h3>
+
+<pre>
+@GetMapping("/{id}")
+public String getUser(@PathVariable int id) {
+
+    if(id != 1) {
+        throw new ResourceNotFoundException("User not found with id: " + id);
+    }
+
+    return "User Found";
+}
+</pre>
+
+<h3>Handle Custom Exception</h3>
+
+<pre>
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity&lt;String&gt; handleResourceNotFound(ResourceNotFoundException ex) {
+
+        return new ResponseEntity&lt;&gt;(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND
+        );
+    }
+}
+</pre>
+
+<hr>
+
+<h2>9. Returning Structured Error Responses</h2>
+
+<pre>
+public class ErrorResponse {
+
+    private LocalDateTime timestamp;
+    private int status;
+    private String message;
+    private String path;
+
+}
+</pre>
+
+<h3>Example Response</h3>
+
+<pre>
+{
+  "timestamp": "2026-03-06T10:45:22",
+  "status": 404,
+  "message": "User not found with id: 5",
+  "path": "/users/5"
+}
+</pre>
+
+<hr>
+
+<h2>10. Handling Validation Exceptions</h2>
+
+<pre>
+@PostMapping("/users")
+public ResponseEntity&lt;String&gt; createUser(@Valid @RequestBody User user) {
+    return ResponseEntity.ok("User Created");
+}
+</pre>
+
+<pre>
+@ExceptionHandler(MethodArgumentNotValidException.class)
+public ResponseEntity&lt;Map&lt;String,String&gt;&gt; handleValidationException(
+        MethodArgumentNotValidException ex) {
+
+    Map&lt;String,String&gt; errors = new HashMap&lt;&gt;();
+
+    ex.getBindingResult().getFieldErrors().forEach(error ->
+            errors.put(error.getField(), error.getDefaultMessage())
+    );
+
+    return new ResponseEntity&lt;&gt;(errors, HttpStatus.BAD_REQUEST);
+}
+</pre>
+
+<h3>Example Validation Response</h3>
+
+<pre>
+{
+  "email": "Invalid email format",
+  "name": "Name must not be blank"
+}
+</pre>
+
+<hr>
+
+<h2>11. Spring Boot Exception Handling Architecture</h2>
+
+<pre>
+Client Request
+      ↓
+Controller
+      ↓
+Service Layer
+      ↓
+Exception Thrown
+      ↓
+@ControllerAdvice / @RestControllerAdvice
+      ↓
+@ExceptionHandler
+      ↓
+Error Response Object
+      ↓
+HTTP Response to Client
+</pre>
+
+<hr>
+
+<h2>12. Best Practices</h2>
+
+<ul>
+<li>Use <b>@RestControllerAdvice</b> for REST APIs</li>
+<li>Use custom exceptions instead of generic RuntimeException</li>
+<li>Return structured error responses</li>
+<li>Log exceptions using SLF4J / Logback</li>
+<li>Handle validation errors separately (HTTP 400)</li>
+</ul>
+
+<hr>
+
+<h2>13. Summary</h2>
+
+<table>
+<tr>
+<th>Concept</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>@ExceptionHandler</td>
+<td>Handle exceptions inside controller</td>
+</tr>
+
+<tr>
+<td>@ControllerAdvice</td>
+<td>Global exception handling</td>
+</tr>
+
+<tr>
+<td>@RestControllerAdvice</td>
+<td>Global REST exception handling</td>
+</tr>
+
+<tr>
+<td>Custom Exception</td>
+<td>Business logic errors</td>
+</tr>
+
+<tr>
+<td>ErrorResponse</td>
+<td>Structured error response</td>
+</tr>
+
+<tr>
+<td>Validation Handling</td>
+<td>Manage input validation errors</td>
+</tr>
+</table>
+
+<hr>
+
+<h2>14. Interview Questions</h2>
+
+<ul>
+<li><b>What is exception handling in Spring Boot?</b><br>
+Handling runtime errors and returning meaningful responses to clients.</li>
+
+<li><b>Difference between @ControllerAdvice and @RestControllerAdvice?</b><br>
+@ControllerAdvice → MVC applications<br>
+@RestControllerAdvice → REST APIs returning JSON</li>
+
+<li><b>What does @ExceptionHandler do?</b><br>
+Handles specific exceptions thrown in controller methods.</li>
+
+<li><b>Why use custom exceptions?</b><br>
+To represent business‑specific errors clearly and maintain clean code.</li>
+</ul>
+
+</body>
+</html>
