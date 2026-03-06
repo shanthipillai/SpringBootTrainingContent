@@ -34,6 +34,16 @@ a{
     color:#1a73e8;
 }
 
+.pagination{
+    margin-top:20px;
+}
+
+button{
+    padding:8px 14px;
+    margin-right:5px;
+    cursor:pointer;
+}
+
 </style>
 
 </head>
@@ -47,13 +57,15 @@ Welcome to the Spring Boot training documentation.
 Click <b>View</b> to open the document in the browser or <b>Download</b> to save it locally.
 </p>
 
-<table>
+<table id="docsTable">
 
 <tr>
 <th>Topic</th>
 <th>View</th>
 <th>Download</th>
 </tr>
+
+<tbody id="tableBody">
 
 <tr>
 <td>Lombok Notes</td>
@@ -98,30 +110,16 @@ Click <b>View</b> to open the document in the browser or <b>Download</b> to save
 </tr>
 
 <tr>
-<td>SpringBoot Application Annotation</td>
-<td><a href="docs/SpringBootApplication_Annotation.html" target="_blank">View</a></td>
-<td><a href="docs/SpringBootApplicationContext_Annotation.html" download>Download</a></td>
-</tr>
-
-<tr>
-<td>SpringBoot Application Context</td>
-<td><a href="docs/SpringBootApplicationContext_Annotation.html" target="_blank">View</a></td>
-<td><a href="docs/SpringBootApplicationContext_Annotation.html" download>Download</a></td>
-</tr>
-
-<tr>
-<td>Rest API</td>
+<td>REST API</td>
 <td><a href="docs/Spring_Boot_REST_API.html" target="_blank">View</a></td>
 <td><a href="docs/Spring_Boot_REST_API.html" download>Download</a></td>
 </tr>
-
 
 <tr>
 <td>HTTP Status Code</td>
 <td><a href="docs/springboot_responseentity_statuscodes_notes.html" target="_blank">View</a></td>
 <td><a href="docs/springboot_responseentity_statuscodes_notes.html" download>Download</a></td>
 </tr>
-
 
 <tr>
 <td>Spring Boot Exception Handling</td>
@@ -136,13 +134,60 @@ Click <b>View</b> to open the document in the browser or <b>Download</b> to save
 </tr>
 
 
+<tr>
+<td>Swagger API</td>
+<td><a href="docs/spring_boot_swagger_documentation.html" target="_blank">View</a></td>
+<td><a href="docs/spring_boot_swagger_documentation.html" download>Download</a></td>
+</tr>
+
+</tbody>
+
 </table>
 
-<br>
+<div class="pagination">
+<button onclick="prevPage()">Previous</button>
+<button onclick="nextPage()">Next</button>
+</div>
 
-<p>
-🚀 Hosted on GitHub Pages
-</p>
+<p>🚀 Hosted on GitHub Pages</p>
+
+<script>
+
+let currentPage = 1;
+let rowsPerPage = 5;
+let rows = document.querySelectorAll("#tableBody tr");
+
+function displayRows(){
+
+    rows.forEach((row,index)=>{
+        row.style.display="none";
+    });
+
+    let start = (currentPage-1)*rowsPerPage;
+    let end = start + rowsPerPage;
+
+    for(let i=start;i<end && i<rows.length;i++){
+        rows[i].style.display="";
+    }
+}
+
+function nextPage(){
+    if(currentPage * rowsPerPage < rows.length){
+        currentPage++;
+        displayRows();
+    }
+}
+
+function prevPage(){
+    if(currentPage>1){
+        currentPage--;
+        displayRows();
+    }
+}
+
+displayRows();
+
+</script>
 
 </body>
 </html>

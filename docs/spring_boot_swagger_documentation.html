@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Swagger Documentation</title>
+<style>
+body{font-family: Arial, sans-serif; line-height:1.6; margin:40px;}
+h1{font-size:28px;}
+h2{font-size:22px;}
+h3{font-size:18px;}
+pre{background:#f4f4f4;padding:12px;border-radius:6px;overflow:auto;}
+code{font-family: monospace;}
+table{border-collapse:collapse;width:100%;margin:20px 0;}
+table,th,td{border:1px solid #999;}
+th,td{padding:8px;text-align:left;}
+</style>
+</head>
+<body>
+
+<h1>Spring Boot Swagger Documentation (OpenAPI)</h1>
+
+<h2>1. Introduction</h2>
+<p><b>Swagger / OpenAPI</b> is used to automatically generate interactive API documentation for Spring Boot REST APIs.</p>
+
+<ul>
+<li>Visualize REST endpoints</li>
+<li>Test APIs directly from the browser</li>
+<li>View request/response structures</li>
+<li>Understand API contracts easily</li>
+</ul>
+
+<p>Modern Spring Boot applications use <b>SpringDoc OpenAPI</b>.</p>
+
+<h2>2. Swagger UI</h2>
+
+<pre><code>http://localhost:8080/swagger-ui.html
+or
+http://localhost:8080/swagger-ui/index.html</code></pre>
+
+<h2>3. Architecture Overview</h2>
+
+<pre><code>Spring Boot Application
+        │
+        ▼
+SpringDoc OpenAPI Library
+        │
+        ▼
+Generates OpenAPI Specification (JSON)
+        │
+        ▼
+Swagger UI
+        │
+        ▼
+Interactive API Documentation</code></pre>
+
+<h2>4. Maven Dependency</h2>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;org.springdoc&lt;/groupId&gt;
+    &lt;artifactId&gt;springdoc-openapi-starter-webmvc-ui&lt;/artifactId&gt;
+    &lt;version&gt;2.5.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+<h2>5. Basic REST Controller</h2>
+
+<pre><code>@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    @GetMapping
+    public List&lt;String&gt; getUsers() {
+        return List.of("John", "David", "Alice");
+    }
+
+    @PostMapping
+    public String createUser(@RequestBody String name) {
+        return "User created: " + name;
+    }
+}</code></pre>
+
+<h2>6. API Metadata Configuration</h2>
+
+<pre><code>@Configuration
+public class OpenAPIConfig {
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info()
+                        .title("User Management API")
+                        .version("1.0")
+                        .description("Spring Boot REST API documentation using Swagger"));
+    }
+}</code></pre>
+
+<h2>7. Swagger Annotations</h2>
+
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td>@Operation</td><td>Describes API endpoint</td></tr>
+<tr><td>@Parameter</td><td>Describes request parameter</td></tr>
+<tr><td>@ApiResponse</td><td>Documents response codes</td></tr>
+<tr><td>@Tag</td><td>Groups APIs</td></tr>
+<tr><td>@Schema</td><td>Defines model schema</td></tr>
+</table>
+
+<h2>8. Documented Controller</h2>
+
+<pre><code>@RestController
+@RequestMapping("/api/users")
+@Tag(name = "User API", description = "Operations related to users")
+public class UserController {
+
+    @Operation(summary = "Get all users")
+    @GetMapping
+    public List&lt;String&gt; getUsers() {
+        return List.of("John", "David", "Alice");
+    }
+
+    @Operation(summary = "Create a new user")
+    @PostMapping
+    public String createUser(@RequestBody String name) {
+        return "User created: " + name;
+    }
+}</code></pre>
+
+<h2>9. Model Example</h2>
+
+<pre><code>@Schema(description = "User entity")
+public class User {
+
+    @Schema(description = "Unique ID of the user")
+    private Long id;
+
+    @Schema(description = "Name of the user")
+    private String name;
+
+    @Schema(description = "Email address")
+    private String email;
+}</code></pre>
+
+<h2>10. API Responses</h2>
+
+<pre><code>@Operation(summary = "Get user by ID")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User found"),
+        @ApiResponse(responseCode = "404", description = "User not found")
+})
+@GetMapping("/{id}")
+public User getUser(@PathVariable Long id) {
+    return new User(id, "John", "john@email.com");
+}</code></pre>
+
+<h2>11. Swagger URLs</h2>
+
+<table>
+<tr><th>URL</th><th>Purpose</th></tr>
+<tr><td>/swagger-ui.html</td><td>Swagger UI</td></tr>
+<tr><td>/swagger-ui/index.html</td><td>Swagger UI (new versions)</td></tr>
+<tr><td>/v3/api-docs</td><td>OpenAPI JSON specification</td></tr>
+<tr><td>/v3/api-docs.yaml</td><td>OpenAPI YAML</td></tr>
+</table>
+
+<h2>12. Advantages</h2>
+
+<ul>
+<li>Auto documentation</li>
+<li>Interactive API testing</li>
+<li>Standardized OpenAPI specification</li>
+<li>Easy Spring Boot integration</li>
+</ul>
+
+<h2>13. Summary</h2>
+
+<p>Swagger with Spring Boot enables automatic API documentation and interactive testing using <b>SpringDoc OpenAPI</b>.</p>
+
+</body>
+</html>
