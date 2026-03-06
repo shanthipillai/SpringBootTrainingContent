@@ -44,6 +44,10 @@ button{
     cursor:pointer;
 }
 
+tr:hover{
+    background-color:#f9f9f9;
+}
+
 </style>
 
 </head>
@@ -133,7 +137,6 @@ Click <b>View</b> to open the document in the browser or <b>Download</b> to save
 <td><a href="docs/springboot_lifecycle.html" download>Download</a></td>
 </tr>
 
-
 <tr>
 <td>Swagger API</td>
 <td><a href="docs/spring_boot_swagger_documentation.html" target="_blank">View</a></td>
@@ -148,6 +151,14 @@ Click <b>View</b> to open the document in the browser or <b>Download</b> to save
 <button onclick="prevPage()">Previous</button>
 <button onclick="nextPage()">Next</button>
 </div>
+
+<hr>
+
+<h3>⚠ Report Broken Link</h3>
+
+<p>If any documentation link is not working, please report it.</p>
+
+<button onclick="reportBrokenLink()">📩 Report Broken Link</button>
 
 <p>🚀 Hosted on GitHub Pages</p>
 
@@ -186,6 +197,19 @@ function prevPage(){
 }
 
 displayRows();
+
+
+function reportBrokenLink(){
+
+let page = window.location.href;
+
+let email = "shanthimaradpillai7@gmail.com";
+let subject = "Broken Spring Boot Documentation Link";
+let body = "Hello,%0A%0AI found a broken link in the Spring Boot documentation portal.%0A%0APage: " + page + "%0A%0ABroken Link:%0ADescription:%0A";
+
+window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+
+}
 
 </script>
 
