@@ -43,6 +43,7 @@ button{
     margin-right:5px;
     cursor:pointer;
 }
+
 footer{
     text-align:center;
     margin-top:20px;
@@ -51,6 +52,17 @@ footer{
 
 tr:hover{
     background-color:#f9f9f9;
+}
+
+#searchBox{
+    padding:10px;
+    width:320px;
+    border:1px solid #ccc;
+    border-radius:4px;
+}
+
+.center{
+    text-align:center;
 }
 
 </style>
@@ -65,6 +77,14 @@ tr:hover{
 Welcome to the Spring Boot training documentation.  
 Click <b>View</b> to open the document in the browser or <b>Download</b> to save it locally.
 </p>
+
+<div style="margin-bottom:20px;">
+<input 
+type="text" 
+id="searchBox" 
+placeholder="🔎 Search documentation..."
+onkeyup="searchDocs()">
+</div>
 
 <table id="docsTable">
 
@@ -164,12 +184,13 @@ Click <b>View</b> to open the document in the browser or <b>Download</b> to save
 <p>If any documentation link is not working, please report it.</p>
 
 <button onclick="reportBrokenLink()">📩 Report Broken Link</button>
+
 <hr>
 
 <footer>
 <p>© 2026 Shanthi Pillai | Spring Boot Training Documentation</p>
-</footer>
 <p>🚀 Hosted on GitHub Pages</p>
+</footer>
 
 <script>
 
@@ -179,7 +200,7 @@ let rows = document.querySelectorAll("#tableBody tr");
 
 function displayRows(){
 
-    rows.forEach((row,index)=>{
+    rows.forEach((row)=>{
         row.style.display="none";
     });
 
@@ -207,7 +228,6 @@ function prevPage(){
 
 displayRows();
 
-
 function reportBrokenLink(){
 
 let page = window.location.href;
@@ -217,6 +237,25 @@ let subject = "Broken Spring Boot Documentation Link";
 let body = "Hello,%0A%0AI found a broken link in the Spring Boot documentation portal.%0A%0APage: " + page + "%0A%0ABroken Link:%0ADescription:%0A";
 
 window.location.href = "mailto:" + email + "?subject=" + subject + "&body=" + body;
+
+}
+
+function searchDocs(){
+
+let input = document.getElementById("searchBox").value.toLowerCase();
+let rows = document.querySelectorAll("#tableBody tr");
+
+rows.forEach(function(row){
+
+let text = row.innerText.toLowerCase();
+
+if(text.includes(input)){
+row.style.display="";
+}else{
+row.style.display="none";
+}
+
+});
 
 }
 
