@@ -12,6 +12,9 @@ This repository is used to organize and share **training materials, notes, prese
 
 - 🗄️ **Spring Data JPA**  
   Database integration and repository layer.
+  
+  - 🧩 **JDBC (Extended Topic)**  
+  Understanding JDBC architecture, connection management, DAO layer, and connection pooling using HikariCP in Spring Boot.
 ---
 
 ## 👩‍🏫 About Me

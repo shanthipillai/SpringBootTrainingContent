@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Java JDBC Complete Guide</title>
+
+<style>
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:40px;
+    line-height:1.6;
+    background:#fafafa;
+}
+
+h1{
+    color:#2c3e50;
+    border-bottom:3px solid #3498db;
+    padding-bottom:6px;
+}
+
+h2{
+    color:#34495e;
+    margin-top:40px;
+}
+
+h3{
+    color:#555;
+}
+
+pre{
+    background:#272822;
+    color:#f8f8f2;
+    padding:15px;
+    overflow:auto;
+    border-radius:6px;
+}
+
+code{
+    font-family: Consolas, monospace;
+}
+
+table{
+    border-collapse:collapse;
+    width:100%;
+    margin:20px 0;
+}
+
+table, th, td{
+    border:1px solid #ccc;
+}
+
+th, td{
+    padding:10px;
+    text-align:left;
+}
+
+th{
+    background:#3498db;
+    color:white;
+}
+
+.note{
+    background:#fff8c4;
+    padding:10px;
+    border-left:5px solid orange;
+}
+
+.warning{
+    background:#ffd6d6;
+    padding:10px;
+    border-left:5px solid red;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Java JDBC – Complete Guide</h1>
+
+<h2>1. What is JDBC?</h2>
+
+<p>
+JDBC (Java Database Connectivity) is a Java API that allows Java programs
+to connect and execute SQL queries with relational databases.
+</p>
+
+<ul>
+<li>MySQL</li>
+<li>PostgreSQL</li>
+<li>Oracle</li>
+<li>SQL Server</li>
+<li>MariaDB</li>
+</ul>
+
+<pre><code>
+java.sql
+javax.sql
+</code></pre>
+
+<h2>2. JDBC Architecture</h2>
+
+<pre>
++----------------------+
+|   Java Application   |
++----------+-----------+
+           |
+           v
++----------------------+
+|      JDBC API        |
++----------+-----------+
+           |
+           v
++----------------------+
+|   JDBC Driver        |
++----------+-----------+
+           |
+           v
++----------------------+
+|       Database       |
++----------------------+
+</pre>
+
+<h2>3. JDBC Workflow</h2>
+
+<pre>
+1. Load Driver
+2. Establish Connection
+3. Create Statement
+4. Execute Query
+5. Process Result
+6. Close Resources
+</pre>
+
+<h2>4. Maven Dependency (MySQL)</h2>
+
+<pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+    &lt;version&gt;8.3.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>5. JDBC Core Interfaces</h2>
+
+<table>
+<tr>
+<th>Interface</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>DriverManager</td>
+<td>Manages JDBC drivers</td>
+</tr>
+
+<tr>
+<td>Connection</td>
+<td>Database connection</td>
+</tr>
+
+<tr>
+<td>Statement</td>
+<td>Execute SQL queries</td>
+</tr>
+
+<tr>
+<td>PreparedStatement</td>
+<td>Parameterized SQL queries</td>
+</tr>
+
+<tr>
+<td>CallableStatement</td>
+<td>Call stored procedures</td>
+</tr>
+
+<tr>
+<td>ResultSet</td>
+<td>Stores query results</td>
+</tr>
+
+</table>
+
+<h2>6. Load JDBC Driver</h2>
+
+<pre><code>
+Class.forName("com.mysql.cj.jdbc.Driver");
+</code></pre>
+
+<h2>Java Example</h2>
+
+<pre><code>
+public class LoadDriverExample {
+
+    public static void main(String[] args) {
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("Driver Loaded Successfully");
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+
+<h2>7. Establish Database Connection</h2>
+
+<pre><code>
+Connection connection =
+DriverManager.getConnection(
+"jdbc:mysql://localhost:3306/testdb",
+"root",
+"root");
+</code></pre>
+
+<h2>8. Create Table Example</h2>
+
+<pre><code>
+Statement stmt = con.createStatement();
+
+String sql = "CREATE TABLE student(" +
+"id INT PRIMARY KEY," +
+"name VARCHAR(50)," +
+"age INT)";
+
+stmt.executeUpdate(sql);
+</code></pre>
+
+<h2>9. Insert Example</h2>
+
+<pre><code>
+INSERT INTO student VALUES (1,'Rahul',22)
+</code></pre>
+
+<h2>Java Insert Code</h2>
+
+<pre><code>
+Statement stmt = con.createStatement();
+
+String sql =
+"INSERT INTO student VALUES (1,'Rahul',22)";
+
+stmt.executeUpdate(sql);
+</code></pre>
+
+<h2>10. Select Example</h2>
+
+<pre><code>
+ResultSet rs =
+stmt.executeQuery("SELECT * FROM student");
+
+while(rs.next()) {
+
+int id = rs.getInt("id");
+String name = rs.getString("name");
+int age = rs.getInt("age");
+
+System.out.println(id + " " + name + " " + age);
+}
+</code></pre>
+
+<h2>11. ResultSet Methods</h2>
+
+<table>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>next()</td>
+<td>Move to next row</td>
+</tr>
+
+<tr>
+<td>getInt()</td>
+<td>Get integer value</td>
+</tr>
+
+<tr>
+<td>getString()</td>
+<td>Get string value</td>
+</tr>
+
+<tr>
+<td>getDouble()</td>
+<td>Get double value</td>
+</tr>
+
+<tr>
+<td>getDate()</td>
+<td>Get date value</td>
+</tr>
+
+</table>
+
+<h2>12. PreparedStatement Example</h2>
+
+<pre><code>
+String sql =
+"INSERT INTO student VALUES (?,?,?)";
+
+PreparedStatement ps =
+con.prepareStatement(sql);
+
+ps.setInt(1,2);
+ps.setString(2,"Anita");
+ps.setInt(3,23);
+
+ps.executeUpdate();
+</code></pre>
+
+<h2>13. Transaction Management</h2>
+
+<pre><code>
+con.setAutoCommit(false);
+
+stmt.executeUpdate("INSERT INTO student VALUES(5,'Alex',22)");
+stmt.executeUpdate("INSERT INTO student VALUES(6,'Mike',23)");
+
+con.commit();
+</code></pre>
+
+<h2>14. SQL Injection</h2>
+
+<p>
+SQL Injection is a vulnerability where attackers manipulate SQL queries
+through user input.
+</p>
+
+<div class="warning">
+This commonly occurs when using Statement with string concatenation.
+</div>
+
+<h3>Example Table</h3>
+
+<pre><code>
+CREATE TABLE users(
+id INT PRIMARY KEY AUTO_INCREMENT,
+username VARCHAR(50),
+password VARCHAR(50)
+);
+</code></pre>
+
+<h3>Vulnerable Java Code</h3>
+
+<pre><code>
+String sql =
+"SELECT * FROM users WHERE username='" + username +
+"' AND password='" + password + "'";
+</code></pre>
+
+<h3>Injection Input</h3>
+
+<pre>
+Username: admin
+Password: ' OR '1'='1
+</pre>
+
+<h3>Generated Query</h3>
+
+<pre>
+SELECT * FROM users
+WHERE username='admin'
+AND password='' OR '1'='1'
+</pre>
+
+<p>
+Since '1'='1' is always true, login becomes successful.
+</p>
+
+<h2>15. Secure Solution (PreparedStatement)</h2>
+
+<pre><code>
+String sql =
+"SELECT * FROM users WHERE username=? AND password=?";
+
+PreparedStatement ps =
+con.prepareStatement(sql);
+
+ps.setString(1, username);
+ps.setString(2, password);
+
+ResultSet rs = ps.executeQuery();
+</code></pre>
+
+<h2>Statement vs PreparedStatement</h2>
+
+<table>
+
+<tr>
+<th>Feature</th>
+<th>Statement</th>
+<th>PreparedStatement</th>
+</tr>
+
+<tr>
+<td>SQL Injection Safe</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>Performance</td>
+<td>Slower</td>
+<td>Faster</td>
+</tr>
+
+<tr>
+<td>Precompiled</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+
+</table>
+
+<h2>Best Practices</h2>
+
+<ul>
+
+<li>Use PreparedStatement</li>
+<li>Never concatenate SQL queries</li>
+<li>Close database resources</li>
+<li>Use connection pooling</li>
+<li>Validate user inputs</li>
+
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Transaction Management</title>
+
+<style>
+
+body{
+font-family: Arial, sans-serif;
+margin:40px;
+line-height:1.6;
+background:#ffffff;
+}
+
+h1{
+font-size:30px;
+color:#222;
+}
+
+h2{
+font-size:24px;
+margin-top:40px;
+color:#333;
+}
+
+h3{
+font-size:18px;
+}
+
+pre{
+background:#f4f4f4;
+padding:12px;
+border-radius:6px;
+overflow-x:auto;
+}
+
+code{
+font-family: Consolas, monospace;
+}
+
+table{
+border-collapse: collapse;
+width:100%;
+margin:15px 0;
+}
+
+th,td{
+border:1px solid #ccc;
+padding:8px;
+text-align:left;
+}
+
+th{
+background:#f0f0f0;
+}
+
+.section{
+margin-bottom:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Spring Boot Transaction Management</h1>
+
+<div class="section">
+
+<h2>1. Introduction</h2>
+
+<p>
+Transaction Management in Spring Boot ensures that multiple database operations behave as a single logical unit of work.
+</p>
+
+<pre>
+If all operations succeed → COMMIT
+If any operation fails → ROLLBACK
+</pre>
+
+<p>This guarantees data consistency and integrity.</p>
+
+<pre>
+Bank Transfer Example
+
+Step 1: Debit amount from Account A
+Step 2: Credit amount to Account B
+</pre>
+
+<pre>
+Either BOTH succeed
+OR
+BOTH fail
+</pre>
+
+</div>
+
+<div class="section">
+
+<h2>2. ACID Properties of Transactions</h2>
+
+<table>
+
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+
+<tr>
+<td>Atomicity</td>
+<td>All operations succeed or all fail</td>
+</tr>
+
+<tr>
+<td>Consistency</td>
+<td>Database remains in valid state</td>
+</tr>
+
+<tr>
+<td>Isolation</td>
+<td>Transactions do not interfere</td>
+</tr>
+
+<tr>
+<td>Durability</td>
+<td>Committed data is permanent</td>
+</tr>
+
+</table>
+
+<pre>
+Transaction Start
+   ↓
+Update Account A
+   ↓
+Update Account B
+   ↓
+Commit
+</pre>
+
+<pre>
+Transaction Start
+   ↓
+Update Account A
+   ↓
+Error occurs
+   ↓
+Rollback
+</pre>
+
+</div>
+
+<div class="section">
+
+<h2>3. Spring Boot Transaction Architecture</h2>
+
+<pre>
+Client
+  ↓
+Service Layer
+  ↓
+@Transactional Proxy
+  ↓
+Transaction Manager
+  ↓
+Repository / DAO
+  ↓
+Database
+</pre>
+
+<table>
+
+<tr>
+<th>Layer</th>
+<th>Responsibility</th>
+</tr>
+
+<tr>
+<td>Client</td>
+<td>Calls service method</td>
+</tr>
+
+<tr>
+<td>Service</td>
+<td>Contains business logic</td>
+</tr>
+
+<tr>
+<td>Transaction Proxy</td>
+<td>Handles transaction boundaries</td>
+</tr>
+
+<tr>
+<td>Transaction Manager</td>
+<td>Begins / commits / rollbacks</td>
+</tr>
+
+<tr>
+<td>Repository</td>
+<td>Executes SQL</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>4. Transaction Manager in Spring Boot</h2>
+
+<table>
+
+<tr>
+<th>Transaction Manager</th>
+<th>Used With</th>
+</tr>
+
+<tr>
+<td>DataSourceTransactionManager</td>
+<td>JDBC</td>
+</tr>
+
+<tr>
+<td>JpaTransactionManager</td>
+<td>JPA / Hibernate</td>
+</tr>
+
+<tr>
+<td>HibernateTransactionManager</td>
+<td>Hibernate</td>
+</tr>
+
+<tr>
+<td>JtaTransactionManager</td>
+<td>Distributed transactions</td>
+</tr>
+
+</table>
+
+<pre><code>
+@Bean
+public PlatformTransactionManager transactionManager(DataSource dataSource) {
+
+    return new DataSourceTransactionManager(dataSource);
+
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>5. @Transactional Annotation</h2>
+
+<p>The @Transactional annotation enables transaction management.</p>
+
+<pre><code>
+@Service
+public class PaymentService {
+
+    @Transactional
+    public void transferMoney(Long fromId, Long toId, double amount) {
+
+        accountRepository.debit(fromId, amount);
+        accountRepository.credit(toId, amount);
+
+    }
+
+}
+</code></pre>
+
+<pre>
+Start Transaction
+    ↓
+Debit Account
+    ↓
+Credit Account
+    ↓
+Success → COMMIT
+Failure → ROLLBACK
+</pre>
+
+</div>
+
+<div class="section">
+
+<h2>6. Real World Example (Spring Boot + JPA)</h2>
+
+<h3>Entity</h3>
+
+<pre><code>
+@Entity
+public class Account {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+    private double balance;
+
+}
+</code></pre>
+
+<h3>Repository</h3>
+
+<pre><code>
+@Repository
+public interface AccountRepository extends JpaRepository<Account, Long> {
+
+}
+</code></pre>
+
+<h3>Service Layer</h3>
+
+<pre><code>
+@Service
+public class AccountService {
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Transactional
+    public void transfer(Long fromId, Long toId, double amount) {
+
+        Account fromAccount = accountRepository.findById(fromId).orElseThrow();
+        Account toAccount = accountRepository.findById(toId).orElseThrow();
+
+        fromAccount.setBalance(fromAccount.getBalance() - amount);
+        toAccount.setBalance(toAccount.getBalance() + amount);
+
+        accountRepository.save(fromAccount);
+        accountRepository.save(toAccount);
+    }
+
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>7. Transaction Propagation</h2>
+
+<table>
+
+<tr>
+<th>Propagation Type</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>REQUIRED</td>
+<td>Join existing transaction or create new</td>
+</tr>
+
+<tr>
+<td>REQUIRES_NEW</td>
+<td>Always create new transaction</td>
+</tr>
+
+<tr>
+<td>SUPPORTS</td>
+<td>Use existing transaction if available</td>
+</tr>
+
+<tr>
+<td>NOT_SUPPORTED</td>
+<td>Run without transaction</td>
+</tr>
+
+<tr>
+<td>MANDATORY</td>
+<td>Must run inside transaction</td>
+</tr>
+
+<tr>
+<td>NEVER</td>
+<td>Must run without transaction</td>
+</tr>
+
+<tr>
+<td>NESTED</td>
+<td>Nested transaction</td>
+</tr>
+
+</table>
+
+<pre><code>
+@Transactional(propagation = Propagation.REQUIRED)
+public void processOrder(){
+
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>8. Transaction Isolation Levels</h2>
+
+<table>
+
+<tr>
+<th>Isolation Level</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>READ_UNCOMMITTED</td>
+<td>Dirty reads allowed</td>
+</tr>
+
+<tr>
+<td>READ_COMMITTED</td>
+<td>Only committed data</td>
+</tr>
+
+<tr>
+<td>REPEATABLE_READ</td>
+<td>Same row returns same result</td>
+</tr>
+
+<tr>
+<td>SERIALIZABLE</td>
+<td>Highest isolation</td>
+</tr>
+
+</table>
+
+<pre><code>
+@Transactional(isolation = Isolation.READ_COMMITTED)
+public void updateInventory(){
+
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>9. Rollback Rules</h2>
+
+<pre>
+Rollback occurs for:
+
+RuntimeException
+Error
+</pre>
+
+<pre><code>
+@Transactional(rollbackFor = Exception.class)
+public void processPayment() throws Exception{
+
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>10. Best Practices</h2>
+
+<pre>
+✔ Keep transactions in Service Layer
+✔ Use @Transactional at method level
+✔ Keep transactions short
+✔ Use readOnly for queries
+✔ Avoid transactions in Controller
+</pre>
+
+</div>
+
+<div class="section">
+
+<h2>11. Interview Questions</h2>
+
+<p><b>What annotation enables transactions?</b></p>
+
+<pre>
+@Transactional
+</pre>
+
+<p><b>Default propagation?</b></p>
+
+<pre>
+REQUIRED
+</pre>
+
+<p><b>Where should transactions be used?</b></p>
+
+<pre>
+Service Layer
+</pre>
+
+</div>
+
+</body>
+</html>

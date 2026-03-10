@@ -1,0 +1,568 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot DataSource and Connection Creation</title>
+<style>
+body{font-family: Arial, sans-serif; margin:40px; line-height:1.6;}
+h1{font-size:28px;}
+h2{font-size:22px; margin-top:30px;}
+h3{font-size:18px; margin-top:20px;}
+pre{background:#f4f4f4; padding:12px; border-radius:6px; overflow:auto;}
+code{font-family: Consolas, monospace;}
+table{border-collapse: collapse; width:100%; margin-top:10px;}
+th,td{border:1px solid #ccc; padding:8px; text-align:left;}
+</style>
+</head>
+<body>
+
+<h1>How Spring Boot Creates DataSource and Connection Objects and Provides Them to Your Application</h1>
+
+<p>Understanding how <b>Spring Boot automatically creates and manages database connections</b> is very important for Spring Boot developers.</p>
+<p>Spring Boot uses <b>Auto Configuration + Connection Pooling + Dependency Injection</b> to create and provide <code>DataSource</code> and <code>Connection</code> objects.</p>
+
+<h2>1. High-Level Flow</h2>
+
+<pre>
+application.properties
+        │
+        ▼
+Spring Boot Auto Configuration
+        │
+        ▼
+Creates DataSource Bean
+        │
+        ▼
+Connection Pool (HikariCP)
+        │
+        ▼
+Connections created and managed
+        │
+        ▼
+Spring injects DataSource into your code
+        │
+        ▼
+You call getConnection()
+</pre>
+
+<h2>2. Step 1 — You Define Database Properties</h2>
+
+<pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/employees
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+</pre>
+
+<h2>3. Step 2 — Spring Boot Auto Configuration</h2>
+
+<p>Spring Boot has an internal class:</p>
+
+<pre>
+DataSourceAutoConfiguration
+</pre>
+
+<p>Auto configuration class:</p>
+
+<pre>
+org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+</pre>
+
+<h2>4. Step 3 — Spring Boot Chooses Connection Pool</h2>
+
+<table>
+<tr><th>Priority</th><th>Connection Pool</th></tr>
+<tr><td>1</td><td>HikariCP (default)</td></tr>
+<tr><td>2</td><td>Tomcat JDBC</td></tr>
+<tr><td>3</td><td>Commons DBCP</td></tr>
+</table>
+
+<h2>5. Step 4 — DataSource Bean Creation</h2>
+
+<pre>
+@Bean
+public DataSource dataSource() {
+    HikariDataSource ds = new HikariDataSource();
+
+    ds.setJdbcUrl("jdbc:mysql://localhost:3306/employees");
+    ds.setUsername("root");
+    ds.setPassword("root");
+
+    return ds;
+}
+</pre>
+
+<p>Normally you do not write this code. Spring Boot generates it automatically.</p>
+
+<h2>6. Step 5 — Connection Pool Creates Connections</h2>
+
+<pre>
+Connection Pool (HikariCP)
+
++----------------------+
+| Connection 1         |
+| Connection 2         |
+| Connection 3         |
+| Connection 4         |
+| Connection 5         |
++----------------------+
+</pre>
+
+<h2>7. Step 6 — Spring Injects DataSource</h2>
+
+<pre>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private DataSource dataSource;
+
+}
+</pre>
+
+<h2>8. Step 7 — Getting Connection Object</h2>
+
+<pre>
+Connection connection = dataSource.getConnection();
+</pre>
+
+<pre>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private DataSource dataSource;
+
+    public void testConnection() throws Exception {
+
+        Connection conn = dataSource.getConnection();
+
+        System.out.println(conn);
+
+        conn.close();
+    }
+}
+</pre>
+
+<p><b>Important:</b> <code>conn.close()</code> does NOT close the real connection. It returns the connection to the pool.</p>
+
+<h2>9. Internal Working Diagram</h2>
+
+<pre>
+Spring Boot Application
+        │
+        ▼
+application.properties
+        │
+        ▼
+DataSourceAutoConfiguration
+        │
+        ▼
+HikariDataSource Bean
+        │
+        ▼
+Hikari Connection Pool
+        ┌──────────────────┐
+        │ Connection 1     │
+        │ Connection 2     │
+        │ Connection 3     │
+        │ Connection 4     │
+        │ Connection 5     │
+        └──────────────────┘
+        │
+        ▼
+Injected into Beans
+        │
+        ▼
+dataSource.getConnection()
+        │
+        ▼
+Database
+</pre>
+
+<h2>10. What Happens When getConnection() is Called</h2>
+
+<pre>
+1 → Request goes to HikariDataSource
+2 → Hikari checks pool
+3 → Available connection returned
+4 → Your application uses it
+5 → conn.close()
+6 → Returned back to pool
+</pre>
+
+<h2>11. Without Spring Boot (Traditional Java)</h2>
+
+<pre>
+HikariConfig config = new HikariConfig();
+config.setJdbcUrl("jdbc:mysql://localhost:3306/employees");
+config.setUsername("root");
+config.setPassword("root");
+
+HikariDataSource ds = new HikariDataSource(config);
+
+Connection conn = ds.getConnection();
+</pre>
+
+<h2>12. Important Classes Involved</h2>
+
+<table>
+<tr><th>Component</th><th>Class</th></tr>
+<tr><td>Auto Configuration</td><td>DataSourceAutoConfiguration</td></tr>
+<tr><td>Properties Binding</td><td>DataSourceProperties</td></tr>
+<tr><td>Pool</td><td>HikariDataSource</td></tr>
+<tr><td>Connection</td><td>java.sql.Connection</td></tr>
+</table>
+
+<h2>13. Key Takeaways</h2>
+
+<ul>
+<li>Spring Boot automatically configures DataSource</li>
+<li>Uses DataSourceAutoConfiguration</li>
+<li>Default connection pool = HikariCP</li>
+<li>DataSource is a Spring Bean</li>
+<li>Connections come from pool not database every time</li>
+<li>conn.close() returns connection to pool</li>
+</ul>
+
+
+<hr>
+
+<h1>Additional Section: How Connections Work When Using Spring Data JPA (JpaRepository)</h1>
+
+<h2>1. High-Level Flow with JPA Repository</h2>
+
+<pre>
+Controller
+    │
+    ▼
+Service
+    │
+    ▼
+JpaRepository
+    │
+    ▼
+Spring Data JPA
+    │
+    ▼
+EntityManager
+    │
+    ▼
+Hibernate (JPA Provider)
+    │
+    ▼
+DataSource
+    │
+    ▼
+Connection Pool (HikariCP)
+    │
+    ▼
+Database
+</pre>
+
+<h2>2. Example Entity</h2>
+
+<pre>
+@Entity
+@Table(name="employees")
+public class Employee {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+}
+</pre>
+
+<h2>3. Repository Example</h2>
+
+<pre>
+@Repository
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
+
+}
+</pre>
+
+<h2>4. Service Layer</h2>
+
+<pre>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private EmployeeRepository repository;
+
+    public Employee save(Employee emp){
+        return repository.save(emp);
+    }
+
+}
+</pre>
+
+<h2>5. What Happens Internally When repository.save() Runs</h2>
+
+<pre>
+repository.save(employee)
+        │
+        ▼
+Spring Data JPA Proxy
+        │
+        ▼
+EntityManager.persist()
+        │
+        ▼
+Hibernate
+        │
+        ▼
+DataSource.getConnection()
+        │
+        ▼
+HikariCP Connection Pool
+        │
+        ▼
+Database
+</pre>
+
+<h2>6. Internal Working Diagram</h2>
+
+<pre>
+Spring Boot Application
+        │
+        ▼
+Spring Data JPA Repository
+        │
+        ▼
+Proxy Implementation
+        │
+        ▼
+EntityManager
+        │
+        ▼
+Hibernate
+        │
+        ▼
+DataSource
+        │
+        ▼
+Hikari Connection Pool
+        │
+        ▼
+Database
+</pre>
+
+<h2>7. Important Classes Involved</h2>
+
+<table>
+<tr><th>Layer</th><th>Class</th></tr>
+<tr><td>Repository</td><td>SimpleJpaRepository</td></tr>
+<tr><td>JPA API</td><td>EntityManager</td></tr>
+<tr><td>ORM</td><td>Hibernate</td></tr>
+<tr><td>Connection</td><td>DataSource</td></tr>
+<tr><td>Pool</td><td>HikariDataSource</td></tr>
+</table>
+
+<h2>8. Key Idea</h2>
+
+<pre>
+JpaRepository
+     ↓
+EntityManager
+     ↓
+Hibernate
+     ↓
+DataSource
+     ↓
+Connection Pool
+     ↓
+Database
+</pre>
+
+
+<hr>
+
+<h1>Difference Between Traditional JDBC Connection and Spring Data JPA Repository</h1>
+
+<h2>1. High-Level Architecture Comparison</h2>
+
+<h3>Traditional JDBC Flow</h3>
+<pre>
+Application Code
+       │
+       ▼
+   JDBC API
+       │
+       ▼
+DriverManager / DataSource
+       │
+       ▼
+   JDBC Driver
+       │
+       ▼
+    Database
+</pre>
+
+<h3>Spring Data JPA Flow</h3>
+<pre>
+Application Code
+       │
+       ▼
+JpaRepository
+       │
+       ▼
+Spring Data JPA
+       │
+       ▼
+EntityManager
+       │
+       ▼
+Hibernate (ORM)
+       │
+       ▼
+DataSource (HikariCP)
+       │
+       ▼
+Database
+</pre>
+
+<h2>2. Example: Traditional JDBC</h2>
+<pre>
+import java.sql.*;
+
+public class EmployeeDAO {
+
+    public void saveEmployee() throws Exception {
+
+        Connection conn = DriverManager.getConnection(
+                "jdbc:mysql://localhost:3306/test",
+                "root",
+                "root");
+
+        String sql = "insert into employees(name) values (?)";
+
+        PreparedStatement ps = conn.prepareStatement(sql);
+
+        ps.setString(1, "John");
+
+        ps.executeUpdate();
+
+        ps.close();
+        conn.close();
+    }
+}
+</pre>
+
+<h2>3. Example: Spring Data JPA Repository</h2>
+<pre>
+@Repository
+public interface EmployeeRepository extends JpaRepository&lt;Employee, Long&gt; {
+
+}
+</pre>
+
+<pre>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private EmployeeRepository repository;
+
+    public Employee save(Employee emp){
+        return repository.save(emp);
+    }
+}
+</pre>
+
+<h2>4. Key Differences</h2>
+
+<table>
+<tr><th>Feature</th><th>Traditional JDBC</th><th>Spring Data JPA</th></tr>
+<tr><td>Level</td><td>Low level</td><td>High level ORM</td></tr>
+<tr><td>SQL Writing</td><td>Manual</td><td>Usually automatic</td></tr>
+<tr><td>Connection Handling</td><td>Manual</td><td>Automatic</td></tr>
+<tr><td>Boilerplate Code</td><td>Large</td><td>Very small</td></tr>
+<tr><td>Mapping</td><td>Manual ResultSet mapping</td><td>Automatic Entity mapping</td></tr>
+<tr><td>Transactions</td><td>Manual</td><td>Managed by Spring</td></tr>
+<tr><td>Development Speed</td><td>Slow</td><td>Very fast</td></tr>
+<tr><td>Maintainability</td><td>Hard</td><td>Easy</td></tr>
+</table>
+
+<h2>5. Data Mapping Example</h2>
+
+<h3>JDBC Mapping</h3>
+<pre>
+Employee emp = new Employee();
+
+emp.setId(rs.getLong("id"));
+emp.setName(rs.getString("name"));
+</pre>
+
+<h3>JPA Mapping</h3>
+<pre>
+@Entity
+public class Employee {
+
+    @Id
+    private Long id;
+
+    private String name;
+}
+</pre>
+
+<h2>6. Transaction Handling</h2>
+
+<h3>JDBC</h3>
+<pre>
+conn.setAutoCommit(false);
+conn.commit();
+conn.rollback();
+</pre>
+
+<h3>JPA</h3>
+<pre>
+@Transactional
+public void saveEmployee(Employee emp){
+    repository.save(emp);
+}
+</pre>
+
+<h2>7. Final Concept Diagram</h2>
+
+<h3>Traditional JDBC</h3>
+<pre>
+Application
+   │
+   ▼
+JDBC API
+   │
+   ▼
+SQL + Connection Handling
+   │
+   ▼
+Database
+</pre>
+
+<h3>Spring Data JPA</h3>
+<pre>
+Application
+   │
+   ▼
+JpaRepository
+   │
+   ▼
+EntityManager
+   │
+   ▼
+Hibernate ORM
+   │
+   ▼
+Connection Pool
+   │
+   ▼
+Database
+</pre>
+
+</body>
+</html>

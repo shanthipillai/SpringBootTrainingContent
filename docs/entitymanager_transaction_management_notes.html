@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot – EntityManager Implemented Classes & Transaction Management</title>
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:40px;
+    line-height:1.6;
+}
+h1{font-size:32px;}
+h2{font-size:26px; margin-top:30px;}
+h3{font-size:20px; margin-top:20px;}
+pre{
+    background:#f5f5f5;
+    padding:14px;
+    border-radius:6px;
+    overflow:auto;
+}
+code{
+    font-family: Consolas, monospace;
+}
+table{
+    border-collapse: collapse;
+    width:100%;
+    margin-top:10px;
+}
+table, th, td{
+    border:1px solid #444;
+}
+th, td{
+    padding:10px;
+}
+ul{
+    margin-top:8px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Spring Boot – EntityManager Implemented Classes & Transaction Management</h1>
+
+<h2>1. EntityManager Implementation Classes</h2>
+
+<p>In <b>JPA</b>, <code>EntityManager</code> is only an <b>interface</b>.</p>
+
+<p>Actual implementations are provided by JPA providers like:</p>
+
+<ul>
+<li>Hibernate</li>
+<li>EclipseLink</li>
+<li>OpenJPA</li>
+</ul>
+
+<p>In <b>Spring Boot</b>, the most commonly used provider is <b>Hibernate</b>.</p>
+
+<pre>
+EntityManager (Interface)
+        |
+        v
+Hibernate Implementation
+        |
+        v
+Session (Hibernate Core)
+</pre>
+
+
+<h3>1.1 Main EntityManager Implementations</h3>
+
+<table>
+<tr>
+<th>Implementation Class</th>
+<th>Provided By</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>org.hibernate.internal.SessionImpl</td>
+<td>Hibernate</td>
+<td>Core implementation behind EntityManager</td>
+</tr>
+
+<tr>
+<td>org.springframework.orm.jpa.SharedEntityManagerCreator</td>
+<td>Spring</td>
+<td>Creates proxy EntityManager</td>
+</tr>
+
+<tr>
+<td>org.springframework.orm.jpa.EntityManagerProxy</td>
+<td>Spring</td>
+<td>Proxy used in Spring transactions</td>
+</tr>
+
+<tr>
+<td>org.hibernate.engine.spi.SessionImplementor</td>
+<td>Hibernate</td>
+<td>Advanced internal interface</td>
+</tr>
+</table>
+
+
+<h3>1.2 Real Runtime Flow in Spring Boot</h3>
+
+<p>When you inject EntityManager in Spring:</p>
+
+<pre>
+@PersistenceContext
+private EntityManager entityManager;
+</pre>
+
+<p>Spring does not inject the real object directly. Instead it injects a <b>proxy</b>.</p>
+
+<pre>
+Spring Proxy EntityManager
+        |
+        v
+Actual Hibernate Session
+        |
+        v
+Database
+</pre>
+
+<h3>Flow Diagram</h3>
+
+<pre>
+Application
+     |
+     v
+Spring Proxy EntityManager
+     |
+     v
+Hibernate SessionImpl
+     |
+     v
+JDBC
+     |
+     v
+Database
+</pre>
+
+
+<h2>2. Hibernate Relationship</h2>
+
+<pre>
+EntityManager ≈ Hibernate Session
+</pre>
+
+<p>Hibernate internally converts EntityManager operations to <b>Session operations</b>.</p>
+
+<table>
+<tr>
+<th>JPA EntityManager</th>
+<th>Hibernate Session</th>
+</tr>
+
+<tr>
+<td>persist()</td>
+<td>save()</td>
+</tr>
+
+<tr>
+<td>find()</td>
+<td>get()</td>
+</tr>
+
+<tr>
+<td>merge()</td>
+<td>update()</td>
+</tr>
+
+<tr>
+<td>remove()</td>
+<td>delete()</td>
+</tr>
+</table>
+
+
+<h2>3. Transaction Management in Spring Boot</h2>
+
+<p>Transaction management ensures:</p>
+
+<ul>
+<li>Data consistency</li>
+<li>Atomic operations</li>
+<li>Rollback on errors</li>
+</ul>
+
+<p>Spring supports two transaction types:</p>
+
+<table>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Programmatic</td>
+<td>Manual transaction control</td>
+</tr>
+
+<tr>
+<td>Declarative</td>
+<td>Using annotations</td>
+</tr>
+</table>
+
+<p>Most Spring applications use <b>Declarative Transactions</b>.</p>
+
+
+<h2>4. Declarative Transaction Management</h2>
+
+<p>Spring provides the annotation:</p>
+
+<pre>
+@Transactional
+</pre>
+
+<h3>Example</h3>
+
+<pre>
+@Service
+@Transactional
+public class StudentService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public void saveStudent() {
+
+        Student student = new Student();
+        student.setName("Rahul");
+
+        entityManager.persist(student);
+    }
+}
+</pre>
+
+<h3>What Happens Internally</h3>
+
+<pre>
+Controller
+    |
+    v
+Spring AOP Proxy
+    |
+    v
+Transaction Start
+    |
+    v
+Service Method
+    |
+    v
+EntityManager.persist()
+    |
+    v
+Transaction Commit
+</pre>
+
+
+<h2>5. Transaction Lifecycle</h2>
+
+<pre>
+Transaction Begin
+        |
+        v
+Execute Business Logic
+        |
+        v
+Persistence Context Flush
+        |
+        v
+Commit Transaction
+</pre>
+
+<p>If an error occurs:</p>
+
+<pre>
+Transaction Begin
+        |
+        v
+Exception Occurs
+        |
+        v
+Transaction Rollback
+</pre>
+
+
+<h2>6. Spring Transaction Managers</h2>
+
+<table>
+<tr>
+<th>Transaction Manager</th>
+<th>Used For</th>
+</tr>
+
+<tr>
+<td>JpaTransactionManager</td>
+<td>JPA / Hibernate</td>
+</tr>
+
+<tr>
+<td>DataSourceTransactionManager</td>
+<td>JDBC</td>
+</tr>
+
+<tr>
+<td>HibernateTransactionManager</td>
+<td>Hibernate native</td>
+</tr>
+
+<tr>
+<td>JtaTransactionManager</td>
+<td>Distributed transactions</td>
+</tr>
+</table>
+
+<p>Most Spring Boot JPA applications use:</p>
+
+<pre>
+JpaTransactionManager
+</pre>
+
+
+<h2>7. JpaTransactionManager Flow</h2>
+
+<pre>
+Service Layer
+      |
+      v
+@Transactional
+      |
+      v
+JpaTransactionManager
+      |
+      v
+EntityManager
+      |
+      v
+Database
+</pre>
+
+
+<h2>8. Example – Transaction Management</h2>
+
+<h3>Entity</h3>
+
+<pre>
+@Entity
+public class Student {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    private String name;
+
+}
+</pre>
+
+
+<h3>Repository / Service</h3>
+
+<pre>
+@Service
+public class StudentService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public void createStudent() {
+
+        Student student = new Student();
+        student.setName("Rahul");
+
+        entityManager.persist(student);
+    }
+}
+</pre>
+
+
+<h2>9. Transaction Propagation</h2>
+
+<p>Propagation defines how transactions behave when one method calls another.</p>
+
+<table>
+<tr>
+<th>Propagation</th>
+<th>Meaning</th>
+</tr>
+
+<tr>
+<td>REQUIRED</td>
+<td>Join existing or create new</td>
+</tr>
+
+<tr>
+<td>REQUIRES_NEW</td>
+<td>Always create new transaction</td>
+</tr>
+
+<tr>
+<td>SUPPORTS</td>
+<td>Join if exists</td>
+</tr>
+
+<tr>
+<td>NOT_SUPPORTED</td>
+<td>Run without transaction</td>
+</tr>
+
+<tr>
+<td>MANDATORY</td>
+<td>Must have transaction</td>
+</tr>
+</table>
+
+<pre>
+@Transactional(propagation = Propagation.REQUIRED)
+</pre>
+
+
+<h2>10. Transaction Isolation Levels</h2>
+
+<table>
+<tr>
+<th>Level</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>READ_UNCOMMITTED</td>
+<td>Dirty reads allowed</td>
+</tr>
+
+<tr>
+<td>READ_COMMITTED</td>
+<td>Only committed data visible</td>
+</tr>
+
+<tr>
+<td>REPEATABLE_READ</td>
+<td>Same row read multiple times</td>
+</tr>
+
+<tr>
+<td>SERIALIZABLE</td>
+<td>Highest isolation</td>
+</tr>
+</table>
+
+<pre>
+@Transactional(isolation = Isolation.READ_COMMITTED)
+</pre>
+
+
+<h2>11. Transaction Rollback Rules</h2>
+
+<p>By default:</p>
+
+<pre>
+Rollback → RuntimeException
+Commit → CheckedException
+</pre>
+
+<pre>
+@Transactional(rollbackFor = Exception.class)
+</pre>
+
+
+<h2>12. Complete Transaction Flow in Spring Boot</h2>
+
+<pre>
+Client Request
+      |
+      v
+Controller
+      |
+      v
+@Service Method
+      |
+      v
+@Transactional Proxy
+      |
+      v
+JpaTransactionManager
+      |
+      v
+EntityManager
+      |
+      v
+Hibernate Session
+      |
+      v
+JDBC
+      |
+      v
+Database
+</pre>
+
+
+<h2>13. Interview Questions</h2>
+
+<h3>Q1: Is EntityManager a class or interface?</h3>
+
+<p>EntityManager is a <b>JPA interface</b>. Actual implementation is provided by <b>Hibernate SessionImpl</b>.</p>
+
+<h3>Q2: What transaction manager is used in Spring Boot JPA?</h3>
+
+<pre>
+JpaTransactionManager
+</pre>
+
+<h3>Q3: How does Spring manage transactions?</h3>
+
+<pre>
+@Transactional
+</pre>
+
+<p>using <b>AOP proxy-based transaction management</b>.</p>
+
+<h3>Q4: What is the relationship between EntityManager and Hibernate Session?</h3>
+
+<pre>
+EntityManager is a wrapper over Hibernate Session.
+</pre>
+
+</body>
+</html>
