@@ -27,6 +27,7 @@ th, td{
 
 th{
     background-color:#f4f4f4;
+    cursor:pointer;
 }
 
 a{
@@ -109,7 +110,7 @@ onkeyup="searchDocs()">
 <table id="docsTable">
 
 <tr>
-<th>Topic</th>
+<th onclick="sortTable()">Topic 🔽</th>
 <th>View</th>
 <th>Download</th>
 </tr>
@@ -299,6 +300,28 @@ displayRows();
 }
 
 displayRows();
+
+function sortTable(){
+
+let tbody = document.getElementById("tableBody");
+let rowsArray = Array.from(tbody.querySelectorAll("tr"));
+
+rowsArray.sort(function(a,b){
+
+let textA = a.cells[0].innerText.toLowerCase();
+let textB = b.cells[0].innerText.toLowerCase();
+
+return textA.localeCompare(textB);
+
+});
+
+rowsArray.forEach(row => tbody.appendChild(row));
+
+currentPage = 1;
+rows = document.querySelectorAll("#tableBody tr");
+displayRows();
+
+}
 
 function reportBrokenLink(){
 
