@@ -1,0 +1,393 @@
+<html lang="en"><head>
+<meta charset="UTF-8">
+<title>HikariCP in Java / Spring Boot</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    margin:40px;
+    line-height:1.6;
+    background:#ffffff;
+}
+
+h1{
+    color:#2c3e50;
+}
+
+h2{
+    margin-top:35px;
+    color:#34495e;
+}
+
+h3{
+    margin-top:25px;
+}
+
+pre{
+    background:#f4f4f4;
+    padding:15px;
+    border-radius:6px;
+    overflow:auto;
+}
+
+code{
+    background:#f4f4f4;
+    padding:3px;
+}
+
+table{
+    border-collapse: collapse;
+    width:100%;
+}
+
+table, th, td{
+    border:1px solid #ddd;
+}
+
+th,td{
+    padding:10px;
+}
+
+th{
+    background:#f2f2f2;
+}
+
+.download-btn{
+    position:fixed;
+    right:20px;
+    top:20px;
+    background:#007bff;
+    color:white;
+    padding:12px 18px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+</style>
+
+<script>
+function downloadPage(){
+    const content = document.documentElement.outerHTML;
+
+    const blob = new Blob([content], {type:"text/html"});
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href=url;
+    a.download="hikaricp-notes.html";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</head>
+
+<body>
+
+<button class="download-btn" onclick="downloadPage()">Download Notes</button>
+
+<h1>HikariCP in Java / Spring Boot Applications</h1>
+
+<h2>1. What is HikariCP?</h2>
+
+<p>
+HikariCP is a high-performance JDBC connection pool used in Java applications
+to manage database connections efficiently.
+</p>
+
+<p>
+Instead of creating a new database connection every time the application queries the database,
+HikariCP maintains a pool of reusable connections.
+</p>
+
+<p>
+It is currently the <b>default connection pool used by Spring Boot.</b>
+</p>
+
+<h3>Why Connection Pooling?</h3>
+
+<ul>
+<li>Reuses existing database connections</li>
+<li>Reduces latency</li>
+<li>Improves application performance</li>
+<li>Controls database resource usage</li>
+</ul>
+
+<h2>2. Basic Architecture</h2>
+
+<pre>                +-------------------+
+                |   Spring Boot App |
+                +---------+---------+
+                          |
+                    Request for DB
+                          |
+                          v
+                 +-----------------+
+                 |   HikariCP Pool |
+                 |                 |
+                 |  Conn1  Conn2  |
+                 |  Conn3  Conn4  |
+                 |  Conn5  Conn6  |
+                 +--------+-------+
+                          |
+                          v
+                     Database
+</pre>
+
+<p>Flow:</p>
+
+<ol>
+<li>Application requests a database connection.</li>
+<li>HikariCP provides an existing connection from the pool.</li>
+<li>Query executes.</li>
+<li>Connection returns to the pool.</li>
+</ol>
+
+<h2>3. Why HikariCP is Popular</h2>
+
+<table>
+<tbody><tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>Very Fast</td>
+<td>One of the fastest JDBC pools</td>
+</tr>
+
+<tr>
+<td>Lightweight</td>
+<td>Small memory footprint</td>
+</tr>
+
+<tr>
+<td>Reliable</td>
+<td>Production-grade pool</td>
+</tr>
+
+<tr>
+<td>Auto Configuration</td>
+<td>Built-in with Spring Boot</td>
+</tr>
+
+<tr>
+<td>Low Latency</td>
+<td>Optimized internal design</td>
+</tr>
+
+</tbody></table>
+
+<h2>4. Default Connection Pool in Spring Boot</h2>
+
+<p>Spring Boot uses HikariCP automatically when these dependencies are included.</p>
+
+<pre>spring-boot-starter-data-jpa
+spring-boot-starter-jdbc
+</pre>
+
+<h2>5. Basic Configuration (application.properties)</h2>
+
+<pre>spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.idle-timeout=30000
+spring.datasource.hikari.max-lifetime=1800000
+spring.datasource.hikari.connection-timeout=30000
+</pre>
+
+<h2>6. Important HikariCP Properties</h2>
+
+<table>
+
+<tbody><tr>
+<th>Property</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+
+<tr>
+<td>maximumPoolSize</td>
+<td>Maximum connections in pool</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>minimumIdle</td>
+<td>Minimum idle connections</td>
+<td>same as max</td>
+</tr>
+
+<tr>
+<td>idleTimeout</td>
+<td>Idle connection removal time</td>
+<td>600000 ms</td>
+</tr>
+
+<tr>
+<td>maxLifetime</td>
+<td>Maximum connection lifetime</td>
+<td>1800000 ms</td>
+</tr>
+
+<tr>
+<td>connectionTimeout</td>
+<td>Wait time for connection</td>
+<td>30000 ms</td>
+</tr>
+
+</tbody></table>
+
+<h2>7. Java Configuration Example</h2>
+
+<pre>import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
+
+public class DataSourceConfig {
+
+    public DataSource dataSource() {
+
+        HikariConfig config = new HikariConfig();
+
+        config.setJdbcUrl("jdbc:mysql://localhost:3306/mydb");
+        config.setUsername("root");
+        config.setPassword("root");
+
+        config.setMaximumPoolSize(10);
+        config.setMinimumIdle(5);
+        config.setConnectionTimeout(30000);
+
+        return new HikariDataSource(config);
+    }
+}
+</pre>
+
+<h2>8. Connection Lifecycle</h2>
+
+<pre>Application Request
+        |
+        v
++--------------------+
+|   HikariCP Pool    |
++--------------------+
+  |     |     |
+Idle  Idle  Idle
+  |     |     |
+Borrow Connection
+       |
+       v
+Execute Query
+       |
+       v
+Return to Pool
+</pre>
+
+<h2>9. Monitoring HikariCP</h2>
+
+<pre>logging.level.com.zaxxer.hikari=DEBUG
+</pre>
+
+<p>Example Logs</p>
+
+<pre>HikariPool-1 - Starting...
+HikariPool-1 - Added connection conn1
+HikariPool-1 - Pool stats (total=10, active=2, idle=8)
+</pre>
+
+<h2>10. Best Practices</h2>
+
+<ul>
+<li>Do not create extremely large connection pools</li>
+<li>Monitor pool usage using Spring Boot Actuator</li>
+<li>Set maxLifetime slightly lower than database timeout</li>
+</ul>
+
+<h3>Connection Formula</h3>
+
+<pre>connections = (CPU cores * 2) + disk count
+</pre>
+
+<h2>11. Common Problems</h2>
+
+<h3>Connection Leak</h3>
+
+<pre>spring.datasource.hikari.leak-detection-threshold=2000
+</pre>
+
+<h3>Pool Exhaustion</h3>
+
+<pre>Connection is not available, request timed out
+</pre>
+
+<h2>12. HikariCP vs Other Pools</h2>
+
+<table>
+
+<tbody><tr>
+<th>Pool</th>
+<th>Performance</th>
+<th>Memory</th>
+<th>Popularity</th>
+</tr>
+
+<tr>
+<td>HikariCP</td>
+<td>Excellent</td>
+<td>Low</td>
+<td>Very High</td>
+</tr>
+
+<tr>
+<td>C3P0</td>
+<td>Low</td>
+<td>Medium</td>
+<td>Old</td>
+</tr>
+
+<tr>
+<td>Apache DBCP</td>
+<td>Medium</td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+
+<tr>
+<td>Tomcat Pool</td>
+<td>Good</td>
+<td>Medium</td>
+<td>Good</td>
+</tr>
+
+</tbody></table>
+
+<h2>13. Production Example</h2>
+
+<pre>spring.datasource.hikari.maximum-pool-size=30
+spring.datasource.hikari.minimum-idle=10
+spring.datasource.hikari.idle-timeout=300000
+spring.datasource.hikari.max-lifetime=1700000
+spring.datasource.hikari.connection-timeout=20000
+spring.datasource.hikari.pool-name=ProductionPool
+</pre>
+
+<h2>14. Key Takeaways</h2>
+
+<ul>
+<li>HikariCP is the default connection pool in Spring Boot</li>
+<li>Improves application performance and scalability</li>
+<li>Efficient database connection management</li>
+<li>Requires tuning in production systems</li>
+</ul>
+
+
+</body></html>
