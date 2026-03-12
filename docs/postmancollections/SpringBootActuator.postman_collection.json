@@ -1,0 +1,380 @@
+{
+  "info": {
+    "_postman_id": "53ad8458-032a-4b04-a91d-f32ad9862396",
+    "name": "SpringBootActuator",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12637036"
+  },
+  "item": [
+    {
+      "name": "CreateUsers",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n  {\r\n    \"userName\": \"pavan\",\r\n    \"password\": \"12345\",\r\n    \"role\": \"ADMIN\"\r\n  }\r\n  \r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/users/createlist",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "createlist"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GetUsers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/users/getall",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "users",
+            "getall"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Main",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CustomEndPoint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "CustomEndPoint Copy",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/health",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "health"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "beans",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/beans",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "beans"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Metrics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/metrics",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "metrics"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "MetricsHttpRequests",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/metrics/http.server.requests",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "metrics",
+            "http.server.requests"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "MetricsHttpRequests POST",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/metrics/http.server.requests?tag=method:POST",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "metrics",
+            "http.server.requests"
+          ],
+          "query": [
+            {
+              "key": "tag",
+              "value": "method:POST"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "MetricsHttpRequests Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/metrics/http.server.requests?tag=status:200",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "metrics",
+            "http.server.requests"
+          ],
+          "query": [
+            {
+              "key": "tag",
+              "value": "status:200"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mappings",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/mappings",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "mappings"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Loggers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/loggers",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "loggers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Loggers ROOT",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/actuator/loggers/feb.training.springboot.controller",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "loggers",
+            "feb.training.springboot.controller"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Loggers ROOT Copy",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"configuredLevel\": \"DEBUG\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/actuator/loggers/ROOT",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "loggers",
+            "ROOT"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Loggers ROOT Copy 2",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"configuredLevel\": \"DEBUG\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:8080/actuator/loggers/feb.training.springboot.controller",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "actuator",
+            "loggers",
+            "feb.training.springboot.controller"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Loggers ROOT Copy 3",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
