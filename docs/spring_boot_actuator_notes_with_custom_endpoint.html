@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Actuator Complete Notes</title>
+<style>
+body { font-family: Arial, sans-serif; margin:40px; line-height:1.6; }
+h1 { font-size:28px; }
+h2 { font-size:22px; margin-top:30px; }
+h3 { font-size:18px; }
+pre { background:#f4f4f4; padding:12px; border-radius:6px; overflow:auto; }
+table { border-collapse: collapse; width:100%; margin:10px 0; }
+table, th, td { border:1px solid #333; }
+th, td { padding:8px; text-align:left; }
+</style>
+</head>
+<body>
+
+<h1>Spring Boot Actuator — Complete Notes</h1>
+
+<h2>1. What is Spring Boot Actuator?</h2>
+<p><b>Spring Boot Actuator</b> provides production-ready monitoring and management features for a Spring Boot application.</p>
+
+<ul>
+<li>Application health monitoring</li>
+<li>Metrics collection</li>
+<li>Application info</li>
+<li>Thread dumps</li>
+<li>Environment properties</li>
+<li>Loggers configuration</li>
+<li>Beans inspection</li>
+</ul>
+
+<h2>2. Why Actuator is Important</h2>
+
+<table>
+<tr><th>Question</th><th>Actuator Endpoint</th></tr>
+<tr><td>Is the application running?</td><td>/health</td></tr>
+<tr><td>What beans are loaded?</td><td>/beans</td></tr>
+<tr><td>What environment variables exist?</td><td>/env</td></tr>
+<tr><td>What metrics are available?</td><td>/metrics</td></tr>
+<tr><td>What threads are running?</td><td>/threaddump</td></tr>
+</table>
+
+<h2>3. Adding Actuator Dependency</h2>
+
+<h3>Maven</h3>
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+<h3>Gradle</h3>
+<pre>
+implementation 'org.springframework.boot:spring-boot-starter-actuator'
+</pre>
+
+<h2>4. Default Endpoints</h2>
+
+<pre>
+/actuator/health
+/actuator/info
+</pre>
+
+<pre>
+http://localhost:8080/actuator/health
+</pre>
+
+<pre>
+{
+ "status": "UP"
+}
+</pre>
+
+<h2>5. Exposing More Endpoints</h2>
+
+<pre>
+management.endpoints.web.exposure.include=*
+</pre>
+
+<pre>
+management.endpoints.web.exposure.include=health,info,beans,metrics
+</pre>
+
+<h2>6. Important Actuator Endpoints</h2>
+
+<table>
+<tr><th>Endpoint</th><th>Description</th></tr>
+<tr><td>/health</td><td>Application health status</td></tr>
+<tr><td>/info</td><td>Application information</td></tr>
+<tr><td>/metrics</td><td>Application metrics</td></tr>
+<tr><td>/beans</td><td>Spring beans in application</td></tr>
+<tr><td>/env</td><td>Environment properties</td></tr>
+<tr><td>/loggers</td><td>Logger configuration</td></tr>
+<tr><td>/threaddump</td><td>Thread dump</td></tr>
+<tr><td>/heapdump</td><td>JVM heap dump</td></tr>
+<tr><td>/mappings</td><td>All request mappings</td></tr>
+</table>
+
+<h2>7. Health Endpoint</h2>
+
+<pre>
+/actuator/health
+</pre>
+
+<pre>
+{
+ "status": "UP",
+ "components": {
+   "db": { "status": "UP" },
+   "diskSpace": { "status": "UP" }
+ }
+}
+</pre>
+
+<pre>
+management.endpoint.health.show-details=always
+</pre>
+
+<h2>8. Info Endpoint</h2>
+
+<pre>
+info.app.name=Spring Boot Application
+info.app.version=1.0
+info.app.description=Learning Spring Boot Actuator
+</pre>
+
+<pre>
+/actuator/info
+</pre>
+
+<h2>9. Metrics Endpoint</h2>
+
+<pre>
+/actuator/metrics
+</pre>
+
+<ul>
+<li>JVM memory usage</li>
+<li>CPU usage</li>
+<li>HTTP request count</li>
+<li>Garbage collection</li>
+</ul>
+
+<h2>10. Beans Endpoint</h2>
+
+<pre>
+/actuator/beans
+</pre>
+
+<h2>11. Environment Endpoint</h2>
+
+<pre>
+/actuator/env
+</pre>
+
+<h2>12. Loggers Endpoint</h2>
+
+<pre>
+/actuator/loggers
+</pre>
+
+<h2>13. Actuator Architecture</h2>
+
+<pre>
+Spring Boot Application
+        |
+   Actuator Module
+        |
+   Management Endpoints
+        |
+Health  Metrics  Info
+        |
+Monitoring Tools (Prometheus, Grafana)
+</pre>
+
+<h2>14. Securing Actuator</h2>
+
+<pre>
+management.endpoints.web.exposure.include=health,info
+</pre>
+
+<h2>15. Changing Base Path</h2>
+
+<pre>
+management.endpoints.web.base-path=/manage
+</pre>
+
+<pre>
+/manage/health
+/manage/metrics
+</pre>
+
+<h2>16. Different Management Port</h2>
+
+<pre>
+management.server.port=9090
+</pre>
+
+<h2>17. Real World Monitoring Stack</h2>
+
+<pre>
+Spring Boot App
+      |
+Spring Boot Actuator
+      |
+Micrometer Metrics
+      |
+Prometheus
+      |
+Grafana Dashboard
+</pre>
+
+<h2>18. Custom Actuator Endpoint (IMPORTANT)</h2>
+
+<p>Spring Boot allows developers to create <b>custom actuator endpoints</b> to expose custom application information.</p>
+
+<h3>Step 1: Create Custom Endpoint Class</h3>
+
+<pre>
+import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
+import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
+import org.springframework.stereotype.Component;
+
+@Component
+@Endpoint(id = "customInfo")
+public class CustomActuatorEndpoint {
+
+    @ReadOperation
+    public String customData() {
+        return "This is a custom actuator endpoint";
+    }
+
+}
+</pre>
+
+<h3>Step 2: Enable Endpoint Exposure</h3>
+
+<pre>
+management.endpoints.web.exposure.include=*
+</pre>
+
+<h3>Step 3: Access Endpoint</h3>
+
+<pre>
+http://localhost:8080/actuator/customInfo
+</pre>
+
+<h3>Output</h3>
+
+<pre>
+This is a custom actuator endpoint
+</pre>
+
+<h2>19. Best Practices</h2>
+
+<ul>
+<li>Expose only necessary endpoints</li>
+<li>Secure endpoints with Spring Security</li>
+<li>Use metrics with monitoring tools</li>
+<li>Use different management port in production</li>
+<li>Avoid exposing sensitive data</li>
+</ul>
+
+<h2>20. Summary</h2>
+
+<ul>
+<li>Monitor application health</li>
+<li>Track performance metrics</li>
+<li>Inspect beans and environment</li>
+<li>Create custom monitoring endpoints</li>
+<li>Integrate with monitoring tools</li>
+</ul>
+
+</body>
+</html>
