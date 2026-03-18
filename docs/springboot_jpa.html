@@ -1,0 +1,747 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot JPA Notes</title>
+<style>
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin:40px;
+    line-height:1.6;
+}
+h1{font-size:28px;}
+h2{font-size:22px;}
+h3{font-size:18px;}
+pre{
+    background:#f5f5f5;
+    padding:12px;
+    overflow:auto;
+}
+code{
+    font-family: Consolas, monospace;
+}
+table{
+    border-collapse: collapse;
+    width:100%;
+    margin:10px 0;
+}
+table, th, td{
+    border:1px solid #444;
+}
+th, td{
+    padding:8px;
+    text-align:left;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Spring Boot JPA (Java Persistence API) – Complete Notes</h1>
+
+<h2>1. What is JPA?</h2>
+<p><b>JPA (Java Persistence API)</b> is a Java specification used to manage relational data in Java applications.</p>
+<p>It provides a <b>standard way to map Java objects to database tables</b>.</p>
+<p>Spring Boot uses <b>Hibernate</b> as the default JPA implementation.</p>
+
+<pre>
+Java Object  ↔  JPA/Hibernate  ↔  Database Table
+</pre>
+
+<h3>Example</h3>
+
+<table>
+<tr><th>Java Class</th><th>Database Table</th></tr>
+<tr><td>User.java</td><td>user</td></tr>
+<tr><td>Product.java</td><td>product</td></tr>
+<tr><td>Order.java</td><td>orders</td></tr>
+</table>
+
+<h2>2. Why Use JPA?</h2>
+
+<p>Without JPA (JDBC):</p>
+<ul>
+<li>Manual SQL writing</li>
+<li>Manual ResultSet mapping</li>
+<li>More boilerplate code</li>
+</ul>
+
+<p>With JPA:</p>
+<ul>
+<li>Automatic ORM</li>
+<li>Less boilerplate</li>
+<li>CRUD operations simplified</li>
+<li>Database independent</li>
+<li>Transaction management</li>
+</ul>
+
+<h2>3. ORM (Object Relational Mapping)</h2>
+
+<p>ORM maps <b>Java objects to database tables</b>.</p>
+
+<table>
+<tr><th>Java</th><th>Database</th></tr>
+<tr><td>Class</td><td>Table</td></tr>
+<tr><td>Object</td><td>Row</td></tr>
+<tr><td>Field</td><td>Column</td></tr>
+</table>
+
+<pre>
+@Entity
+public class Student {
+
+    @Id
+    private Long id;
+
+    private String name;
+}
+</pre>
+
+<h2>4. JPA Architecture</h2>
+
+<pre>
+Application
+     |
+Spring Data JPA
+     |
+JPA Specification
+     |
+Hibernate (Implementation)
+     |
+JDBC
+     |
+Database
+</pre>
+
+<table>
+<tr><th>Layer</th><th>Responsibility</th></tr>
+<tr><td>Application</td><td>Business Logic</td></tr>
+<tr><td>Spring Data JPA</td><td>Repository abstraction</td></tr>
+<tr><td>JPA</td><td>Specification</td></tr>
+<tr><td>Hibernate</td><td>ORM implementation</td></tr>
+<tr><td>JDBC</td><td>Database connectivity</td></tr>
+</table>
+
+<h2>5. Important JPA Annotations</h2>
+
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td>@Entity</td><td>Marks class as database table</td></tr>
+<tr><td>@Table</td><td>Custom table name</td></tr>
+<tr><td>@Id</td><td>Primary key</td></tr>
+<tr><td>@GeneratedValue</td><td>Auto ID generation</td></tr>
+<tr><td>@Column</td><td>Customize column</td></tr>
+<tr><td>@Transient</td><td>Ignore field</td></tr>
+<tr><td>@Temporal</td><td>Date mapping</td></tr>
+</table>
+
+<h2>6. Entity Example</h2>
+
+<pre>
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "students")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name="student_name")
+    private String name;
+
+    private String email;
+
+}
+</pre>
+
+<h2>7. JPA Repository (Spring Data JPA)</h2>
+
+<pre>
+public interface StudentRepository 
+        extends JpaRepository&lt;Student, Long&gt; {
+}
+</pre>
+
+<p>Automatically provides:</p>
+<ul>
+<li>save()</li>
+<li>findById()</li>
+<li>findAll()</li>
+<li>delete()</li>
+<li>count()</li>
+</ul>
+
+<h2>8. Common CRUD Operations</h2>
+
+<pre>
+studentRepository.save(student);
+</pre>
+
+<pre>
+Student student = studentRepository.findById(1L).orElse(null);
+</pre>
+
+<pre>
+List&lt;Student&gt; students = studentRepository.findAll();
+</pre>
+
+<pre>
+studentRepository.deleteById(1L);
+</pre>
+
+<h2>9. Derived Query Methods</h2>
+
+<pre>
+public interface StudentRepository 
+        extends JpaRepository&lt;Student, Long&gt; {
+
+    List&lt;Student&gt; findByName(String name);
+
+    List&lt;Student&gt; findByEmail(String email);
+
+    List&lt;Student&gt; findByNameAndEmail(String name, String email);
+}
+</pre>
+
+<pre>
+SELECT * FROM students WHERE name = ?
+</pre>
+
+<h2>10. Custom Query using @Query</h2>
+
+<pre>
+@Query("SELECT s FROM Student s WHERE s.name = :name")
+List&lt;Student&gt; getStudentsByName(String name);
+</pre>
+
+<pre>
+@Query(value="SELECT * FROM students WHERE name = :name", 
+       nativeQuery = true)
+List&lt;Student&gt; getStudentsNative(String name);
+</pre>
+
+<h2>11. JPA Relationships</h2>
+
+<table>
+<tr><th>Relationship</th><th>Description</th></tr>
+<tr><td>OneToOne</td><td>One record linked to one</td></tr>
+<tr><td>OneToMany</td><td>One record → many</td></tr>
+<tr><td>ManyToOne</td><td>Many → one</td></tr>
+<tr><td>ManyToMany</td><td>Many ↔ many</td></tr>
+</table>
+
+<h2>12. One-to-Many Example</h2>
+
+<pre>
+Student
+   |
+   | 1
+   |
+   |------ * Courses
+</pre>
+
+<pre>
+@Entity
+public class Student {
+
+    @Id
+    private Long id;
+
+    @OneToMany(mappedBy = "student")
+    private List&lt;Course&gt; courses;
+}
+</pre>
+
+<pre>
+@Entity
+public class Course {
+
+    @Id
+    private Long id;
+
+    @ManyToOne
+    private Student student;
+}
+</pre>
+
+<h2>13. application.properties Configuration</h2>
+
+<pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/springdb
+spring.datasource.username=root
+spring.datasource.password=root
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+</pre>
+
+<h2>14. JPA Entity Lifecycle</h2>
+
+<pre>
+New (Transient)
+      |
+      v
+Managed (Persistent)
+      |
+      v
+Detached
+      |
+      v
+Removed
+</pre>
+
+<h2>15. Advantages of Spring Data JPA</h2>
+<ul>
+<li>Reduces boilerplate code</li>
+<li>Automatic query generation</li>
+<li>Easy pagination and sorting</li>
+<li>Built-in transaction management</li>
+<li>Integrates with Hibernate</li>
+</ul>
+
+<h2>16. Disadvantages</h2>
+<ul>
+<li>Less control over SQL</li>
+<li>Performance issues for complex queries</li>
+<li>Learning curve for relationships</li>
+</ul>
+
+<h2>17. Real World Example Architecture</h2>
+
+<pre>
+Controller
+     |
+Service Layer
+     |
+Repository Layer (JPA)
+     |
+Hibernate
+     |
+Database
+</pre>
+
+<pre>
+UserController
+     |
+UserService
+     |
+UserRepository (JpaRepository)
+     |
+MySQL
+</pre>
+
+<h2>18. Best Practices</h2>
+<ul>
+<li>Use DTOs for API responses</li>
+<li>Avoid EAGER fetching</li>
+<li>Use LAZY relationships</li>
+<li>Use pagination for large data</li>
+<li>Use @Transactional in services</li>
+</ul>
+
+<pre>
+@Transactional
+public void saveStudent(Student student){
+    studentRepository.save(student);
+}
+</pre>
+
+<h2>19. Pagination Example</h2>
+
+<pre>
+Page&lt;Student&gt; page =
+        studentRepository.findAll(PageRequest.of(0,5));
+</pre>
+
+<table>
+<tr><th>Parameter</th><th>Meaning</th></tr>
+<tr><td>0</td><td>Page number</td></tr>
+<tr><td>5</td><td>Records per page</td></tr>
+</table>
+
+<h2>20. Summary</h2>
+
+<p>Spring Boot JPA simplifies database operations by providing:</p>
+<ul>
+<li>ORM support</li>
+<li>Automatic repository implementation</li>
+<li>Query generation</li>
+<li>Relationship management</li>
+<li>Transaction handling</li>
+</ul>
+
+
+<hr>
+
+<h1>Entity Management in Spring Boot JPA</h1>
+
+<h2>1. What Does “Entity Managed by JPA” Mean?</h2>
+
+<p>In <b>Spring Boot JPA</b>, an <b>Entity</b> is a Java object that is managed by the <b>JPA persistence context</b>.</p>
+
+<p>When an entity is managed, JPA automatically:</p>
+
+<ul>
+<li>Tracks changes in the object</li>
+<li>Synchronizes those changes with the database</li>
+<li>Handles insert, update, delete operations</li>
+</ul>
+
+<pre>
+Java Object (Entity)
+        |
+        v
+Persistence Context (EntityManager)
+        |
+        v
+Database Table
+</pre>
+
+<h2>2. What is an Entity?</h2>
+
+<p>An <b>Entity</b> is a Java class mapped to a database table.</p>
+
+<pre>
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "students")
+public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    private String email;
+}
+</pre>
+
+<table>
+<tr><th>Java Entity</th><th>Database</th></tr>
+<tr><td>Student class</td><td>students table</td></tr>
+<tr><td>id</td><td>primary key</td></tr>
+<tr><td>name</td><td>column</td></tr>
+<tr><td>email</td><td>column</td></tr>
+</table>
+
+<h2>3. Who Manages the Entity?</h2>
+
+<pre>
+EntityManager
+        |
+Hibernate (JPA Implementation)
+        |
+Database
+</pre>
+
+<p>In Spring Boot we usually interact through:</p>
+
+<pre>
+JpaRepository
+        |
+Spring Data JPA
+        |
+EntityManager
+        |
+Hibernate
+</pre>
+
+<h2>4. Entity Lifecycle States</h2>
+
+<pre>
+Transient  →  Persistent  →  Detached  →  Removed
+</pre>
+
+<h3>Transient State</h3>
+
+<pre>
+Student student = new Student();
+student.setName("John");
+</pre>
+
+<ul>
+<li>Normal Java object</li>
+<li>Not stored in database</li>
+<li>Not managed by JPA</li>
+</ul>
+
+<h3>Persistent State</h3>
+
+<pre>
+studentRepository.save(student);
+</pre>
+
+<p>JPA now tracks changes automatically.</p>
+
+<pre>
+student.setName("David");
+</pre>
+
+<p>Hibernate will execute:</p>
+
+<pre>
+UPDATE students SET name='David' WHERE id=1
+</pre>
+
+<h3>Detached State</h3>
+
+<p>The entity was previously managed but is no longer attached to the persistence context.</p>
+
+<pre>
+student.setName("Alex"); // not automatically saved
+</pre>
+
+<p>To reattach:</p>
+
+<pre>
+entityManager.merge(student);
+</pre>
+
+<h3>Removed State</h3>
+
+<pre>
+studentRepository.delete(student);
+</pre>
+
+<pre>
+DELETE FROM students WHERE id=1
+</pre>
+
+<h2>5. Persistence Context</h2>
+
+<p>The persistence context is a memory area where JPA manages entities.</p>
+
+<pre>
+Persistence Context
+---------------------------
+| Student id=1            |
+| Student id=2            |
+| Student id=3            |
+---------------------------
+</pre>
+
+<h2>6. Dirty Checking</h2>
+
+<p>JPA automatically detects changes made to managed entities.</p>
+
+<pre>
+Student student = studentRepository.findById(1L).get();
+student.setName("Mike");
+</pre>
+
+<p>At transaction commit:</p>
+
+<pre>
+UPDATE students SET name='Mike' WHERE id=1
+</pre>
+
+<h2>7. Transaction Role</h2>
+
+<pre>
+@Transactional
+public void updateStudent() {
+
+    Student student = studentRepository.findById(1L).get();
+    student.setName("Robert");
+
+}
+</pre>
+
+<pre>
+Start Transaction
+        |
+Load Entity
+        |
+Modify Entity
+        |
+Dirty Checking
+        |
+Commit Transaction
+        |
+Update Database
+</pre>
+
+<h2>8. EntityManager vs JpaRepository</h2>
+
+<table>
+<tr><th>Feature</th><th>EntityManager</th><th>JpaRepository</th></tr>
+<tr><td>Level</td><td>Low-level API</td><td>High-level abstraction</td></tr>
+<tr><td>Code required</td><td>More</td><td>Less</td></tr>
+<tr><td>Usage</td><td>Used internally</td><td>Used by developers</td></tr>
+</table>
+
+<h2>9. Real World Flow</h2>
+
+<pre>
+Controller
+     |
+Service
+     |
+Repository (JpaRepository)
+     |
+EntityManager
+     |
+Hibernate
+     |
+Database
+</pre>
+
+<h2>10. Summary</h2>
+
+<ul>
+<li>Entities represent database tables</li>
+<li>Persistence Context manages entities</li>
+<li>JPA tracks changes using Dirty Checking</li>
+<li>Transactions synchronize entity state with database</li>
+<li>Spring Data JPA simplifies everything through repositories</li>
+</ul>
+
+
+<hr>
+
+<h1>How JDBC Connection is Managed Inside Spring Boot JPA</h1>
+
+<h2>1. High-Level Flow</h2>
+
+<pre>
+Application Code
+       |
+Spring Data JPA Repository
+       |
+EntityManager
+       |
+Hibernate
+       |
+JDBC
+       |
+HikariCP (Connection Pool)
+       |
+Database
+</pre>
+
+<p>Spring Boot automatically handles creating, reusing, and closing JDBC connections.</p>
+
+<h2>2. Key Components</h2>
+
+<table>
+<tr><th>Component</th><th>Responsibility</th></tr>
+<tr><td>DataSource</td><td>Provides JDBC connections</td></tr>
+<tr><td>Connection Pool</td><td>Reuses database connections</td></tr>
+<tr><td>Hibernate</td><td>Generates and executes SQL</td></tr>
+<tr><td>EntityManager</td><td>Manages persistence context</td></tr>
+<tr><td>Transaction Manager</td><td>Controls transactions</td></tr>
+</table>
+
+<h2>3. DataSource Configuration</h2>
+
+<pre>
+spring.datasource.url=jdbc:mysql://localhost:3306/springdb
+spring.datasource.username=root
+spring.datasource.password=root
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+</pre>
+
+<p>Spring Boot automatically creates a DataSource and manages JDBC connections.</p>
+
+<h2>4. Connection Pool (HikariCP)</h2>
+
+<pre>
+Hikari Connection Pool
+---------------------------
+| Connection 1            |
+| Connection 2            |
+| Connection 3            |
+| Connection 4            |
+---------------------------
+</pre>
+
+<p>Instead of creating new connections every time, Spring Boot reuses existing ones.</p>
+
+<h2>5. How Hibernate Uses JDBC</h2>
+
+<pre>
+Connection connection = dataSource.getConnection();
+
+PreparedStatement ps =
+    connection.prepareStatement("SELECT * FROM students");
+
+ResultSet rs = ps.executeQuery();
+</pre>
+
+<p>This code is executed internally by Hibernate. Developers normally do not write it.</p>
+
+<h2>6. Transaction Management</h2>
+
+<pre>
+@Transactional
+public void updateStudent() {
+
+    Student student = repository.findById(1L).get();
+    student.setName("David");
+
+}
+</pre>
+
+<pre>
+Start Transaction
+       |
+Get JDBC Connection from Pool
+       |
+Execute SQL
+       |
+Commit Transaction
+       |
+Return Connection to Pool
+</pre>
+
+<h2>7. Traditional JDBC Steps vs Spring Boot</h2>
+
+<table>
+<tr><th>JDBC Step</th><th>Handled By</th></tr>
+<tr><td>Register driver</td><td>Spring Boot Auto Configuration</td></tr>
+<tr><td>Create connection</td><td>DataSource</td></tr>
+<tr><td>Connection pooling</td><td>HikariCP</td></tr>
+<tr><td>Create statement</td><td>Hibernate</td></tr>
+<tr><td>Execute query</td><td>Hibernate</td></tr>
+<tr><td>Map ResultSet to Entity</td><td>Hibernate ORM</td></tr>
+<tr><td>Close connection</td><td>HikariCP</td></tr>
+</table>
+
+<h2>8. Internal Execution Flow</h2>
+
+<pre>
+studentRepository.findAll()
+        |
+Spring Data JPA
+        |
+EntityManager
+        |
+Hibernate generates SQL
+        |
+DataSource provides connection
+        |
+HikariCP connection pool
+        |
+JDBC executes query
+        |
+Entities returned
+</pre>
+
+<h2>9. Key Takeaways</h2>
+
+<ul>
+<li>Spring Boot auto-configures the JDBC driver.</li>
+<li>DataSource provides connections.</li>
+<li>HikariCP manages connection pooling.</li>
+<li>Hibernate generates SQL and interacts with JDBC.</li>
+<li>Developers interact through JpaRepository instead of JDBC directly.</li>
+</ul>
+
+</body>
+</html>

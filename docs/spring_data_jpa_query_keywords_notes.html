@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Data JPA Derived Query Keywords Notes</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+h1 { color: #2c3e50; }
+h2 { color: #34495e; margin-top: 30px; }
+code { background: #f4f4f4; padding: 4px 6px; border-radius: 4px; }
+pre { background: #f4f4f4; padding: 10px; border-radius: 6px; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background: #f0f0f0; }
+</style>
+</head>
+<body>
+
+<h1>Spring Data JPA Derived Query Keywords</h1>
+<p>These examples assume a <code>Customer</code> entity with fields:</p>
+
+<pre>
+private String name;
+private Double salary;
+private Address permanentaddress;
+</pre>
+
+<h2>1. Equal Condition</h2>
+<pre>
+List<Customer> findByName(String name);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE name = ?</p>
+
+<h2>2. Greater Than</h2>
+<pre>
+List<Customer> findBySalaryGreaterThan(Double salary);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE salary > ?</p>
+
+<h2>3. Less Than</h2>
+<pre>
+List<Customer> findBySalaryLessThan(Double salary);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE salary < ?</p>
+
+<h2>4. Between</h2>
+<pre>
+List<Customer> findBySalaryBetween(Double min, Double max);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE salary BETWEEN ? AND ?</p>
+
+<h2>5. Is Null</h2>
+<pre>
+List<Customer> findByTemporaryadressIsNull();
+</pre>
+<p>SQL: SELECT * FROM customer WHERE temp_area IS NULL</p>
+
+<h2>6. Is Not Null</h2>
+<pre>
+List<Customer> findByPermanentaddressIsNotNull();
+</pre>
+<p>SQL: SELECT * FROM customer WHERE perm_area IS NOT NULL</p>
+
+<h2>7. Containing</h2>
+<pre>
+List<Customer> findByNameContaining(String name);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE name LIKE %?%</p>
+
+<h2>8. Starting With</h2>
+<pre>
+List<Customer> findByNameStartingWith(String name);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE name LIKE ?%</p>
+
+<h2>9. Ending With</h2>
+<pre>
+List<Customer> findByNameEndingWith(String name);
+</pre>
+<p>SQL: SELECT * FROM customer WHERE name LIKE %?</p>
+
+<h2>10. And Condition</h2>
+<pre>
+List<Customer> findByNameAndSalary(String name, Double salary);
+</pre>
+
+<h2>11. Or Condition</h2>
+<pre>
+List<Customer> findByNameOrSalary(String name, Double salary);
+</pre>
+
+<h2>12. Order By</h2>
+<pre>
+List<Customer> findAllByOrderByNameAsc();
+List<Customer> findAllByOrderBySalaryDesc();
+</pre>
+
+<h2>13. Top Results</h2>
+<pre>
+List<Customer> findTop3ByOrderBySalaryDesc();
+</pre>
+
+<h2>14. First Result</h2>
+<pre>
+Customer findFirstByOrderBySalaryDesc();
+</pre>
+
+<h2>15. Ignore Case</h2>
+<pre>
+List<Customer> findByNameIgnoreCase(String name);
+</pre>
+
+<h2>16. In</h2>
+<pre>
+List<Customer> findByNameIn(List<String> names);
+</pre>
+
+<h2>17. Not In</h2>
+<pre>
+List<Customer> findByNameNotIn(List<String> names);
+</pre>
+
+<h2>Commonly Used Keywords</h2>
+<table>
+<tr><th>Keyword</th><th>Meaning</th></tr>
+<tr><td>GreaterThan</td><td>value greater than</td></tr>
+<tr><td>LessThan</td><td>value less than</td></tr>
+<tr><td>Between</td><td>value between range</td></tr>
+<tr><td>IsNull</td><td>field is null</td></tr>
+<tr><td>IsNotNull</td><td>field is not null</td></tr>
+<tr><td>Containing</td><td>LIKE %value%</td></tr>
+<tr><td>StartingWith</td><td>LIKE value%</td></tr>
+<tr><td>EndingWith</td><td>LIKE %value</td></tr>
+<tr><td>OrderBy</td><td>sorting</td></tr>
+<tr><td>Top</td><td>limit results</td></tr>
+<tr><td>First</td><td>first record</td></tr>
+<tr><td>IgnoreCase</td><td>case insensitive</td></tr>
+<tr><td>In</td><td>match list values</td></tr>
+<tr><td>NotIn</td><td>exclude list values</td></tr>
+</table>
+
+</body>
+</html>
