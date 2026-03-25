@@ -5,6 +5,8 @@
 Welcome to the **Spring Boot Training Repository**.  
 This repository is used to organize and share **training materials, notes, presentations, sample code, and assignments** related to Spring Boot.
 
+---
+
 ## 📢 Upcoming Training Sessions
 
 - 🧩 **Spring Boot MVC**  
@@ -15,15 +17,24 @@ This repository is used to organize and share **training materials, notes, prese
 
 - 🏗️ **MVC Architecture**  
   Design pattern separating Model, View, and Controller.
+
+---
+
+## 📬 Postman Collections
+
+Test and explore APIs using ready-made Postman collections:
+
+👉 [Open Postman Collections](docs/postmancollections)
+
 ---
 
 ## 👩‍🏫 About Me
 
 Hi, I’m **Shanthi**, an IT professional with **9 years of industry experience** in software development.
 
-
 I enjoy **teaching and mentoring**, and my focus is on explaining concepts with **real-world examples**, best practices, and common pitfalls seen in enterprise projects.
 
+---
 
 ## 📂 Repository Structure
 
@@ -34,9 +45,6 @@ SpringBootTrainingContent/
 │   └── README.md      ← Documentation index (auto-rendered)
 ├── Code/              ← Sample projects and demo applications
 ├── Assignments/       ← Practice exercises for learners
+├── docs/
+│   └── postmancollections/ ← Postman collections (API testing)
 └── pom.xml            ← Maven configuration (if applicable)
-
-
----
-© **Maradpilli Shanthi**  
-Spring Boot Training Repository
