@@ -7,14 +7,14 @@ This repository is used to organize and share **training materials, notes, prese
 
 ## 📢 Upcoming Training Sessions
 
-- ⚙️ **Spring Boot Actuator**  
-  Monitoring and managing Spring Boot applications.
+- 🧩 **Spring Boot MVC**  
+  Building web applications using Spring MVC architecture.
 
-- 🗄️ **Spring Data JPA**  
-  Database integration and repository layer.
-  
-  - 🧩 **JDBC (Extended Topic)**  
-  Understanding JDBC architecture, connection management, DAO layer, and connection pooling using HikariCP in Spring Boot.
+- 🌐 **Java Servlets**  
+  Request handling, lifecycle, and servlet API fundamentals.
+
+- 🏗️ **MVC Architecture**  
+  Design pattern separating Model, View, and Controller.
 ---
 
 ## 👩‍🏫 About Me
