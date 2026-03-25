@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "e9f84375-f3e3-43b8-b9d9-04d7ab6356eb",
+    "name": "JPATesting",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12637036"
+  },
+  "item": [
+    {
+      "name": "DynamicSort",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "CreateCustomer",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "Paging",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "PaginationRealTime",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    }
+  ]
+}
