@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Transaction Propagation - Complete Notes</title>
+<style>
+body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.7; }
+h1 { font-size: 30px; }
+h2 { font-size: 24px; margin-top: 25px; }
+h3 { font-size: 18px; margin-top: 15px; }
+pre {
+    background-color: #f4f4f4;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px 0;
+}
+table, th, td {
+    border: 1px solid #ccc;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+</style>
+</head>
+<body>
+
+<h1>🌿 Spring Boot Transaction Propagation</h1>
+
+<h2>📌 1. Introduction</h2>
+<p>Transaction propagation defines how transactions behave when one method calls another method.</p>
+
+<h2>🔁 2. What is Transaction Propagation?</h2>
+<p>It controls whether a method should join an existing transaction or create a new one.</p>
+
+<pre>
+@Transactional(propagation = Propagation.REQUIRED)
+</pre>
+
+<h2>⚙️ 3. Propagation Types</h2>
+<table>
+<tr><th>Type</th><th>Description</th></tr>
+<tr><td>REQUIRED</td><td>Join existing or create new</td></tr>
+<tr><td>REQUIRES_NEW</td><td>Always create new transaction</td></tr>
+<tr><td>SUPPORTS</td><td>Join if exists, else non-transactional</td></tr>
+<tr><td>NOT_SUPPORTED</td><td>Run without transaction</td></tr>
+<tr><td>MANDATORY</td><td>Must have existing transaction</td></tr>
+<tr><td>NEVER</td><td>Must not have transaction</td></tr>
+<tr><td>NESTED</td><td>Nested transaction (savepoint)</td></tr>
+</table>
+
+<h2>📊 4. REQUIRED (Default)</h2>
+<pre>
+ServiceA (TX)
+   ↓
+ServiceB (joins same TX)
+</pre>
+
+<h2>📊 5. REQUIRES_NEW</h2>
+<pre>
+ServiceA (TX1)
+   ↓
+ServiceB (TX2 - new)
+</pre>
+
+<h2>📊 6. SUPPORTS</h2>
+<pre>
+If TX exists → join
+Else → run without TX
+</pre>
+
+<h2>📊 7. MANDATORY & NEVER</h2>
+<pre>
+MANDATORY → throws exception if no TX
+NEVER → throws exception if TX exists
+</pre>
+
+<h2>📊 8. NESTED</h2>
+<pre>
+Outer TX
+   ↓
+Inner TX (Savepoint)
+   ↓
+Rollback inner only if needed
+</pre>
+
+<h2>⚠️ 9. Common Pitfalls</h2>
+<ul>
+<li>Self-invocation does not trigger transactions</li>
+<li>Wrong propagation leads to data inconsistency</li>
+<li>REQUIRES_NEW misuse causes performance issues</li>
+</ul>
+
+<h2>🧠 10. Best Practices</h2>
+<ul>
+<li>Use REQUIRED by default</li>
+<li>Use REQUIRES_NEW for independent operations</li>
+<li>Avoid NESTED unless necessary</li>
+</ul>
+
+<h2>🏁 Summary</h2>
+<pre>
+REQUIRED → Join or create
+REQUIRES_NEW → Always new
+SUPPORTS → Optional
+</pre>
+
+</body>
+</html>

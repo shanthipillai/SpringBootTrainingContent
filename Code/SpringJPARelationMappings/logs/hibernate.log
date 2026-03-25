@@ -1,0 +1,67 @@
+2026-03-19T22:42:24.352+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] t.s.SpringJpaRelationMappingsApplication : Starting SpringJpaRelationMappingsApplication using Java 17.0.9 with PID 161552 (E:\SpringBootFebBatch\SpringJPARelationMappings\target\classes started by Admin in E:\SpringBootFebBatch\SpringJPARelationMappings)
+2026-03-19T22:42:24.358+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] t.s.SpringJpaRelationMappingsApplication : No active profile set, falling back to 1 default profile: "default"
+2026-03-19T22:42:24.437+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-03-19T22:42:24.438+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-03-19T22:42:25.433+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-19T22:42:25.520+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 73 ms. Found 3 JPA repository interfaces.
+2026-03-19T22:42:26.264+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-03-19T22:42:26.284+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-19T22:42:26.285+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-19T22:42:26.352+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1913 ms
+2026-03-19T22:42:26.619+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-19T22:42:26.720+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.4.Final
+2026-03-19T22:42:27.570+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-19T22:42:27.662+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-19T22:42:28.503+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@245973d2
+2026-03-19T22:42:28.509+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-19T22:42:28.752+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/eazybank]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.37
+	Default catalog/schema: eazybank/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-19T22:42:31.296+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-03-19T22:42:31.423+05:30 DEBUG 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.SQL                        : 
+    create table emp121 (
+        empid bigint not null auto_increment,
+        company varchar(255),
+        date_of_joining date,
+        empname varchar(255),
+        yearsofexperience integer,
+        primary key (empid)
+    ) engine=InnoDB
+2026-03-19T22:42:31.465+05:30 DEBUG 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.SQL                        : 
+    create table profile (
+        profiid integer not null auto_increment,
+        aadharcard varchar(255),
+        address varchar(255),
+        mobile varchar(255),
+        pancard varchar(255),
+        uan varchar(255),
+        empid bigint,
+        primary key (profiid)
+    ) engine=InnoDB
+2026-03-19T22:42:31.496+05:30 DEBUG 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.SQL                        : 
+    alter table profile 
+       drop index UK98p05v9pv1c0exnciwbnveyat
+2026-03-19T22:42:31.551+05:30 DEBUG 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.SQL                        : 
+    alter table profile 
+       add constraint UK98p05v9pv1c0exnciwbnveyat unique (empid)
+2026-03-19T22:42:31.637+05:30 DEBUG 161552 --- [SpringJPARelationMappings] [restartedMain] org.hibernate.SQL                        : 
+    alter table profile 
+       add constraint FK2ekdyx2nyqxhaihummlk8xmbg 
+       foreign key (empid) 
+       references emp121 (empid)
+2026-03-19T22:42:31.746+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-19T22:42:31.876+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-19T22:42:32.110+05:30  WARN 161552 --- [SpringJPARelationMappings] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-19T22:42:32.741+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2026-03-19T22:42:32.829+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-03-19T22:42:32.838+05:30  INFO 161552 --- [SpringJPARelationMappings] [restartedMain] t.s.SpringJpaRelationMappingsApplication : Started SpringJpaRelationMappingsApplication in 9.124 seconds (process running for 10.347)
+
