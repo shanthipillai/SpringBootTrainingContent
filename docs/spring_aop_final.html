@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring AOP Notes</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.6; padding: 40px; }
+h1 { font-size: 28px; }
+h2 { font-size: 22px; }
+h3 { font-size: 18px; }
+pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+code { font-family: monospace; }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+table, th, td { border: 1px solid #000; padding: 8px; }
+</style>
+</head>
+<body>
+
+<h1>🌱 Spring AOP (Aspect-Oriented Programming) – Complete Notes</h1>
+
+<h2>📌 1. What is AOP?</h2>
+<p>Aspect-Oriented Programming (AOP) is a programming paradigm used to separate cross-cutting concerns from the main business logic.</p>
+
+<h3>Cross-Cutting Concerns Examples:</h3>
+<ul>
+<li>Logging</li>
+<li>Security</li>
+<li>Transaction management</li>
+<li>Exception handling</li>
+<li>Performance monitoring</li>
+</ul>
+
+<h2>🧠 2. Why Use AOP?</h2>
+
+<h3>Without AOP:</h3>
+<pre><code>public void transferMoney() {
+    log.info("Start transfer");
+    checkSecurity();
+    // business logic
+    log.info("End transfer");
+}</code></pre>
+
+<h3>With AOP:</h3>
+<pre><code>public void transferMoney() {
+    // pure business logic only
+}</code></pre>
+
+<h2>🧩 3. Core Terminology</h2>
+<table>
+<tr><th>Term</th><th>Description</th></tr>
+<tr><td>Aspect</td><td>A class that contains cross-cutting logic</td></tr>
+<tr><td>Join Point</td><td>A point during execution</td></tr>
+<tr><td>Advice</td><td>Action taken at a join point</td></tr>
+<tr><td>Pointcut</td><td>Expression that selects join points</td></tr>
+<tr><td>Weaving</td><td>Linking aspects with application code</td></tr>
+</table>
+
+<h2>🔥 4. Difference Between JoinPoint and Pointcut</h2>
+<table>
+<tr><th>Feature</th><th>JoinPoint</th><th>Pointcut</th></tr>
+<tr>
+<td>Definition</td>
+<td>A specific point in program execution</td>
+<td>An expression that selects join points</td>
+</tr>
+<tr>
+<td>Nature</td>
+<td>Actual event</td>
+<td>Selection rule</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Used inside advice</td>
+<td>Used to define matching logic</td>
+</tr>
+</table>
+
+<h2>🔥 4A. Difference Between JoinPoint and ProceedingJoinPoint</h2>
+<table>
+<tr><th>Feature</th><th>JoinPoint</th><th>ProceedingJoinPoint</th></tr>
+<tr>
+<td>Definition</td>
+<td>Represents a point during execution</td>
+<td>Special JoinPoint used in @Around advice</td>
+</tr>
+<tr>
+<td>Control</td>
+<td>Cannot control execution</td>
+<td>Can control execution</td>
+</tr>
+<tr>
+<td>Execution</td>
+<td>Only observe</td>
+<td>Can execute using proceed()</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>@Before, @After</td>
+<td>@Around only</td>
+</tr>
+</table>
+
+<h3>Example:</h3>
+<pre><code>@Around("execution(* com.example.service.*.*(..))")
+public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+    System.out.println("Before method");
+    Object result = pjp.proceed();
+    System.out.println("After method");
+    return result;
+}</code></pre>
+
+<h2>🎯 5. Types of Advice</h2>
+<table>
+<tr><th>Advice Type</th><th>When It Runs</th><th>Description</th></tr>
+<tr><td>@Before</td><td>Before method execution</td><td>Runs before the target method executes</td></tr>
+<tr><td>@After</td><td>After method execution</td><td>Runs after method completes (both success and exception)</td></tr>
+<tr><td>@AfterReturning</td><td>After successful execution</td><td>Runs only when method completes successfully</td></tr>
+<tr><td>@AfterThrowing</td><td>When exception occurs</td><td>Runs only if method throws an exception</td></tr>
+<tr><td>@Around</td><td>Before + After</td><td>Wraps the method and controls execution</td></tr>
+</table>
+
+<h3>Examples:</h3>
+<pre><code>@Before("execution(* com.example.service.*.*(..))")
+public void beforeAdvice() {
+    System.out.println("Before method");
+}
+
+@After("execution(* com.example.service.*.*(..))")
+public void afterAdvice() {
+    System.out.println("After method");
+}
+
+@AfterReturning("execution(* com.example.service.*.*(..))")
+public void afterReturningAdvice() {
+    System.out.println("After successful execution");
+}
+
+@AfterThrowing("execution(* com.example.service.*.*(..))")
+public void afterThrowingAdvice() {
+    System.out.println("Exception occurred");
+}</code></pre>
+
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot Multi DB + JPA Complete Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        .diagram {
+            background: #eef3ff;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            white-space: pre;
+        }
+        hr {
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🚀 Spring Boot Multi-Database + JPA Full Notes</h1>
+
+<hr>
+
+<h2>📌 1. Overview</h2>
+<ul>
+<li>Connect multiple databases in Spring Boot</li>
+<li>Each DB has separate configuration</li>
+<li>Used in microservices, legacy integration, multi-tenant apps</li>
+</ul>
+
+<hr>
+
+<h2>⚙️ 2. application.yml</h2>
+
+<pre>
+spring:
+  datasource:
+    db1:
+      url: jdbc:mysql://localhost:3306/db1
+      username: root
+      password: root
+
+    db2:
+      url: jdbc:postgresql://localhost:5432/db2
+      username: postgres
+      password: postgres
+</pre>
+
+<hr>
+
+<h2>🏗️ 3. DataSource Configuration</h2>
+
+<pre>
+@Bean
+@ConfigurationProperties(prefix = "spring.datasource.db1")
+public DataSource db1DataSource() {
+    return DataSourceBuilder.create().build();
+}
+
+@Bean
+@ConfigurationProperties(prefix = "spring.datasource.db2")
+public DataSource db2DataSource() {
+    return DataSourceBuilder.create().build();
+}
+</pre>
+
+<hr>
+
+<h2>🏭 4. EntityManagerFactory</h2>
+
+<ul>
+<li>Factory that creates EntityManager</li>
+<li>One per database</li>
+<li>Heavy, singleton object</li>
+</ul>
+
+<pre>
+@Bean
+public LocalContainerEntityManagerFactoryBean db1EntityManagerFactory(
+        EntityManagerFactoryBuilder builder,
+        DataSource dataSource) {
+
+    return builder
+            .dataSource(dataSource)
+            .packages("com.example.db1.entity")
+            .persistenceUnit("db1")
+            .build();
+}
+</pre>
+
+<hr>
+
+<h2>🔁 5. TransactionManager</h2>
+
+<pre>
+@Bean
+public PlatformTransactionManager db1TransactionManager(
+        EntityManagerFactory emf) {
+
+    return new JpaTransactionManager(emf);
+}
+</pre>
+
+<hr>
+
+<h2>🧠 6. EntityManager</h2>
+
+<ul>
+<li>Used for CRUD operations</li>
+<li>Interacts with persistence context</li>
+</ul>
+
+<pre>
+@PersistenceContext
+private EntityManager entityManager;
+</pre>
+
+<hr>
+
+<h2>🧠 7. Persistence Context</h2>
+
+<ul>
+<li>First-level cache</li>
+<li>Stores managed entities</li>
+<li>Handles dirty checking</li>
+</ul>
+
+<pre class="diagram">
+EntityManager → Persistence Context → Database
+</pre>
+
+<hr>
+
+<h2>🧠 8. Single DB Flow Diagram</h2>
+
+<div class="diagram">
+                    🚀 Spring Boot Application
+                               |
+                +------------------------------+
+                | TransactionManager           |
+                +------------------------------+
+                               |
+                               ↓
+                +------------------------------+
+                | EntityManagerFactory         |
+                +------------------------------+
+                               |
+        -----------------------------------------
+        |               |                      |
+   EntityManager   EntityManager        EntityManager
+        |               |                      |
+        ↓               ↓                      ↓
+   Persistence     Persistence           Persistence
+     Context         Context               Context
+        |               |                      |
+        ↓               ↓                      ↓
+        ----------- Managed Entities ----------
+                       |
+                       ↓
+                 DataSource
+                       |
+                       ↓
+                   Database
+</div>
+
+<hr>
+
+<h2>🔥 9. Multi-Database Diagram</h2>
+
+<div class="diagram">
+Spring Boot Application
+        |
+-----------------------------------------------------
+|                                                   |
+TransactionManager(DB1)                TransactionManager(DB2)
+        |                                   |
+EntityManagerFactory(DB1)        EntityManagerFactory(DB2)
+        |                                   |
+   EntityManager                     EntityManager
+        |                                   |
+Persistence Context(DB1)         Persistence Context(DB2)
+        |                                   |
+Entities(DB1)                      Entities(DB2)
+        |                                   |
+DataSource(DB1)                  DataSource(DB2)
+        |                                   |
+Database(MySQL)                 Database(PostgreSQL)
+</div>
+
+<hr>
+
+<h2>🔄 10. Flow Steps</h2>
+
+<pre class="diagram">
+TransactionManager
+        ↓
+EntityManagerFactory
+        ↓
+EntityManager
+        ↓
+Persistence Context
+        ↓
+Entities
+        ↓
+DataSource
+        ↓
+Database
+</pre>
+
+<hr>
+
+<h2>🧩 11. Entity Example</h2>
+
+<pre>
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue
+    private Long id;
+}
+</pre>
+
+<hr>
+
+<h2>⚠️ 12. Important Rules</h2>
+
+<ul>
+<li>One EntityManagerFactory per DB</li>
+<li>Separate packages for entities</li>
+<li>Separate TransactionManager</li>
+<li>Always use correct qualifier</li>
+</ul>
+
+<hr>
+
+<h2>💡 13. Best Practices</h2>
+
+<ul>
+<li>Use meaningful bean names</li>
+<li>Keep DB configs isolated</li>
+<li>Avoid cross DB transactions</li>
+</ul>
+
+<hr>
+
+<h2>🎯 14. Final Summary</h2>
+
+<pre class="diagram">
+TransactionManager
+        ↓
+EntityManagerFactory
+        ↓
+EntityManager
+        ↓
+Persistence Context
+        ↓
+Entities
+        ↓
+Database
+</pre>
+
+</body>
+</html>
