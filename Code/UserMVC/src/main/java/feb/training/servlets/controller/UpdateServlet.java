@@ -20,6 +20,7 @@ public class UpdateServlet extends HttpServlet {
 
     	// ✅ Create model
     	User user = new User();
+
     	user.setUserId(userId);
     	user.setPassword(password);
     	user.setEmail(email);
@@ -33,6 +34,7 @@ public class UpdateServlet extends HttpServlet {
     	    request.setAttribute("success", "User updated successfully!");
     	} else {
     	    request.setAttribute("error", "Update failed!");
+    		   throw new ServletException("User update failed!");
     	}
 
     	// ✅ Go back to update page

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+	<label th:text="#{result.label}"></label>
+	<h2 th:text="${message}"></h2>
+
+
+
+	<p th:if="${message != null and message != ''}">
+		<span th:text="#{result.label}"></span> : <span th:text="${message}"></span>
+	</p>
+
+
+
+
+
+
+	<!-- Show only if message is NOT null -->
+	<p th:if="${message != null}">
+
+		<span th:text="#{result.label}"></span> : <span th:text="${message}"></span>
+
+	</p>
+
+	<!-- Show alternative if message is null -->
+	<p th:unless="${message == null}">No Result Available</p>
+
+
+
+	<div th:with="msg=${message}, status='SUCCESS'">
+
+		<p th:text="${msg}"></p>
+		<p th:text="${status}"></p>
+
+	</div>
+	
+	
+	<div th:with="users=${list}">
+
+    <ul>
+        <li th:each="user : ${users}" th:text="${user}"></li>
+    </ul>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+<p>Name: <span th:text="${registerUser.name}"></span></p>
+<p>Email: <span th:text="${registerUser.email}"></span></p>
+
+
+	<div th:with="users=${list}">
+
+    <ul>
+        <li th:each="user : ${users}" th:text="${user}"></li>
+    </ul>
+
+</div>

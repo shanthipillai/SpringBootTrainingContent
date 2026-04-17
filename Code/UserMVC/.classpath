@@ -10,5 +10,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/mysql-connector-j-9.6.0/mysql-connector-j-9.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Admin/Downloads/jstl-1.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -60,6 +60,7 @@ public class LoadServlet extends HttpServlet {
         }
 
         // ✅ 4. Set attribute
+        //pagecontent=insert.jsp
         request.setAttribute("pageContent", page);
 
         // ✅ 5. FORWARD (NOT REDIRECT)

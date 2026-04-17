@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Thymeleaf Complete Notes</title>
+<style>
+body { font-family: Arial; line-height: 1.6; padding: 20px; }
+h1, h2, h3 { color: #2c3e50; }
+code { background: #f4f4f4; padding: 5px; display: block; }
+table { border-collapse: collapse; width: 100%; }
+table, th, td { border: 1px solid black; padding: 8px; }
+</style>
+</head>
+<body>
+
+<h1>📘 Thymeleaf – Complete Notes</h1>
+
+<h2>🔥 What is Thymeleaf?</h2>
+<p>Thymeleaf is a server-side Java template engine used to build dynamic web pages in Spring Boot.</p>
+
+<h2>🧩 Why Thymeleaf?</h2>
+<ul>
+<li>Natural templating</li>
+<li>Easy integration with Spring Boot</li>
+<li>No scriptlets</li>
+<li>Supports data binding, iteration, conditions</li>
+</ul>
+
+<h2>⚙️ Dependency</h2>
+<code>
+&lt;dependency&gt;
+&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+&lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code>
+
+<h2>📁 Folder Structure</h2>
+<p>src/main/resources/templates/</p>
+
+<h2>🔗 Controller Example</h2>
+<code>
+@Controller
+public class MyController {
+@GetMapping("/home")
+public String home(Model model) {
+model.addAttribute("name", "Shanthi");
+return "home";
+}
+}
+</code>
+
+<h2>🧾 Display Data</h2>
+<code>&lt;p th:text="${name}"&gt;&lt;/p&gt;</code>
+
+<h2>🧩 Core Attributes</h2>
+<ul>
+<li>th:text</li>
+<li>th:utext</li>
+<li>th:if / th:unless</li>
+<li>th:each</li>
+<li>th:value</li>
+<li>th:href</li>
+<li>th:src</li>
+</ul>
+
+<h2>🧠 Expressions</h2>
+<ul>
+<li>${} - Variable</li>
+<li>*{} - Selection</li>
+<li>@{} - Links</li>
+<li>#{} - Messages</li>
+</ul>
+
+<h2>🧾 Forms</h2>
+<code>
+&lt;form th:action="@{/register}" th:object="${user}" method="post"&gt;
+&lt;input th:field="*{name}"&gt;
+&lt;/form&gt;
+</code>
+
+<h2>🔁 Controller Handling</h2>
+<code>
+@PostMapping("/register")
+public String register(@ModelAttribute("user") User user) {
+return "success";
+}
+</code>
+
+<h2>🧩 List Display</h2>
+<code>
+&lt;tr th:each="u : ${users}"&gt;
+&lt;td th:text="${u.id}"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+</code>
+
+<h2>⚠️ th:object vs ${}</h2>
+<table>
+<tr><th>Feature</th><th>Usage</th></tr>
+<tr><td>${}</td><td>Normal variable</td></tr>
+<tr><td>th:object</td><td>Form binding</td></tr>
+<tr><td>*{}</td><td>Form fields</td></tr>
+</table>
+
+<h2>❗ Common Mistakes</h2>
+<ul>
+<li>Forgetting th:</li>
+<li>Wrong folder</li>
+<li>Missing dependency</li>
+</ul>
+
+<h2>🧠 Interview Topics</h2>
+<ul>
+<li>Template Engine</li>
+<li>Data Binding</li>
+<li>MVC Flow</li>
+</ul>
+
+
+<h2>📘 Thymeleaf Expression Types with Examples</h2>
+
+<h3>🔹 ${} → Variable Expression</h3>
+<p>Used to access model data (attributes from controller)</p>
+
+<pre>
+model.addAttribute("name", "Shanthi");
+model.addAttribute("age", 25);
+</pre>
+
+<pre>
+&lt;p th:text="${name}"&gt;&lt;/p&gt;
+&lt;p th:text="${age}"&gt;&lt;/p&gt;
+</pre>
+
+<p><b>Output:</b><br>Shanthi<br>25</p>
+
+<h3>🔹 *{} → Selection Expression</h3>
+<p>Used with th:object (form binding). Refers to current object.</p>
+
+<pre>
+model.addAttribute("user", new User("Shanthi", "shanthi@gmail.com"));
+</pre>
+
+<pre>
+&lt;form th:object="${user}"&gt;
+Name: &lt;input type="text" th:field="*{name}" /&gt;
+Email: &lt;input type="email" th:field="*{email}" /&gt;
+&lt;/form&gt;
+</pre>
+
+<h3>🔹 @{} → URL Expression</h3>
+
+<pre>
+&lt;a th:href="@{/home}"&gt;Home&lt;/a&gt;
+&lt;a th:href="@{/user/{id}(id=101)}"&gt;View User&lt;/a&gt;
+&lt;a th:href="@{/search(name='Shanthi', age=25)}"&gt;Search&lt;/a&gt;
+</pre>
+
+<h3>🔹 #{} → Message Expression (i18n)</h3>
+
+<pre>
+welcome.message=Welcome to Spring Boot
+login.title=Login Page
+</pre>
+
+<pre>
+&lt;h1 th:text="#{welcome.message}"&gt;&lt;/h1&gt;
+&lt;p th:text="#{login.title}"&gt;&lt;/p&gt;
+</pre>
+
+<h3>🎯 Quick Summary</h3>
+<table>
+<tr><th>Expression</th><th>Purpose</th><th>Example</th></tr>
+<tr><td>${}</td><td>Model data</td><td>${name}</td></tr>
+<tr><td>*{}</td><td>Form object</td><td>*{email}</td></tr>
+<tr><td>@{}</td><td>URL/link</td><td>@{/home}</td></tr>
+<tr><td>#{} </td><td>Messages</td><td>#{welcome.message}</td></tr>
+</table>
+
+<h3>💡 Teaching Tip</h3>
+<ul>
+<li>${} → Outside form</li>
+<li>*{} → Inside form</li>
+<li>@{} → Navigation</li>
+<li>#{} → Properties/messages</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Servlet & JSP Concepts Notes</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        h1, h2, h3 { color: #2c3e50; }
+        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        table, th, td { border: 1px solid #333; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #eee; }
+    </style>
+</head>
+<body>
+
+<h1>Servlet & JSP Concepts Notes</h1>
+
+<h2>1. RequestDispatcher</h2>
+<p><b>What is it?</b></p>
+<p>RequestDispatcher is used to forward or include resources (JSP/Servlet) within the server.</p>
+
+<pre>
+RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+</pre>
+
+<h3>Types of Operations</h3>
+<pre>
+1. Forward
+rd.forward(request, response);
+
+2. Include
+rd.include(request, response);
+</pre>
+
+<h2>2. Request Forward</h2>
+<p><b>Definition</b></p>
+<p>Transfers request from one servlet/JSP to another resource.</p>
+
+<pre>
+request.setAttribute("name", "Shanthi");
+RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+rd.forward(request, response);
+</pre>
+
+<h3>Key Points</h3>
+<ul>
+<li>Same request & response</li>
+<li>URL does NOT change</li>
+<li>Control does NOT return back</li>
+<li>Request attributes are available</li>
+</ul>
+
+<h3>Use Case</h3>
+<ul>
+<li>Login → Dashboard</li>
+<li>Controller → JSP</li>
+</ul>
+
+<h2>3. Request Include</h2>
+<p><b>Definition</b></p>
+<p>Includes output of another resource into current response.</p>
+
+<pre>
+RequestDispatcher rd = request.getRequestDispatcher("header.jsp");
+rd.include(request, response);
+</pre>
+
+<h3>Key Points</h3>
+<ul>
+<li>Same request</li>
+<li>Output is appended</li>
+<li>Control returns back</li>
+<li>Used for reusable components</li>
+</ul>
+
+<h3>Use Case</h3>
+<ul>
+<li>Header / Footer / Navbar</li>
+</ul>
+
+<h2>4. sendRedirect</h2>
+<p><b>Definition</b></p>
+<p>Sends response to browser → browser makes new request</p>
+
+<pre>
+response.sendRedirect("home.jsp");
+</pre>
+
+<h3>Key Points</h3>
+<ul>
+<li>New request</li>
+<li>URL changes</li>
+<li>Request data lost</li>
+<li>Slower than forward</li>
+</ul>
+
+<h3>Forward vs Redirect</h3>
+<table>
+<tr>
+<th>Feature</th>
+<th>Forward</th>
+<th>Redirect</th>
+</tr>
+<tr>
+<td>Request</td>
+<td>Same</td>
+<td>New</td>
+</tr>
+<tr>
+<td>URL change</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Fast</td>
+<td>Slower</td>
+</tr>
+<tr>
+<td>Request attributes</td>
+<td>Available</td>
+<td>Lost</td>
+</tr>
+</table>
+
+<h2>5. HttpSession</h2>
+<p><b>Definition</b></p>
+<p>Used to store user data across multiple requests.</p>
+
+<pre>
+HttpSession session = request.getSession();
+session.setAttribute("user", "Shanthi");
+</pre>
+
+<h3>Session Methods</h3>
+
+<p><b>Validate (Concept)</b></p>
+<pre>
+HttpSession session = request.getSession(false);
+if(session != null) {
+    // valid session
+}
+</pre>
+
+<p><b>Invalidate</b></p>
+<pre>
+session.invalidate();
+</pre>
+
+<p><b>Effect</b></p>
+<ul>
+<li>Session destroyed</li>
+<li>All data removed</li>
+<li>User logged out</li>
+</ul>
+
+<p><b>Session Timeout</b></p>
+<pre>
+&lt;session-config&gt;
+    &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+&lt;/session-config&gt;
+</pre>
+
+<pre>
+session.setMaxInactiveInterval(1800);
+</pre>
+
+<h2>6. Cookie</h2>
+<p><b>Definition</b></p>
+<p>Small data stored in browser.</p>
+
+<pre>
+Cookie cookie = new Cookie("user", "Shanthi");
+response.addCookie(cookie);
+</pre>
+
+<h3>Read Cookie</h3>
+<pre>
+Cookie[] cookies = request.getCookies();
+</pre>
+
+<h3>Key Points</h3>
+<ul>
+<li>Stored in browser</li>
+<li>Used for login tracking</li>
+<li>Smaller size than session</li>
+<li>Can be disabled</li>
+</ul>
+
+<h2>7. JSP Request Scopes</h2>
+<table>
+<tr>
+<th>Scope</th>
+<th>Object</th>
+<th>Life</th>
+</tr>
+<tr>
+<td>Page</td>
+<td>pageContext</td>
+<td>Same JSP</td>
+</tr>
+<tr>
+<td>Request</td>
+<td>request</td>
+<td>One request</td>
+</tr>
+<tr>
+<td>Session</td>
+<td>session</td>
+<td>User session</td>
+</tr>
+<tr>
+<td>Application</td>
+<td>application</td>
+<td>Entire app</td>
+</tr>
+</table>
+
+<pre>
+&lt;%
+request.setAttribute("msg", "Hello");
+%&gt;
+
+${requestScope.msg}
+</pre>
+
+<h2>8. JSP Scriptlets</h2>
+<p><b>Old Style (Avoid)</b></p>
+<pre>
+&lt;%
+String name = "Shanthi";
+out.println(name);
+%&gt;
+</pre>
+
+<p><b>Issues</b></p>
+<ul>
+<li>Mixing Java + HTML</li>
+<li>Hard to maintain</li>
+</ul>
+
+<p><b>Preferred</b></p>
+<pre>
+${name}
+</pre>
+
+<h2>9. JSTL (JSP Tag Libraries)</h2>
+
+<p><b>Definition</b></p>
+<p>Standard tags to avoid Java code in JSP.</p>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+<pre>
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+</pre>
+
+<h3>Common Tags</h3>
+
+<p><b>if</b></p>
+<pre>
+&lt;c:if test="${user != null}"&gt;
+    Welcome User
+&lt;/c:if&gt;
+</pre>
+
+<p><b>forEach</b></p>
+<pre>
+&lt;c:forEach var="u" items="${users}"&gt;
+    ${u.name}
+&lt;/c:forEach&gt;
+</pre>
+
+<p><b>choose</b></p>
+<pre>
+&lt;c:choose&gt;
+    &lt;c:when test="${user == null}"&gt;
+        Login
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+        Welcome
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;
+</pre>
+
+</body>
+</html>

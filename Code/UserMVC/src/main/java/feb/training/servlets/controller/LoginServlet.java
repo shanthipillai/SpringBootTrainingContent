@@ -26,6 +26,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
 
+        
         UserDAO dao = new UserDAO();
         
         boolean isValidUser = dao.validateUser(userId, password);

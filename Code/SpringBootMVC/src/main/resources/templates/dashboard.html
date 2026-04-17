@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .logout {
+            background: #e74c3c;
+            padding: 8px 15px;
+            border-radius: 5px;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Container */
+        .container {
+            width: 80%;
+            margin: 30px auto;
+        }
+
+        h3 {
+            margin-bottom: 20px;
+        }
+
+        /* Job Cards */
+        .job-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: 0.3s;
+        }
+
+        .job-card:hover {
+            transform: scale(1.01);
+        }
+
+        .job-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .company {
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .location {
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .date {
+            color: #999;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .apply-btn {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 8px 12px;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2>Welcome, <span th:text="${username}"></span> 👋</h2>
+    <a th:href="@{/logout}" class="logout">Logout</a>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+    <h3>Java Jobs (Developer + Support)</h3>
+
+    <div th:each="job : ${jobs}" class="job-card">
+
+        <div class="job-title" th:text="${job.title}"></div>
+
+        <div class="company" 
+             th:text="'Company: ' + ${job.company.display_name}"></div>
+
+        <div class="location" 
+             th:text="'Location: ' + ${job.location.display_name}"></div>
+
+        <div class="date" 
+             th:text="'Posted: ' + ${job.created}"></div>
+
+        <!-- Apply link -->
+        <a class="apply-btn" 
+           th:href="${job.redirect_url}" 
+           target="_blank">Apply Now</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

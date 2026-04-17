@@ -1,4 +1,5 @@
 <%@ page language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -125,7 +126,7 @@
 
     <div class="content">
 
-        <%
+       <%--  <%
             String pageContent = (String) request.getAttribute("pageContent");
 
             if (pageContent != null && !pageContent.trim().isEmpty()) {
@@ -144,7 +145,22 @@
 
         <%
             }
-        %>
+        %> --%>
+        
+        <c:choose>
+
+    <c:when test="${not empty pageContent}">
+        <jsp:include page="${pageContent}" />
+    </c:when>
+
+    <c:otherwise>
+        <div class="welcome-box">
+            <h1>Welcome to Dashboard</h1>
+            <p>Select an option from the left menu</p>
+        </div>
+    </c:otherwise>
+
+</c:choose>
 
     </div>
 

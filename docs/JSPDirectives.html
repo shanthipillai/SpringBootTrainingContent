@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Servlet & JSP Complete Notes</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; }
+        h1, h2, h3 { color: #2c3e50; }
+        pre { background: #f4f4f4; padding: 10px; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        table, th, td { border: 1px solid #333; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #eee; }
+    </style>
+</head>
+<body>
+
+<h1>Servlet & JSP Complete Notes</h1>
+
+<h2>JSP Directives</h2>
+
+<p><b>What are JSP Directives?</b></p>
+<p>JSP Directives provide instructions to the JSP container during translation phase (JSP → Servlet).</p>
+
+<p><b>Syntax</b></p>
+<pre>&lt;%@ directive attribute="value" %&gt;</pre>
+
+<h3>Types of JSP Directives</h3>
+
+<h3>1. Page Directive</h3>
+<p><b>Purpose</b></p>
+<p>Defines page-level settings for a JSP.</p>
+
+<pre>&lt;%@ page attribute="value" %&gt;</pre>
+
+<p><b>Common Attributes</b></p>
+
+<pre>&lt;%@ page import="java.util.*, java.sql.*" %&gt;</pre>
+
+<pre>&lt;%@ page contentType="text/html;charset=UTF-8" %&gt;</pre>
+
+<pre>&lt;%@ page pageEncoding="UTF-8" %&gt;</pre>
+
+<pre>&lt;%@ page session="true" %&gt;</pre>
+
+<pre>&lt;%@ page isELIgnored="false" %&gt;</pre>
+
+<pre>&lt;%@ page errorPage="error.jsp" %&gt;</pre>
+
+<pre>&lt;%@ page isErrorPage="true" %&gt;</pre>
+
+<p><b>Example</b></p>
+<pre>&lt;%@ page import="java.util.*" contentType="text/html;charset=UTF-8" %&gt;</pre>
+
+<ul>
+<li>Applies to entire JSP</li>
+<li>Translated into servlet code</li>
+<li>Usually placed at top</li>
+</ul>
+
+<h3>2. Include Directive</h3>
+<p><b>Purpose</b></p>
+<p>Includes another file at compile time.</p>
+
+<pre>&lt;%@ include file="header.jsp" %&gt;</pre>
+
+<ul>
+<li>Static include</li>
+<li>Code copied into servlet</li>
+<li>Faster execution</li>
+<li>Same request</li>
+</ul>
+
+<p><b>Example</b></p>
+<pre>
+&lt;%@ include file="header.jsp" %&gt;
+&lt;h1&gt;Welcome&lt;/h1&gt;
+&lt;%@ include file="footer.jsp" %&gt;
+</pre>
+
+<table>
+<tr>
+<th>Include Directive</th>
+<th>jsp:include</th>
+</tr>
+<tr>
+<td>Compile-time</td>
+<td>Runtime</td>
+</tr>
+<tr>
+<td>Static</td>
+<td>Dynamic</td>
+</tr>
+<tr>
+<td>Faster</td>
+<td>Slightly slower</td>
+</tr>
+</table>
+
+<h3>3. Taglib Directive</h3>
+<p><b>Purpose</b></p>
+<p>Used to include JSTL or custom tag libraries.</p>
+
+<pre>&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;</pre>
+
+<p><b>Example</b></p>
+<pre>
+&lt;c:forEach var="user" items="${users}"&gt;
+    ${user.name}
+&lt;/c:forEach&gt;
+</pre>
+
+<ul>
+<li>Avoid Java code</li>
+<li>Clean and readable</li>
+<li>Works with EL</li>
+</ul>
+
+<h3>Directive vs Action vs Scriptlet</h3>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>Directive</th>
+<th>Action Tag</th>
+<th>Scriptlet</th>
+</tr>
+<tr>
+<td>Syntax</td>
+<td>&lt;%@ %&gt;</td>
+<td>&lt;jsp:...&gt;</td>
+<td>&lt;% %&gt;</td>
+</tr>
+<tr>
+<td>Time</td>
+<td>Compile</td>
+<td>Runtime</td>
+<td>Runtime</td>
+</tr>
+<tr>
+<td>Purpose</td>
+<td>Config</td>
+<td>Dynamic tasks</td>
+<td>Java code</td>
+</tr>
+</table>
+
+<h3>Final Summary</h3>
+<ul>
+<li>JSP Directives work at translation phase</li>
+<li>Types: page, include, taglib</li>
+<li>&lt;%@ include %&gt; = compile-time</li>
+<li>&lt;jsp:include&gt; = runtime</li>
+</ul>
+
+</body>
+</html>

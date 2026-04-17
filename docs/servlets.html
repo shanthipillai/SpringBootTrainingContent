@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JAVA SERVLETS – COMPLETE TRAINING NOTES</title>
+<style>
+body {font-family: Arial; line-height:1.8; padding:20px;}
+h1,h2,h3 {color:#2c3e50;}
+pre,code {background:#f4f4f4; padding:10px; display:block; white-space:pre-wrap;}
+img {max-width:100%; margin:15px 0;}
+table {border-collapse: collapse; width:100%;}
+table, th, td {border:1px solid black;}
+th, td {padding:10px;}
+</style>
+</head>
+<body>
+
+<h1>🔥 JAVA SERVLETS – COMPLETE TRAINING NOTES</h1>
+
+<h2>📌 1. What is a Servlet?</h2>
+
+<img src="https://miro.medium.com/1%2AtB0Op6WY8nD1iyXDpgJYRg.jpeg"/>
+<img src="https://miro.medium.com/0%2Aml8VyUeQraagOTr8.png"/>
+<img src="https://www3.ntu.edu.sg/home/ehchua/programming/howto/images/HTTP_RequestResponseMessages.png"/>
+
+<p>A Servlet is a Java program that runs on a web server and handles client requests.</p>
+
+<p><b>👉 It is mainly used to:</b></p>
+<ul>
+<li>Process HTTP requests</li>
+<li>Generate dynamic web content</li>
+<li>Interact with databases</li>
+<li>Act as a controller in MVC architecture</li>
+</ul>
+
+<p><b>Definition:</b> A Servlet is a server-side Java class that processes requests and generates responses dynamically.</p>
+
+<h2>📌 2. Why Servlets?</h2>
+
+<p><b>Before Servlets:</b></p>
+<ul>
+<li>CGI (Common Gateway Interface)</li>
+<li>Each request created a new process → slow & heavy</li>
+</ul>
+
+<p><b>After Servlets:</b></p>
+<ul>
+<li>Runs inside JVM</li>
+<li>Uses threads → fast & scalable</li>
+</ul>
+
+<h3>Advantages</h3>
+<ul>
+<li>High performance (multithreading)</li>
+<li>Platform independent</li>
+<li>Secure</li>
+<li>Reusable</li>
+<li>Integrated with Java ecosystem</li>
+</ul>
+
+<h2>📌 3. Servlet Architecture</h2>
+
+<img src="https://miro.medium.com/1%2AtB0Op6WY8nD1iyXDpgJYRg.jpeg"/>
+<img src="https://miro.medium.com/0%2ACdg8CBPWokYfi9WV.png"/>
+<img src="https://miro.medium.com/1%2Ayw7D8njef49dBsR15wMY9g.png"/>
+
+<pre>
+Client (Browser) sends request
+Web Server forwards request to Servlet Container
+Servlet Container:
+    Creates request & response objects
+    Calls servlet methods
+Servlet processes request
+Response sent back to client
+</pre>
+
+<h3>Components</h3>
+<ul>
+<li>Client (Browser)</li>
+<li>Web Server</li>
+<li>Servlet Container (Apache Tomcat)</li>
+<li>Servlet</li>
+</ul>
+
+<h2>📌 4. Servlet Life Cycle</h2>
+
+<img src="https://miro.medium.com/v2/resize%3Afit%3A1400/1%2AHPY2e4zf7ZIKCyCJXzEVnQ.png"/>
+<img src="https://ik.imagekit.io/upgrad1/abroad-images/imageCompo/images/S3V3FEA0.png?pr-true="/>
+<img src="https://www.c-sharpcorner.com/UploadFile/0d4935/describing-the-life-cycle-of-servlet/Images/lyf.gif"/>
+
+<h3>init()</h3>
+<pre>
+public void init() {
+    System.out.println("Servlet Initialized");
+}
+</pre>
+
+<h3>service()</h3>
+<pre>
+public void service(ServletRequest req, ServletResponse res) {
+    System.out.println("Request processed");
+}
+</pre>
+
+<h3>destroy()</h3>
+<pre>
+public void destroy() {
+    System.out.println("Servlet Destroyed");
+}
+</pre>
+
+<h2>📌 5. Types of Servlets</h2>
+
+<h3>Generic Servlet</h3>
+<pre>
+public class MyServlet extends GenericServlet {
+    public void service(ServletRequest req, ServletResponse res) {
+        System.out.println("Generic Servlet");
+    }
+}
+</pre>
+
+<h3>HTTP Servlet</h3>
+<pre>
+public class MyServlet extends HttpServlet {
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("GET Request");
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) {
+        System.out.println("POST Request");
+    }
+}
+</pre>
+
+<h2>📌 6. doGet() vs doPost()</h2>
+<table>
+<tr><th>Feature</th><th>doGet()</th><th>doPost()</th></tr>
+<tr><td>Data Visibility</td><td>Visible in URL</td><td>Hidden</td></tr>
+<tr><td>Security</td><td>Less</td><td>More</td></tr>
+<tr><td>Data Length</td><td>Limited</td><td>Unlimited</td></tr>
+<tr><td>Use Case</td><td>Fetch data</td><td>Submit data</td></tr>
+</table>
+
+<h2>📌 7. Servlet API Interfaces</h2>
+<ul>
+<li>Servlet</li>
+<li>ServletRequest</li>
+<li>ServletResponse</li>
+<li>HttpServletRequest</li>
+<li>HttpServletResponse</li>
+</ul>
+
+<pre>
+String name = request.getParameter("username");
+response.getWriter().println(name);
+</pre>
+
+<h2>📌 8. Servlet Configuration</h2>
+
+<h3>web.xml</h3>
+<pre>
+&lt;servlet&gt;
+    &lt;servlet-name&gt;MyServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.example.MyServlet&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;MyServlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/test&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</pre>
+
+<h3>Annotation</h3>
+<pre>
+@WebServlet("/test")
+public class MyServlet extends HttpServlet {
+}
+</pre>
+
+<h2>📌 9. Servlet Context & Config</h2>
+<pre>
+ServletContext ctx = getServletContext();
+ctx.setAttribute("data", "Hello");
+</pre>
+
+<h2>📌 10. Session Management</h2>
+
+<img src="https://www.sitesbay.com/servlet/images/session-tracking.png"/>
+<img src="https://www.scaler.com/topics/images/session-tracking-in-servlet-thumbnail.webp"/>
+<img src="https://terasolunaorg.github.io/guideline/5.2.0.RELEASE/en/_images/session-management_overview_cooperation.png"/>
+
+<ul>
+<li>Cookies</li>
+<li>URL Rewriting</li>
+<li>Hidden Fields</li>
+<li>HttpSession</li>
+</ul>
+
+<pre>
+HttpSession session = request.getSession();
+session.setAttribute("user", "Shanthi");
+</pre>
+
+<h2>📌 11. Request Dispatching</h2>
+<pre>
+RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+rd.forward(request, response);
+
+response.sendRedirect("home.jsp");
+</pre>
+
+<table>
+<tr><th>forward()</th><th>sendRedirect()</th></tr>
+<tr><td>Server-side</td><td>Client-side</td></tr>
+<tr><td>Same request</td><td>New request</td></tr>
+<tr><td>Faster</td><td>Slower</td></tr>
+</table>
+
+<h2>📌 12. Exception Handling</h2>
+<pre>
+try {
+    int x = 10/0;
+} catch(Exception e) {
+    response.getWriter().println("Error occurred");
+}
+</pre>
+
+<h2>📌 13. JDBC Example</h2>
+<pre>
+Connection con = DriverManager.getConnection("url","user","pass");
+PreparedStatement ps = con.prepareStatement("insert into emp values(?)");
+ps.executeUpdate();
+</pre>
+
+<h2>📌 14. MVC Architecture</h2>
+
+<img src="https://cs-prod-assets-bucket.s3.ap-south-1.amazonaws.com/image_1_5f8f5d9a89.png"/>
+<img src="https://files.codingninjas.in/article_images/codingninjas-69-25527.webp"/>
+<img src="https://miro.medium.com/1%2AGsTTb9CbRpzPJayS0clcJQ.png"/>
+
+<ul>
+<li>Model → Business logic</li>
+<li>View → JSP</li>
+<li>Controller → Servlet</li>
+</ul>
+
+<h2>📌 15. Real-Time Flow</h2>
+<ol>
+<li>User submits form</li>
+<li>Servlet receives request</li>
+<li>Validates data</li>
+<li>Calls service/DAO</li>
+<li>Sends response</li>
+</ol>
+
+<h2>🎯 FINAL SUMMARY</h2>
+<ul>
+<li>Servlet is backbone of Java Web</li>
+<li>Controller in MVC</li>
+<li>Handles request-response cycle</li>
+<li>Works with HTTP protocol</li>
+</ul>
+
+</body>
+</html>

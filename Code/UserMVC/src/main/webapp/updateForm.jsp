@@ -1,4 +1,5 @@
 <%@ page language="java" %>
+<%@ page language="java" errorPage="error.jsp" %>
 <%@ page import="feb.training.servlets.model.User" %>
 
 <%

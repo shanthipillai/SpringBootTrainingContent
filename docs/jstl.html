@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JSTL Complete Notes</title>
+<style>
+body {
+    font-family: Arial;
+    margin: 30px;
+    background: #f4f6f8;
+}
+h1, h2, h3 {
+    color: #2c3e50;
+}
+.section {
+    margin-bottom: 40px;
+}
+code {
+    background: #eee;
+    display: block;
+    padding: 10px;
+    white-space: pre-wrap;
+}
+img {
+    width: 100%;
+    max-width: 700px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+}
+table {
+    border-collapse: collapse;
+    width: 60%;
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>📘 JSTL (JavaServer Pages Standard Tag Library)</h1>
+
+<div class="section">
+<h2>🔥 What is JSTL?</h2>
+<ul>
+<li>JSTL is a standard tag library for JSP</li>
+<li>Avoids Java scriptlets</li>
+<li>Provides tags for logic, loops, conditions</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🧩 Why JSTL?</h2>
+
+<h3>❌ Without JSTL</h3>
+<code>
+<%
+for(int i=0;i<5;i++){
+ out.println(i);
+}
+%>
+</code>
+
+<h3>✅ With JSTL</h3>
+<code>
+<c:forEach var="i" begin="1" end="5">
+ ${i}
+</c:forEach>
+</code>
+</div>
+
+<div class="section">
+<h2>🧠 JSTL Architecture Diagram</h2>
+
+<img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTAiIHk9IjUwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZGRlZWZmIi8+Cjx0ZXh0IHg9IjIwIiB5PSI4MCI+QnJvd3NlcjwvdGV4dD4KPHJlY3QgeD0iMTgwIiB5PSI1MCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI1MCIgZmlsbD0iI2RkZmZkZCIvPgo8dGV4dCB4PSIxOTAiIHk9IjgwIj5KU1AgU2VydmVyPC90ZXh0Pgo8cmVjdCB4PSIzNTAiIHk9IjUwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZmZlZGRkIi8+Cjx0ZXh0IHg9IjM2MCIgeT0iODAiPlNlcnZsZXQ8L3RleHQ+CjxsaW5lIHgxPSIxMzAiIHkxPSI3NSIgeDI9IjE4MCIgeTI9Ijc1IiBzdHJva2U9ImJsYWNrIi8+CjxsaW5lIHgxPSIzMDAiIHkxPSI3NSIgeDI9IjM1MCIgeTI9Ijc1IiBzdHJva2U9ImJsYWNrIi8+Cjwvc3ZnPg==" />
+
+<p><b>Flow:</b> Browser → JSP → Servlet → Response</p>
+</div>
+
+<div class="section">
+<h2>📦 JSTL Core Library</h2>
+<code>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+</code>
+</div>
+
+<div class="section">
+<h2>🔁 forEach Loop Diagram</h2>
+
+<img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHRleHQgeD0iMzAwIiB5PSIyMCI+TG9vcDwvdGV4dD4KPGNpcmNsZSBjeD0iMzUwIiBjeT0iMTAwIiByPSI1MCIgc3Ryb2tlPSJibGFjayIgZmlsbD0ibm9uZSIvPgo8dGV4dCB4PSIzMjAiIHk9IjEwNSI+aXRlbXM8L3RleHQ+Cjwvc3ZnPg==" />
+
+<code>
+<c:forEach var="item" items="${list}">
+ ${item}
+</c:forEach>
+</code>
+</div>
+
+<div class="section">
+<h2>🔀 Conditional Diagram</h2>
+
+<img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBvbHlnb24gcG9pbnRzPSIzNTAsMjAgNDUwLDEwMCAzNTAsMTgwIDI1MCwxMDAiIHN0cm9rZT0iYmxhY2siIGZpbGw9IiNmZmYiLz4KPHRleHQgeD0iMzIwIiB5PSIxMDUiPmlmPC90ZXh0Pgo8L3N2Zz4=" />
+
+<code>
+<c:if test="${age > 18}">
+ Eligible
+</c:if>
+</code>
+</div>
+
+<div class="section">
+<h2>📌 JSTL Scopes</h2>
+<table>
+<tr><th>Scope</th><th>Description</th></tr>
+<tr><td>page</td><td>Current JSP</td></tr>
+<tr><td>request</td><td>One request</td></tr>
+<tr><td>session</td><td>Multiple requests</td></tr>
+<tr><td>application</td><td>Entire app</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>🔄 JSP + JSTL + EL Flow</h2>
+
+<img src="data:image/svg+xml;base64,
+PHN2ZyB3aWR0aD0iNzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMTAiIHk9IjcwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQwIiBmaWxsPSIjZGRmIi8+Cjx0ZXh0IHg9IjIwIiB5PSI5NSI+Q29udHJvbGxlcjwvdGV4dD4KPHJlY3QgeD0iMTgwIiB5PSI3MCIgd2lkdGg9IjEyMCIgaGVpZ2h0PSI0MCIgZmlsbD0iI2RmZCIvPgo8dGV4dCB4PSIxOTAiIHk9Ijk1Ij5KU1A8L3RleHQ+CjxsaW5lIHgxPSIxMzAiIHkxPSI5MCIgeDI9IjE4MCIgeTI9IjkwIiBzdHJva2U9ImJsYWNrIi8+Cjwvc3ZnPg==" />
+
+</div>
+
+<div class="section">
+<h2>📘 Example</h2>
+
+<code>
+request.setAttribute("names", List.of("A","B","C"));
+</code>
+
+<code>
+<c:forEach var="n" items="${names}">
+ <c:out value="${n}"/><br/>
+</c:forEach>
+</code>
+</div>
+
+<div class="section">
+<h2>⚠️ Important Notes</h2>
+<ul>
+<li>Works with EL</li>
+<li>Avoid scriptlets</li>
+<li>Used in Spring MVC (JSP)</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🚀 Interview Points</h2>
+<ul>
+<li>Removes Java code</li>
+<li>Improves readability</li>
+<li>Core tags widely used</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🔥 Cheat Sheet</h2>
+<table>
+<tr><th>Tag</th><th>Purpose</th></tr>
+<tr><td>&lt;c:forEach&gt;</td><td>Loop</td></tr>
+<tr><td>&lt;c:if&gt;</td><td>Condition</td></tr>
+<tr><td>&lt;c:choose&gt;</td><td>Switch</td></tr>
+<tr><td>&lt;c:set&gt;</td><td>Set</td></tr>
+<tr><td>&lt;c:out&gt;</td><td>Print</td></tr>
+<tr><td>&lt;c:remove&gt;</td><td>Remove</td></tr>
+</table>
+</div>
+
+</body>
+</html>
