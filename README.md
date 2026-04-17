@@ -8,16 +8,23 @@ This repository is used to organize and share **training materials, notes, prese
 ---
 
 ## 📢 Upcoming Training Sessions
+- 🧩 **Spring MVC Project**  
+  End-to-end web application using controllers, services, and views.
 
-- 🧩 **Spring Boot MVC**  
-  Building web applications using Spring MVC architecture.
+- 🌐 **Microservices**  
+  Architecture for building scalable, independently deployable services.
 
-- 🌐 **Java Servlets**  
-  Request handling, lifecycle, and servlet API fundamentals.
+- 🔗 **FeignClient**  
+  Declarative REST client for communication between microservices.
 
-- 🏗️ **MVC Architecture**  
-  Design pattern separating Model, View, and Controller.
+- 📡 **Eureka**  
+  Service discovery server for registering and locating microservices.
 
+- ⚙️ **ConfigServer**  
+  Centralized configuration management for all services.
+
+- 🚪 **Gateway**  
+  API Gateway for routing, filtering, and securing requests.
 ---
 
 ## 📬 Postman Collections
