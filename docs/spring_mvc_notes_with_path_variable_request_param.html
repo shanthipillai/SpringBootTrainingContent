@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring MVC Notes with Diagrams</title>
+    <style>
+        body { font-family: Arial; margin: 20px; line-height: 1.6; }
+        h1, h2, h3 { color: #2c3e50; }
+        code { background: #f4f4f4; padding: 5px; display: block; margin: 10px 0; }
+        img { margin: 15px 0; border: 1px solid #ddd; }
+        .box { background: #f9f9f9; padding: 10px; border-left: 5px solid #3498db; }
+        table { border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; border: 1px solid #333; }
+    </style>
+</head>
+<body>
+
+<h1>📘 Spring MVC – Complete Notes</h1>
+
+<h2>🔥 What is Spring MVC?</h2>
+<p>Spring MVC is a framework used to build Java web applications.</p>
+
+<h2>🧩 MVC Architecture Diagram</h2>
+<img src="https://images.openai.com/static-rsc-4/-H7ZgQ04dtuVmiqQcicW8-iDcaCrCLVYj0voLlD8KKC-Kbd2t5UhYPn0G3ZeeWQwZufiAx7vAjcW1_onJHv3iQQEI3o0JOxLhhIPP7jcYtn_wD2K1UJJ6J03aDPqkgeMFZzZRgl7psTXNsRQvl_RhliRlZzCefiA2UinvA36jRQHF1jRhC4XlstBKEwQY7T_?purpose=fullsize" width="600">
+
+<h2>⚙️ Spring MVC Flow Diagram</h2>
+<img src="https://images.openai.com/static-rsc-4/QVN99aUFPTpeE7pft1SDipegDw8z97iBU7wsmsuMWiak-3MolmcPyPrHcJeBeCBaDuXeiQOTUHOWfIkJifGHe7NLRrahP2IgUr8YyzM_5-S_8hxSkWBC69qFdE6-kHmXkX4nV0cah9P5d_Wt4cyzTUph5tyZ5C9Hihwo_L5L8QdP4vbAfcMBTH2lGbm_yJL0?purpose=fullsize" width="600">
+
+<div class="box">
+<h3>🔁 Flow Steps</h3>
+<ul>
+    <li>Client → Request</li>
+    <li>DispatcherServlet</li>
+    <li>HandlerMapping</li>
+    <li>Controller</li>
+    <li>Model + View</li>
+    <li>ViewResolver</li>
+    <li>Response</li>
+</ul>
+</div>
+
+<h2>📌 Controller Example</h2>
+<code>
+@Controller
+public class HomeController {
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("msg", "Welcome");
+        return "home";
+    }
+}
+</code>
+
+<h2>📌 Thymeleaf View</h2>
+<code>
+&lt;h1 th:text="${msg}"&gt;&lt;/h1&gt;
+</code>
+
+<!-- NEW SECTION START -->
+<h1>📦 PathVariable vs RequestParam (Detailed)</h1>
+
+<h2>🔹 1. Using Path Variables (@PathVariable)</h2>
+<p>👉 Used when value is part of the URL path</p>
+
+<p><b>Example URL:</b> http://localhost:8080/user/101</p>
+
+<code>
+@GetMapping("/user/{id}")
+public String getUser(@PathVariable int id) {
+    return "User ID: " + id;
+}
+</code>
+
+<ul>
+<li>{id} → placeholder in URL</li>
+<li>@PathVariable → binds value from URL</li>
+</ul>
+
+<h3>🔹 Multiple Path Variables</h3>
+<p>URL: http://localhost:8080/user/101/John</p>
+
+<code>
+@GetMapping("/user/{id}/{name}")
+public String getUser(@PathVariable int id,
+                      @PathVariable String name) {
+    return id + " - " + name;
+}
+</code>
+
+<h3>🔹 Custom Name Mapping</h3>
+<code>
+@GetMapping("/user/{id}")
+public String getUser(@PathVariable("id") int userId) {
+    return "User ID: " + userId;
+}
+</code>
+
+<h2>🔹 2. Using Request Parameters (@RequestParam)</h2>
+<p>👉 Used when value is sent as query parameter</p>
+
+<p><b>Example URL:</b> http://localhost:8080/user?id=101</p>
+
+<code>
+@GetMapping("/user")
+public String getUser(@RequestParam int id) {
+    return "User ID: " + id;
+}
+</code>
+
+<h3>🔹 Multiple Request Params</h3>
+<p>URL: http://localhost:8080/user?id=101&name=John</p>
+
+<code>
+@GetMapping("/user")
+public String getUser(@RequestParam int id,
+                      @RequestParam String name) {
+    return id + " - " + name;
+}
+</code>
+
+<h3>🔹 Optional Parameters</h3>
+<code>
+@GetMapping("/user")
+public String getUser(@RequestParam(required = false) String name) {
+    return "Name: " + name;
+}
+</code>
+
+<h3>🔹 Default Value</h3>
+<code>
+@GetMapping("/user")
+public String getUser(@RequestParam(defaultValue = "Guest") String name) {
+    return name;
+}
+</code>
+
+<h2>🔥 PathVariable vs RequestParam</h2>
+<table>
+<tr>
+<th>Feature</th>
+<th>PathVariable</th>
+<th>RequestParam</th>
+</tr>
+<tr>
+<td>URL Style</td>
+<td>/user/101</td>
+<td>/user?id=101</td>
+</tr>
+<tr>
+<td>Usage</td>
+<td>Mandatory</td>
+<td>Optional</td>
+</tr>
+<tr>
+<td>Use Case</td>
+<td>Resource identification</td>
+<td>Search / filter</td>
+</tr>
+</table>
+
+<h2>🧠 Real-Time Example</h2>
+<code>
+@GetMapping("/users/{id}")
+public String getUserById(@PathVariable int id) {
+    return "User: " + id;
+}
+
+@GetMapping("/users")
+public String searchUsers(@RequestParam(required = false) String name) {
+    return "Searching for: " + name;
+}
+</code>
+<!-- NEW SECTION END -->
+
+</body>
+</html>
