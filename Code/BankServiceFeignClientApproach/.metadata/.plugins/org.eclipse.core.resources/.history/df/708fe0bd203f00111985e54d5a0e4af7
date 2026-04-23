@@ -1,0 +1,138 @@
+package com.bank.account.service;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bank.account.dto.AccountSummary;
+import com.bank.account.dto.Card;
+import com.bank.account.dto.Loan;
+import com.bank.account.feign.CardClient;
+import com.bank.account.feign.LoanClient;
+import com.bank.account.model.Account;
+import com.bank.account.repository.AccountRepository;
+
+@Service
+public class AccountService {
+
+    @Autowired
+    private AccountRepository repo;
+   
+
+    // ✅ Use ExternalService (CB handled there)
+	/*
+	 * @Autowired private ExternalService externalService;
+	 */
+
+    // ================= GET FULL DETAILS =================
+	/*
+	 * public AccountSummary getFullDetails(String userId) {
+	 * 
+	 * Account acc = repo.findByUserId(userId) .orElseThrow(() -> new
+	 * RuntimeException("Account not found"));
+	 * 
+	 * // ✅ Calls go through Circuit Breaker
+	 * System.out.println("Calling Card Service"); long
+	 * start=System.currentTimeMillis();
+	 * System.out.println(Thread.currentThread().getName()); List<Card> cards =
+	 * externalService.getCards(acc.getAccountId());
+	 * System.out.println("Calling Loan Service"); List<Loan> loans =
+	 * externalService.getLoans(acc.getAccountId()); long
+	 * end=System.currentTimeMillis(); System.out.println(end-start+""+"ms"); return
+	 * new AccountSummary(acc, cards, loans); }
+	 */
+	/*
+	 * public AccountSummary getFullDetails(String userId) {
+	 * 
+	 * Account acc = repo.findByUserId(userId) .orElseThrow(() -> new
+	 * RuntimeException("Account not found"));
+	 * 
+	 * long start = System.currentTimeMillis();
+	 * 
+	 * System.out.println("Main Thread → " + Thread.currentThread().getName());
+	 * 
+	 * System.out.println("Calling Card Service"); List<Card> cards =
+	 * cardClient.getCards(acc.getAccountId());
+	 * 
+	 * System.out.println("Calling Loan Service"); List<Loan> loans =
+	 * loanClient.getLoans(acc.getAccountId());
+	 * 
+	 * long end = System.currentTimeMillis();
+	 * 
+	 * System.out.println("Total Time: " + (end - start) + " ms");
+	 * 
+	 * return new AccountSummary(acc, cards, loans); }
+	 */
+    
+    @Autowired
+    private AsyncService asyncService;
+
+    public AccountSummary getFullDetails(String userId) throws Exception {
+
+        Account acc = repo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        long start = System.currentTimeMillis();
+
+        System.out.println("Main Thread → " + Thread.currentThread().getName());
+
+        // ✅ Parallel async calls
+        CompletableFuture<List<Card>> cardsFuture =
+                asyncService.getCardsAsync(acc.getAccountId());
+
+        CompletableFuture<List<Loan>> loansFuture =
+                asyncService.getLoansAsync(acc.getAccountId());
+
+        // ✅ wait for both
+        CompletableFuture.allOf(cardsFuture, loansFuture).join();
+
+        List<Card> cards = cardsFuture.get();
+        List<Loan> loans = loansFuture.get();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Total Time: " + (end - start) + " ms");
+
+        return new AccountSummary(acc, cards, loans);
+    }
+
+    // ================= CREATE ACCOUNT =================
+    public Account createAccount(Account acc) {
+        return repo.save(acc);
+    }
+    
+    
+    
+
+    // ================= GET BY USER =================
+    public Account getByUserId(String userId) {
+        return repo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
+
+    // ================= DEBIT =================
+    public Account debit(int accountId, double amount) {
+
+        Account acc = repo.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        if (acc.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        acc.setBalance(acc.getBalance() - amount);
+        return repo.save(acc);
+    }
+
+    // ================= CREDIT =================
+    public Account credit(int accountId, double amount) {
+
+        Account acc = repo.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        acc.setBalance(acc.getBalance() + amount);
+        return repo.save(acc);
+    }
+}

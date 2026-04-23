@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Cloud Notes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+        code {
+            background: #eee;
+            padding: 5px;
+            display: block;
+            white-space: pre-wrap;
+            border-left: 4px solid #3498db;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        img {
+            width: 100%;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>🌩️ Spring Cloud – Complete Notes</h1>
+
+<div class="section">
+<h2>🎯 What is Spring Cloud?</h2>
+<p>Spring Cloud is a framework used to build distributed systems / microservices architecture.</p>
+
+<ul>
+<li>Configuration management</li>
+<li>Service discovery</li>
+<li>Load balancing</li>
+<li>Fault tolerance</li>
+<li>API routing</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🏗️ Microservices Architecture</h2>
+
+<img src="https://images.openai.com/static-rsc-4/eMxXFijbuNJGAa843QcWJrr8z6z3LrqgZ8Cf6TR5Cqd-lhk0J7dLMxysUwJmtZfsbBdRs4sAzQyRfCGXuw00XKSOE8Tnvnua5YylRhogWWl6m5JXIvFympoWYzom1bqS_SqQ52gVcvyRzvC0ux0jEni0t1a0zuZMihksqmgybkj4Eb2zQVCvbUcwwMoc6F39">
+
+<img src="https://images.openai.com/static-rsc-4/raMO8FJPT6asfoUvLSAA3UIMwpFETIzLp6VIHZbkH6ht8RCYlQqyP9Sk-f1AmQPwGJjACBHjvoXECUF0zPbblOokLyM5b1Kkq3sJEGhawAkxLtS30FArxP2j88GkeTDWKcmWJwoUc3vSSBmAJLALcZb4mzziMSk2RT-g-VeNhf2DgKUEpI2Vpu0_lcrPeK0u">
+
+<p><b>Flow:</b></p>
+<ul>
+<li>Client → API Gateway</li>
+<li>Gateway → Microservices</li>
+<li>Services register with Eureka</li>
+<li>Config fetched from Config Server</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>1️⃣ Config Server</h2>
+
+<p>Centralized configuration for all services</p>
+
+<code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code>
+
+<code>
+@EnableConfigServer
+@SpringBootApplication
+</code>
+
+<code>
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/your-repo/config-repo
+</code>
+
+<ul>
+<li>No hardcoding configs</li>
+<li>Change config without redeploy</li>
+<li>Common config</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>2️⃣ Eureka Server</h2>
+
+<code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code>
+
+<code>
+@EnableEurekaServer
+</code>
+
+<code>
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+</code>
+
+<p>URL: http://localhost:8761</p>
+</div>
+
+<div class="section">
+<h2>3️⃣ Eureka Client</h2>
+
+<code>
+spring:
+  application:
+    name: account-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+</code>
+</div>
+
+<div class="section">
+<h2>4️⃣ Feign Client</h2>
+
+<code>
+@FeignClient(name = "card-service")
+public interface CardClient {
+
+    @GetMapping("/cards/account/{accountId}")
+    List&lt;Card&gt; getCards(@PathVariable int accountId);
+}
+</code>
+
+<ul>
+<li>No boilerplate</li>
+<li>Clean code</li>
+<li>Works with Eureka</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>5️⃣ API Gateway</h2>
+
+<code>
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/accounts/**
+</code>
+
+<ul>
+<li>Routing</li>
+<li>Authentication</li>
+<li>Logging</li>
+<li>Rate limiting</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>6️⃣ Load Balancing</h2>
+
+<code>
+@LoadBalanced
+@Bean
+public RestTemplate restTemplate() {
+    return new RestTemplate();
+}
+</code>
+
+<p>http://account-service/accounts</p>
+</div>
+
+<div class="section">
+<h2>7️⃣ Circuit Breaker</h2>
+
+<code>
+@CircuitBreaker(name = "cardService", fallbackMethod = "fallback")
+public List&lt;Card&gt; getCards(int accountId) {
+    return cardClient.getCards(accountId);
+}
+
+public List&lt;Card&gt; fallback(int accountId, Exception e) {
+    return new ArrayList&lt;&gt;();
+}
+</code>
+</div>
+
+<div class="section">
+<h2>🔁 Flow Summary</h2>
+
+<img src="https://images.openai.com/static-rsc-4/MqYdw7hcmkIMpqB4W_X-i3vWKb5WgetB13-yWunlBcrCIE4Af4dBZlEmwvY3fG_lX3RmKdgjj5tFHvMuOXb5v1rNYUZ0mK6LfKXf_REyADDrONrYHTG1Qrzm6_K1fm294WeS1-eNZLIKwPXY5L0Hv8elrCkCAnAWtliicmcWp8ogfYdnulk3fnQtS8-sV1Pk">
+
+<ul>
+<li>Client → Gateway</li>
+<li>Gateway → Service</li>
+<li>Service → Config Server</li>
+<li>Feign calls</li>
+<li>Circuit breaker handles failure</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>⚙️ Annotations Cheat Sheet</h2>
+
+<ul>
+<li>@EnableConfigServer</li>
+<li>@EnableEurekaServer</li>
+<li>@EnableDiscoveryClient</li>
+<li>@EnableFeignClients</li>
+<li>@CircuitBreaker</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🔥 Real-Time Example</h2>
+
+<ul>
+<li>Account Service</li>
+<li>Card Service</li>
+<li>Loan Service</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>💡 Interview Questions</h2>
+
+<ul>
+<li>What is Spring Cloud?</li>
+<li>Why Eureka?</li>
+<li>Feign vs RestTemplate?</li>
+<li>API Gateway?</li>
+<li>Circuit Breaker?</li>
+</ul>
+</div>
+
+</body>
+</html>

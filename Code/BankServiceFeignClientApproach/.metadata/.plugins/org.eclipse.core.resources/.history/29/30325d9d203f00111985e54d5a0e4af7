@@ -1,0 +1,33 @@
+package com.bank.account.service;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
+import com.bank.account.dto.Card;
+import com.bank.account.dto.Loan;
+import com.bank.account.feign.CardClient;
+import com.bank.account.feign.LoanClient;
+@Service
+public class AsyncService {
+
+    @Autowired
+    private CardClient cardClient;
+
+    @Autowired
+    private LoanClient loanClient;
+
+    @Async
+    public CompletableFuture<List<Card>> getCardsAsync(int accountId) {
+        System.out.println("Cards Thread → " + Thread.currentThread().getName());
+        return CompletableFuture.completedFuture(cardClient.getCards(accountId));
+    }
+
+    @Async
+    public CompletableFuture<List<Loan>> getLoansAsync(int accountId) {
+        System.out.println("Loans Thread → " + Thread.currentThread().getName());
+        return CompletableFuture.completedFuture(loanClient.getLoans(accountId));
+    }
+}

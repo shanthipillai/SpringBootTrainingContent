@@ -1,0 +1,166 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Feign Client Complete Notes</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f4f6f8; }
+h1, h2, h3 { color: #1f3a5f; }
+pre { background: #eee; padding: 12px; border-radius: 6px; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+th, td { border: 1px solid #ccc; padding: 10px; }
+th { background: #ddd; }
+.section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>Spring Boot Feign Client - Advanced Complete Notes</h1>
+
+<div class="section">
+<h2>Basic Feign Annotation</h2>
+<pre>
+@FeignClient(name = "card-service", url = "http://localhost:8081")
+</pre>
+</div>
+
+<div class="section">
+<h2>Core Attributes</h2>
+
+<h3>name (MANDATORY)</h3>
+<pre>name = "card-service"</pre>
+
+<h3>url (when NO Eureka)</h3>
+<pre>url = "http://localhost:8081"</pre>
+
+<h3>fallback</h3>
+<pre>fallback = CardClientUnavailable.class</pre>
+
+<h3>fallbackFactory (ADVANCED)</h3>
+<pre>fallbackFactory = CardFallbackFactory.class</pre>
+
+</div>
+
+<div class="section">
+<h2>Configuration Properties</h2>
+
+<h3>Timeout</h3>
+<pre>
+feign.client.config.default.connectTimeout=2000
+feign.client.config.default.readTimeout=5000
+</pre>
+
+<h3>Logging</h3>
+<pre>
+logging.level.com.bank.account.feign=DEBUG
+logging.level.feign=DEBUG
+</pre>
+
+<h3>Retry</h3>
+<pre>
+spring.cloud.openfeign.client.config.default.retryer=feign.Retryer$Default
+</pre>
+
+<h3>Disable Retry</h3>
+<pre>
+spring.cloud.openfeign.client.config.default.retryer=feign.Retryer$NeverRetry
+</pre>
+
+<h3>Circuit Breaker</h3>
+<pre>
+spring.cloud.openfeign.circuitbreaker.enabled=true
+</pre>
+
+</div>
+
+<div class="section">
+<h2>Advanced Attributes</h2>
+
+<h3>path</h3>
+<pre>
+@FeignClient(name="card-service", url="http://localhost:8081", path="/cards")
+</pre>
+
+<h3>configuration</h3>
+<pre>
+@FeignClient(name="card-service", configuration = FeignConfig.class)
+</pre>
+
+<h3>qualifiers</h3>
+<p>Used when multiple beans exist</p>
+
+</div>
+
+<div class="section">
+<h2>Headers</h2>
+
+<h3>Static Header</h3>
+<pre>
+@GetMapping(value = "/account/{accountId}", headers = "Content-Type=application/json")
+</pre>
+
+<h3>Dynamic Header</h3>
+<pre>
+@GetMapping("/account/{accountId}")
+List&lt;Card&gt; getCards(@RequestHeader("Authorization") String token,
+                    @PathVariable int accountId);
+</pre>
+
+</div>
+
+<div class="section">
+<h2>Request Interceptor</h2>
+<pre>
+@Bean
+public RequestInterceptor requestInterceptor() {
+    return requestTemplate -> {
+        requestTemplate.header("Authorization", "Bearer token");
+    };
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Error Decoder</h2>
+<pre>
+@Bean
+public ErrorDecoder errorDecoder() {
+    return new CustomErrorDecoder();
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Clean Best Practice Example</h2>
+<pre>
+@FeignClient(
+    name = "card-service",
+    url = "http://localhost:8081",
+    path = "/cards",
+    fallback = CardClientUnavailable.class
+)
+public interface CardClient {
+
+    @GetMapping("/account/{accountId}")
+    List&lt;Card&gt; getCards(@PathVariable("accountId") int accountId);
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Teaching Flow Order</h2>
+<ol>
+<li>name + url</li>
+<li>fallback</li>
+<li>timeout</li>
+<li>logging</li>
+<li>retry</li>
+<li>circuit breaker</li>
+<li>path</li>
+<li>interceptors</li>
+</ol>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+package com.bank.account.feign;
+
+public class CardClientUnavailable {
+
+}

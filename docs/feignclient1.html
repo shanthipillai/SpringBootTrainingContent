@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot Feign Client Notes</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background: #f9f9f9; }
+h1, h2, h3 { color: #2c3e50; }
+code, pre { background: #eee; padding: 10px; display: block; border-radius: 5px; }
+table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+table, th, td { border: 1px solid #ccc; }
+th, td { padding: 10px; text-align: left; }
+.section { margin-bottom: 30px; }
+</style>
+</head>
+<body>
+
+<h1>Spring Boot Feign Client - Complete Notes</h1>
+
+<div class="section">
+<h2>What is Feign Client?</h2>
+<p>Feign Client is a declarative HTTP client in Spring Boot.</p>
+<p>Instead of writing RestTemplate or WebClient code, you define an interface and Spring generates the implementation.</p>
+</div>
+
+<div class="section">
+<h2>Dependency</h2>
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+</div>
+
+<div class="section">
+<h2>Enable Feign</h2>
+<pre>
+@SpringBootApplication
+@EnableFeignClients
+public class AccountServiceApplication {
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Basic Feign Client</h2>
+<pre>
+@FeignClient(name = "card-service", url = "http://localhost:8081")
+public interface CardClient {
+
+    @GetMapping("/account/{accountId}")
+    List&lt;Card&gt; getCards(@PathVariable Long accountId);
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>How It Works</h2>
+<ul>
+<li>Create interface</li>
+<li>Add annotations</li>
+<li>Spring creates proxy implementation</li>
+<li>Internally uses HTTP calls</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Service Layer Usage</h2>
+<pre>
+@Service
+public class AccountService {
+
+    @Autowired
+    private CardClient cardClient;
+
+    public List&lt;Card&gt; fetchCards(Long accountId) {
+        return cardClient.getCards(accountId);
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Key Annotations</h2>
+<table>
+<tr><th>Annotation</th><th>Purpose</th></tr>
+<tr><td>@FeignClient</td><td>Defines external service</td></tr>
+<tr><td>@GetMapping</td><td>HTTP GET call</td></tr>
+<tr><td>@PostMapping</td><td>HTTP POST call</td></tr>
+<tr><td>@PathVariable</td><td>Path param</td></tr>
+<tr><td>@RequestParam</td><td>Query param</td></tr>
+<tr><td>@RequestBody</td><td>Send body</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>Using Service Name (Eureka)</h2>
+<pre>
+@FeignClient(name = "CARD-SERVICE")
+</pre>
+<p>Requires service registered in Eureka and load balancing enabled.</p>
+</div>
+
+<div class="section">
+<h2>Without URL (Recommended)</h2>
+<pre>
+@FeignClient(name = "CARD-SERVICE")
+</pre>
+<ul>
+<li>Uses service discovery</li>
+<li>No hardcoding</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Request with Body</h2>
+<pre>
+@PostMapping("/cards")
+Card createCard(@RequestBody Card card);
+</pre>
+</div>
+
+<div class="section">
+<h2>Multiple Parameters</h2>
+<pre>
+@GetMapping("/cards")
+List&lt;Card&gt; getCards(
+    @RequestParam String type,
+    @RequestParam String status
+);
+</pre>
+</div>
+
+<div class="section">
+<h2>Exception Handling (Fallback)</h2>
+<pre>
+@FeignClient(name = "CARD-SERVICE", fallback = CardFallback.class)
+@Component
+public class CardFallback implements CardClient {
+
+    @Override
+    public List&lt;Card&gt; getCards(Long accountId) {
+        return new ArrayList&lt;&gt;();
+    }
+}
+</pre>
+</div>
+
+<div class="section">
+<h2>Timeout Configuration</h2>
+<pre>
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+</pre>
+</div>
+
+<div class="section">
+<h2>Logging</h2>
+<pre>
+logging:
+  level:
+    com.example.client: DEBUG
+</pre>
+</div>
+
+<div class="section">
+<h2>Feign vs RestTemplate vs WebClient</h2>
+<table>
+<tr><th>Feature</th><th>Feign</th><th>RestTemplate</th><th>WebClient</th></tr>
+<tr><td>Style</td><td>Declarative</td><td>Imperative</td><td>Reactive</td></tr>
+<tr><td>Code</td><td>Less</td><td>More</td><td>Medium</td></tr>
+<tr><td>Blocking</td><td>Yes</td><td>Yes</td><td>No</td></tr>
+<tr><td>Best For</td><td>Microservices</td><td>Legacy</td><td>Reactive apps</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>Advantages</h2>
+<ul>
+<li>Less boilerplate</li>
+<li>Easy integration</li>
+<li>Clean code</li>
+<li>Service discovery support</li>
+<li>Built-in load balancing</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Disadvantages</h2>
+<ul>
+<li>Blocking (not reactive)</li>
+<li>Less control than WebClient</li>
+<li>Needs fallback handling</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>When to Use</h2>
+<ul>
+<li>Microservices communication</li>
+<li>Simple REST calls</li>
+<li>When using Eureka</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>When NOT to Use</h2>
+<ul>
+<li>Reactive applications → use WebClient</li>
+<li>High-performance async flows</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Important Notes</h2>
+<ul>
+<li>Feign is blocking</li>
+<li>Uses Spring MVC annotations</li>
+<li>Works best with Spring Cloud</li>
+<li>Supports fallback (Resilience)</li>
+<li>Internally uses HTTP client (Ribbon/LoadBalancer)</li>
+</ul>
+</div>
+
+</body>
+</html>

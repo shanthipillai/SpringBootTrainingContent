@@ -1,0 +1,66 @@
+package com.bank.account.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
+import com.bank.account.dto.Card;
+import com.bank.account.dto.Loan;
+import com.bank.account.feign.CardClient;
+import com.bank.account.feign.LoanClient;
+
+@Service
+public class ExternalService {
+
+    @Autowired
+    private CardClient cardClient;
+
+    @Autowired
+    private LoanClient loanClient;
+
+    // ================= CARD =================
+    @CircuitBreaker(name = "card-service", fallbackMethod = "cardsFallback")
+    public List<Card> getCards(int accountId) {
+        return cardClient.getCards(accountId);
+    }
+
+    public List<Card> cardsFallback(int accountId, Throwable ex) {
+
+        System.out.println("Card fallback triggered: " + ex.getMessage());
+
+        List<Card> list = new ArrayList<>();
+
+        Card card = new Card();
+        card.setCardId(0);
+        card.setType("Card Service Down");
+
+        list.add(card);
+
+        return list;
+    }
+
+    // ================= LOAN =================
+    @CircuitBreaker(name = "loan-service", fallbackMethod = "loansFallback")
+    public List<Loan> getLoans(int accountId) {
+        return loanClient.getLoans(accountId);
+    }
+
+    public List<Loan> loansFallback(int accountId, Throwable ex) {
+
+        System.out.println("Loan fallback triggered: " + ex.getMessage());
+
+        List<Loan> list = new ArrayList<>();
+
+        Loan loan = new Loan();
+        loan.setLoanId(0);
+        loan.setStatus("Loan Service Down");
+
+        list.add(loan);
+
+        return list;
+    }
+}

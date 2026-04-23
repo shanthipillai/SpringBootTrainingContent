@@ -1,0 +1,20 @@
+package com.bank.account.feign;
+import com.bank.account.config.FeignConfig;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.bank.account.dto.Loan;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+@FeignClient(name = "loan-service",   configuration = FeignConfig.class)
+//@FeignClient(name = "loan-service", url = "http://localhost:8082")
+public interface LoanClient {
+
+
+    @GetMapping("/loans/account/{accountId}")
+    List<Loan> getLoans(@PathVariable int accountId);
+    }

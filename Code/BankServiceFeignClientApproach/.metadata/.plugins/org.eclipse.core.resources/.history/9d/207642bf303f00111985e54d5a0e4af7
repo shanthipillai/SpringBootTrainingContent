@@ -1,0 +1,15 @@
+package com.bank.account.feign;
+
+import java.util.List;
+
+import com.bank.account.dto.Loan;
+
+public class LoanClientUnavailable implements LoanClient{
+
+	@Override
+	public List<Loan> getLoans(int accountId) {
+	System.out.println("Loan Client is currently unavailable");
+		return List.of();
+	}
+
+}

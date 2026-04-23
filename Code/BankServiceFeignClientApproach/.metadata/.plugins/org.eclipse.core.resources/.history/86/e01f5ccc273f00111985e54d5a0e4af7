@@ -1,0 +1,83 @@
+package com.bank.account.service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+import javax.smartcardio.CardChannel;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bank.account.dto.AccountSummary;
+import com.bank.account.dto.Card;
+import com.bank.account.dto.Loan;
+import com.bank.account.feign.CardClient;
+import com.bank.account.feign.LoanClient;
+import com.bank.account.model.Account;
+import com.bank.account.repository.AccountRepository;
+
+@Service
+public class AccountService {
+
+    @Autowired
+    private AccountRepository repo;
+   
+    private CardClient cardclient;
+    private LoanClient loanclient;
+    
+    
+    // ================= GET BY USER =================
+    public Account getByUserId(String userId) {
+        return repo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+    }
+
+    // ================= DEBIT =================
+    public Account debit(int accountId, double amount) {
+
+        Account acc = repo.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        if (acc.getBalance() < amount) {
+            throw new RuntimeException("Insufficient balance");
+        }
+
+        acc.setBalance(acc.getBalance() - amount);
+        return repo.save(acc);
+    }
+
+    // ================= CREDIT =================
+    public Account credit(int accountId, double amount) {
+
+        Account acc = repo.findById(accountId)
+                .orElseThrow(() -> new RuntimeException("Account not found"));
+
+        acc.setBalance(acc.getBalance() + amount);
+        return repo.save(acc);
+    }
+
+
+
+
+	public AccountSummary getFullDetails(String userId) {
+
+        // Step 1: Get Account
+        Account account = repo.findByUserId(userId).get();
+
+        // Step 2: Call Cards Service
+        List<Card> cards = cardclient.getCards(account.getAccountId());
+
+        // Step 3: Call Loans Service
+        List<Loan> loans = loanclient.getLoans(account.getAccountId());
+
+        // Step 4: Aggregate
+        return new AccountSummary(account, cards, loans);
+	
+	}
+	
+	 // ================= CREATE ACCOUNT =================
+    public Account createAccount(Account acc) {
+        return repo.save(acc);
+    }
+}

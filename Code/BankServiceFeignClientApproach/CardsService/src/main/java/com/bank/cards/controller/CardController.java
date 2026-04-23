@@ -1,0 +1,46 @@
+package com.bank.cards.controller;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.bank.cards.model.Card;
+import com.bank.cards.service.CardService;
+
+import java.util.List;
+
+@RestController
+
+@RequestMapping("/cards")
+public class CardController {
+
+    @Autowired
+    private CardService service;
+
+    // Issue new card
+    @PostMapping
+    public Card issue(@RequestBody Card card) {
+        return service.issueCard(card);
+    }
+
+    // Get cards by accountId
+    @GetMapping("/account/{accountId}")
+    public List<Card> getCards(@PathVariable int accountId) {
+    	System.out.println("In Card Service"+Thread.currentThread().getName());
+        return service.getCardsByAccount(accountId);
+    }
+
+    // Block card
+    @PutMapping("/{cardId}/block")
+    public Card block(@PathVariable int cardId) {
+        return service.blockCard(cardId);
+    }
+
+    // Activate card
+    @PutMapping("/{cardId}/activate")
+    public Card activate(@PathVariable int cardId) {
+        return service.activateCard(cardId);
+    }
+}
