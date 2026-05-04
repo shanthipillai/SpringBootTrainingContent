@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eureka Server Complete Notes</title>
+<style>
+body { font-family: Arial, sans-serif; line-height: 1.6; padding: 20px; background:#ffffff; }
+h1, h2, h3 { color:#2c3e50; }
+code { background:#f4f4f4; padding:10px; display:block; white-space:pre-wrap; }
+table { border-collapse: collapse; width: 60%; }
+table, th, td { border:1px solid black; padding:10px; }
+img { max-width:100%; margin:15px 0; }
+.section { margin-bottom:30px; }
+</style>
+</head>
+<body>
+
+<h1>📘 Eureka Server (Service Registry) – Complete Training Notes</h1>
+
+<div class="section">
+<h2>1. Introduction</h2>
+<p>Eureka Server is a service registry used in microservices architecture. It is part of Spring Cloud Netflix Eureka and helps services register themselves and discover other services dynamically.</p>
+<p>Instead of hardcoding URLs, services communicate using service names.</p>
+</div>
+
+<div class="section">
+<h2>2. Why Needed (Real-world)</h2>
+<h3>Problem (Without Eureka)</h3>
+<ul>
+<li>Services must know IP address</li>
+<li>Services must know port</li>
+<li>If service restarts → URL changes → communication breaks</li>
+</ul>
+
+<h3>Solution (With Eureka)</h3>
+<ul>
+<li>Services register with Eureka</li>
+<li>Other services ask Eureka for location</li>
+<li>Dynamic discovery = no hardcoding</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>3. Core Concepts</h2>
+<ul>
+<li>Service Registry</li>
+<li>Service Discovery</li>
+<li>Client-side Load Balancing</li>
+<li>Heartbeat Mechanism</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>4. Architecture</h2>
+<img src="https://images.openai.com/static-rsc-4/VVkdg-n6MGQGpFz5RgHX4l7n1Jc-iYrCvepd8B04lvnk67K7pu7xFZZ3kty32sfapE0MInJYUNjRkV-8bx3HaFZ2HZ9n_W3cChbm63FL5ssCSgQcIzKRCOSOrm4bA1Ng8Ax9Bln3vd8YZihxcpiBJj5B-TZewLcuaAuMZ9WRK6HYWY-mfu_J53ci85K6uheu?purpose=fullsize" />
+<img src="https://images.openai.com/static-rsc-4/JRj-2qqx_pfbMcib0O454fJDolSbb2zP4roA196K0q6XrlYKUjo3GTV-pOCvnnqcKgjQEU_Aqva9r0qLFmFGiYhnO-IdyOsRXmYiBnwm8YvWYIsjLLVU49amP7l-Z29lgO8iwsBATuvvf_MgE3Ett9iZ6RFzar-zZnXLAKDn1rBX-n4VmqfbcONuagaTPXGv?purpose=fullsize" />
+<img src="https://images.openai.com/static-rsc-4/_92omOS6UOUtoiHQCGSldwUWkbqtboveVMClyXssFP2X6sdJE0xSfetqDYTV9-myiUj2frvU_wwRLGnbFktZ4IU_8tQ66Ba2ApBRZAyOwXLsd_FAM1qY5iFoiTQYAmPeIZvswxfzJ9HIkxnRMLbNpxb1j54nWs2vdzrol94ZTWXh0yTZudneR__GBkRZPzQ0?purpose=fullsize" />
+
+<h3>Components</h3>
+<ul>
+<li>Eureka Server – Central registry</li>
+<li>Eureka Client – Microservices</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>5. How It Works (Lifecycle)</h2>
+<ol>
+<li>Service starts</li>
+<li>Registers with Eureka</li>
+<li>Sends heartbeat (renewal)</li>
+<li>Other services query Eureka</li>
+<li>Get service instance details</li>
+</ol>
+
+<p><b>Example:</b></p>
+<p>ACCOUNT-SERVICE → registered<br>
+PAYMENT-SERVICE → queries Eureka → gets ACCOUNT-SERVICE URL</p>
+</div>
+
+<div class="section">
+<h2>6. Key Features</h2>
+<ul>
+<li>Service Registration</li>
+<li>Service Discovery</li>
+<li>Load Balancing (client-side)</li>
+<li>Fault Tolerance</li>
+<li>Health Monitoring</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>7. Important Terms</h2>
+<ul>
+<li><b>Instance:</b> One running service</li>
+<li><b>Registry:</b> List of services</li>
+<li><b>Heartbeat:</b> Sent every 30 seconds</li>
+<li><b>Lease Renewal:</b> Confirms service is alive</li>
+<li><b>Eviction:</b> Removes dead services</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>8. Default Ports</h2>
+<table>
+<tr><th>Component</th><th>Port</th></tr>
+<tr><td>Eureka Server</td><td>8761</td></tr>
+</table>
+<p>URL: http://localhost:8761</p>
+</div>
+
+<div class="section">
+<h2>9. Creating Eureka Server</h2>
+<code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+@EnableEurekaServer
+@SpringBootApplication
+public class EurekaServerApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaServerApplication.class, args);
+    }
+}
+
+server:
+  port: 8761
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+</code>
+</div>
+
+<div class="section">
+<h2>10. Creating Eureka Client</h2>
+<code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+spring:
+  application:
+    name: ACCOUNT-SERVICE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+@EnableDiscoveryClient
+</code>
+</div>
+
+<div class="section">
+<h2>11. Eureka Dashboard</h2>
+<img src="https://images.openai.com/static-rsc-4/KeEQUNdYPSbKFbIb2g8Qqc17Tr0pMyhdp1wAzMCOU0gz7ARseihAhpai7E8giBe6WJutkp94o2k7-K-ke8qBFF4r-z74AgS1hLP1ZvRRkZiUehQySsPgXAWsEeyQZlsswfH1MELynzdIWVR75FRlZFp3XvlwkgQzbhVAVRTwVCuUeKk2sLsbB6xuBz0AguqI?purpose=fullsize" />
+<img src="https://images.openai.com/static-rsc-4/EE1g_r8yjIw7Zalys0Ong7wclz0zGfm1zlN75Fo-xnGd_z71fT3DnjA2QoCZ45cwDDwUL-Sf0k8KDqDP1xGHZWjv_hPBsp8Q5IhZMRh7bdsE8hpx9cH2e5JlQu8GrGQI7TWXye500s_xNIUQPv568pKcuwikCtufDNSJzJ8dXxStYxv-3p7pSI3GIdFYoqA8?purpose=fullsize" />
+<img src="https://images.openai.com/static-rsc-4/zJAOZ7LdmaPG6fBYRnYiChJlDgpcj7FFdXW-O4ZZsyN6iuwH6N1r2wB-97H57t8SbwvgXaMTUz1hCtIL_30hwqu_6XAHg0BgyW1NYoLtnsbgPEi76kgmOR7ZWewZjTqb09LKGFxgRuOHaT2KljiC0hi7uYo1ef-k4q_ibyQ8wSOMhOl3epfJO3JOWtn5qMss?purpose=fullsize" />
+<p>Shows registered services, status, and instance count.</p>
+</div>
+
+<div class="section">
+<h2>12. Load Balancing Example</h2>
+<code>
+@LoadBalanced
+@Bean
+RestTemplate restTemplate() {
+    return new RestTemplate();
+}
+
+http://ACCOUNT-SERVICE/api
+</code>
+</div>
+
+<div class="section">
+<h2>13. Common Configurations</h2>
+<code>
+eureka:
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+</code>
+</div>
+
+<div class="section">
+<h2>14. Advantages</h2>
+<ul>
+<li>No hardcoded URLs</li>
+<li>Auto scaling support</li>
+<li>Dynamic service discovery</li>
+<li>Fault tolerant</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>15. Disadvantages</h2>
+<ul>
+<li>Extra component to maintain</li>
+<li>Slight latency</li>
+<li>Replaced by Kubernetes DNS in modern setups</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>16. Real-time Example</h2>
+<p>Eureka = Phone Directory<br>Service = Person<br>Search name → get number</p>
+</div>
+
+<div class="section">
+<h2>17. Interview Questions</h2>
+<ul>
+<li>What is Eureka Server?</li>
+<li>Difference between register-with-eureka and fetch-registry?</li>
+<li>What happens if heartbeat stops?</li>
+<li>What is self-preservation mode?</li>
+<li>Eureka vs Kubernetes?</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>18. Quick Summary</h2>
+<p>Eureka = Service Registry<br>Clients = Register + Discover<br>Default port = 8761</p>
+</div>
+
+</body>
+</html>
