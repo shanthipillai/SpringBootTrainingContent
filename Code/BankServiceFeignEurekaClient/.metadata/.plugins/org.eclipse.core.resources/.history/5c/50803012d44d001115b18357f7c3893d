@@ -1,0 +1,56 @@
+package tes.your.coding.arrays;
+
+import java.util.Arrays;
+
+public class ArrayReverse {
+	
+	
+	
+	public static int[] reverseAnArray(int arr[], int i, int j)
+	{
+		
+		while(i<j)
+		{
+			int temp=arr[i];
+			arr[i]=arr[j];
+			arr[j]=temp;
+			i++;
+			j--;
+		}
+		
+		return arr;
+	}
+	
+	public static void shiftArrayRight(int arr[], int k)
+	{
+		int n=arr.length;
+		reverseAnArray(arr,n-k,n-1);
+		reverseAnArray(arr, 0, n-k-1);
+		reverseAnArray(arr, 0, n-1);
+		/*
+		 * reverseAnArray(arr, 0, n-k); reverseAnArray(arr, 0, n-1);
+		 */
+		
+		for(int i:arr)
+		{
+			System.out.print(i);
+		}
+		
+	}
+	
+	public static void shiftArrayleft(int arr[], int k)
+	{
+		int n=arr.length;
+		reverseAnArray(arr, 0,k-1);
+		reverseAnArray(arr, k,n-1);
+		reverseAnArray(arr, 0, n-1)
+		
+	}
+	
+	
+public static void main(String[] args) {
+	int arr[]= {1,2,3,4,5,6,7,8};
+	//System.out.println(Arrays.toString(reverseAnArray(arr,0,arr.length-1)));
+	shiftArrayRight(arr,2);
+}
+}

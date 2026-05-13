@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot Gateway Notes</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            margin: 40px;
+            background-color: #f4f6f9;
+            color: #222;
+        }
+
+        h1,h2,h3{
+            color:#0d47a1;
+        }
+
+        pre{
+            background:#1e1e1e;
+            color:#fff;
+            padding:15px;
+            border-radius:8px;
+            overflow-x:auto;
+        }
+
+        table{
+            width:100%;
+            border-collapse: collapse;
+            margin:20px 0;
+            background:white;
+        }
+
+        table, th, td{
+            border:1px solid #ccc;
+        }
+
+        th{
+            background:#1976d2;
+            color:white;
+            padding:10px;
+        }
+
+        td{
+            padding:10px;
+        }
+
+        .container{
+            background:white;
+            padding:30px;
+            border-radius:10px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .diagram{
+            background:#eef5ff;
+            padding:15px;
+            border-left:5px solid #1976d2;
+            margin:20px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Spring Boot Gateway Notes</h1>
+
+    <h2>What is API Gateway?</h2>
+
+    <p>
+        An API Gateway is the single entry point for all client requests in a
+        microservices architecture.
+    </p>
+
+    <div class="diagram">
+Client → API Gateway → Microservices
+    </div>
+
+    <h3>Gateway Handles</h3>
+
+    <ul>
+        <li>Routing</li>
+        <li>Authentication</li>
+        <li>Authorization</li>
+        <li>Load Balancing</li>
+        <li>Logging</li>
+        <li>Rate Limiting</li>
+        <li>Monitoring</li>
+        <li>Security</li>
+    </ul>
+
+    <h2>Spring Cloud Gateway</h2>
+
+    <p>
+        Spring Boot provides gateway support using Spring Cloud Gateway.
+    </p>
+
+    <h3>Built On</h3>
+
+    <ul>
+        <li>Spring Boot</li>
+        <li>Spring WebFlux</li>
+        <li>Reactive Programming</li>
+    </ul>
+
+    <h2>Why Use Gateway?</h2>
+
+    <h3>Without Gateway</h3>
+
+    <div class="diagram">
+Client → Account Service
+Client → User Service
+Client → Payment Service
+    </div>
+
+    <h3>Problems</h3>
+
+    <ul>
+        <li>Multiple URLs exposed</li>
+        <li>Security difficult</li>
+        <li>CORS issues</li>
+        <li>Hard to monitor</li>
+    </ul>
+
+    <h3>With Gateway</h3>
+
+    <div class="diagram">
+Client → Gateway → Services
+    </div>
+
+    <h3>Benefits</h3>
+
+    <ul>
+        <li>Centralized security</li>
+        <li>Single endpoint</li>
+        <li>Easy routing</li>
+        <li>Better monitoring</li>
+        <li>Load balancing</li>
+        <li>Dynamic service discovery</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+
+    <h3>Maven Dependency</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-gateway&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+    <h3>For Eureka Discovery</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+    <h2>Basic Project Structure</h2>
+
+<pre>
+gateway-service
+ ├── src/main/java
+ ├── application.properties
+ └── pom.xml
+</pre>
+
+    <h2>Basic Configuration</h2>
+
+<pre>
+server.port=8080
+
+spring.application.name=API-GATEWAY
+</pre>
+
+    <h2>Static Routing</h2>
+
+<pre>
+spring.cloud.gateway.routes[0].id=account-service
+spring.cloud.gateway.routes[0].uri=http://localhost:8081
+spring.cloud.gateway.routes[0].predicates[0]=Path=/accounts/**
+</pre>
+
+    <h3>Meaning</h3>
+
+    <table>
+        <tr>
+            <th>Property</th>
+            <th>Meaning</th>
+        </tr>
+
+        <tr>
+            <td>id</td>
+            <td>Route name</td>
+        </tr>
+
+        <tr>
+            <td>uri</td>
+            <td>Target service</td>
+        </tr>
+
+        <tr>
+            <td>predicates</td>
+            <td>Matching condition</td>
+        </tr>
+    </table>
+
+    <h2>Flow</h2>
+
+    <div class="diagram">
+Request:
+http://localhost:8080/accounts/1
+
+Gateway checks:
+Path=/accounts/**
+
+Forward to:
+http://localhost:8081/accounts/1
+    </div>
+
+    <h2>Dynamic Routing Using Eureka</h2>
+
+<pre>
+spring.cloud.gateway.discovery.locator.enabled=true
+spring.cloud.gateway.discovery.locator.lower-case-service-id=true
+</pre>
+
+    <h3>Example</h3>
+
+    <div class="diagram">
+If Account Service runs on:
+http://localhost:8081
+
+Then access through gateway:
+http://localhost:8080/account-service/accounts/1
+    </div>
+
+    <h2>Using Load Balancer</h2>
+
+<pre>
+spring.cloud.gateway.routes[0].id=account-service
+spring.cloud.gateway.routes[0].uri=lb://ACCOUNT-SERVICE
+spring.cloud.gateway.routes[0].predicates[0]=Path=/accounts/**
+</pre>
+
+    <h3>Meaning of lb://</h3>
+
+    <p>
+        lb:// means Load Balance using Eureka.
+    </p>
+
+    <h3>Multiple Instances Example</h3>
+
+    <div class="diagram">
+ACCOUNT-SERVICE
+    localhost:8081
+    localhost:8082
+    localhost:8083
+    </div>
+
+    <h2>Common Predicates</h2>
+
+    <table>
+        <tr>
+            <th>Predicate</th>
+            <th>Description</th>
+        </tr>
+
+        <tr>
+            <td>Path</td>
+            <td>Matches URL paths</td>
+        </tr>
+
+        <tr>
+            <td>Method</td>
+            <td>Matches HTTP methods</td>
+        </tr>
+
+        <tr>
+            <td>Header</td>
+            <td>Checks headers</td>
+        </tr>
+
+        <tr>
+            <td>Query</td>
+            <td>Checks query parameters</td>
+        </tr>
+    </table>
+
+    <h2>Filters</h2>
+
+<pre>
+AddRequestHeader=X-Request-Red, Blue
+RemoveRequestHeader=Cookie
+RewritePath=/accounts/(?&lt;segment&gt;.*), /${segment}
+</pre>
+
+    <h2>Gateway with Eureka Architecture</h2>
+
+    <div class="diagram">
+               Eureka Server
+                     ↑
+                     |
+      ------------------------------
+      |             |              |
+Account Service  User Service  Payment Service
+
+              ↑
+          API Gateway
+
+              ↑
+            Client
+    </div>
+
+    <h2>Important Ports Example</h2>
+
+    <table>
+        <tr>
+            <th>Service</th>
+            <th>Port</th>
+        </tr>
+
+        <tr>
+            <td>Eureka Server</td>
+            <td>8761</td>
+        </tr>
+
+        <tr>
+            <td>Gateway</td>
+            <td>8080</td>
+        </tr>
+
+        <tr>
+            <td>Account Service</td>
+            <td>8081</td>
+        </tr>
+
+        <tr>
+            <td>User Service</td>
+            <td>8082</td>
+        </tr>
+    </table>
+
+    <h2>Gateway Flow Internally</h2>
+
+    <ol>
+        <li>Client sends request</li>
+        <li>Gateway checks predicates</li>
+        <li>Route matched</li>
+        <li>Filters applied</li>
+        <li>Request forwarded</li>
+        <li>Response returned</li>
+    </ol>
+
+    <h2>Advantages of Gateway</h2>
+
+    <ul>
+        <li>Centralized routing</li>
+        <li>Security</li>
+        <li>Logging</li>
+        <li>JWT authentication</li>
+        <li>Load balancing</li>
+        <li>Service discovery</li>
+        <li>Monitoring</li>
+        <li>Rate limiting</li>
+    </ul>
+
+    <h2>Disadvantages</h2>
+
+    <ul>
+        <li>Single point of failure</li>
+        <li>Adds complexity</li>
+        <li>Reactive programming learning curve</li>
+    </ul>
+
+    <h2>Interview Questions</h2>
+
+    <h3>What is API Gateway?</h3>
+    <p>Single entry point for microservices.</p>
+
+    <h3>Difference Between Zuul and Spring Cloud Gateway</h3>
+
+    <table>
+        <tr>
+            <th>Zuul</th>
+            <th>Spring Cloud Gateway</th>
+        </tr>
+
+        <tr>
+            <td>Servlet based</td>
+            <td>Reactive</td>
+        </tr>
+
+        <tr>
+            <td>Slower</td>
+            <td>Faster</td>
+        </tr>
+
+        <tr>
+            <td>Old Netflix</td>
+            <td>Modern Spring</td>
+        </tr>
+    </table>
+
+    <h2>Minimal Complete Example</h2>
+
+    <h3>Gateway Main Class</h3>
+
+<pre>
+@SpringBootApplication
+public class GatewayApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(GatewayApplication.class, args);
+    }
+}
+</pre>
+
+    <h3>application.properties</h3>
+
+<pre>
+server.port=8080
+
+spring.application.name=API-GATEWAY
+
+eureka.client.service-url.defaultZone=http://localhost:8761/eureka
+
+spring.cloud.gateway.routes[0].id=account-service
+spring.cloud.gateway.routes[0].uri=lb://ACCOUNT-SERVICE
+spring.cloud.gateway.routes[0].predicates[0]=Path=/accounts/**
+</pre>
+
+    <h2>Real-Time Example</h2>
+
+    <div class="diagram">
+Client Request:
+GET /accounts/101
+
+Gateway checks:
+ /accounts/**
+
+Eureka finds:
+ACCOUNT-SERVICE
+
+Forwarded To:
+http://localhost:8081/accounts/101
+    </div>
+
+    <h2>Important Annotations</h2>
+
+    <table>
+        <tr>
+            <th>Annotation</th>
+            <th>Use</th>
+        </tr>
+
+        <tr>
+            <td>@SpringBootApplication</td>
+            <td>Main class</td>
+        </tr>
+
+        <tr>
+            <td>@EnableEurekaClient</td>
+            <td>Register with Eureka</td>
+        </tr>
+    </table>
+
+    <h2>Useful Starter Dependencies</h2>
+
+    <table>
+        <tr>
+            <th>Dependency</th>
+            <th>Purpose</th>
+        </tr>
+
+        <tr>
+            <td>spring-cloud-starter-gateway</td>
+            <td>Gateway</td>
+        </tr>
+
+        <tr>
+            <td>spring-cloud-starter-netflix-eureka-client</td>
+            <td>Eureka Client</td>
+        </tr>
+
+        <tr>
+            <td>spring-boot-starter-actuator</td>
+            <td>Monitoring</td>
+        </tr>
+    </table>
+
+</div>
+
+</body>
+</html>

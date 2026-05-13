@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Cloud Config Server Notes</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin:0;
+            padding:0;
+            background:#f4f7fb;
+            color:#222;
+            line-height:1.7;
+        }
+
+        .container{
+            width:90%;
+            max-width:1200px;
+            margin:auto;
+            padding:20px;
+        }
+
+        h1,h2,h3,h4{
+            color:#0b4f8a;
+        }
+
+        .section{
+            background:white;
+            padding:25px;
+            margin-bottom:25px;
+            border-radius:10px;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        code{
+            background:#eee;
+            padding:2px 5px;
+            border-radius:4px;
+        }
+
+        pre{
+            background:#1e1e1e;
+            color:#fff;
+            padding:15px;
+            overflow:auto;
+            border-radius:8px;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:15px;
+        }
+
+        table th, table td{
+            border:1px solid #ccc;
+            padding:12px;
+            text-align:left;
+        }
+
+        table th{
+            background:#0b4f8a;
+            color:white;
+        }
+
+        .diagram{
+            background:#fff;
+            border:2px dashed #0b4f8a;
+            padding:20px;
+            text-align:center;
+            margin-top:20px;
+            border-radius:8px;
+            font-weight:bold;
+            white-space:pre-line;
+        }
+
+        ul li{
+            margin-bottom:10px;
+        }
+
+        .highlight{
+            background:#fff3cd;
+            padding:10px;
+            border-left:5px solid orange;
+            margin-top:15px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Spring Cloud Config Server Complete Notes</h1>
+
+    <div class="section">
+        <h2>1. Introduction</h2>
+
+        <p>
+            Spring Cloud Config Server is used to externalize and centralize configuration
+            management for microservices.
+        </p>
+
+        <p>
+            Instead of storing configuration files separately inside every microservice,
+            configurations are stored in a centralized repository such as:
+        </p>
+
+        <ul>
+            <li>GitHub Repository</li>
+            <li>Local File System</li>
+            <li>Native Storage</li>
+        </ul>
+
+        <p>
+            All microservices fetch configurations dynamically from the Config Server.
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>2. Why Config Server is Needed</h2>
+
+        <h3>Problem in Microservices</h3>
+
+        <ul>
+            <li>Many services exist</li>
+            <li>Configurations repeat across services</li>
+            <li>Updating configs manually is difficult</li>
+            <li>Environment-specific configs become hard to manage</li>
+        </ul>
+
+        <h3>Advantages of Config Server</h3>
+
+        <ul>
+            <li>Centralized configuration management</li>
+            <li>Dynamic refresh support</li>
+            <li>Environment-specific configuration</li>
+            <li>Easy maintenance</li>
+            <li>Better scalability</li>
+            <li>Secure property management</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>3. Config Server Architecture</h2>
+
+        <div class="diagram">
+Client Microservices
+        |
+        v
+  Config Server
+        |
+        v
+GitHub / Local Config Repository
+        </div>
+
+        <h3>Detailed Flow</h3>
+
+        <ol>
+            <li>Config Server starts</li>
+            <li>Connects to Git repository</li>
+            <li>Microservice starts</li>
+            <li>Reads bootstrap.properties</li>
+            <li>Connects to Config Server</li>
+            <li>Downloads configuration</li>
+            <li>Application starts using downloaded properties</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>4. Required Dependencies</h2>
+
+        <h3>Config Server Dependency</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-config-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+        <h3>Client Dependency</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-starter-config&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+        <h3>Actuator Dependency</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+        <h3>Monitor Dependency</h3>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-cloud-config-monitor&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>5. Enable Config Server</h2>
+
+<pre>
+@SpringBootApplication
+@EnableConfigServer
+public class ConfigServerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigServerApplication.class, args);
+    }
+}
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>6. application.properties for Config Server</h2>
+
+<pre>
+server.port=8888
+
+spring.cloud.config.server.git.uri=https://github.com/username/config-repo
+spring.cloud.config.server.git.clone-on-start=true
+</pre>
+
+        <h3>Explanation</h3>
+
+        <table>
+            <tr>
+                <th>Property</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>server.port</td>
+                <td>Runs Config Server on port 8888</td>
+            </tr>
+
+            <tr>
+                <td>spring.cloud.config.server.git.uri</td>
+                <td>GitHub repository URL</td>
+            </tr>
+
+            <tr>
+                <td>clone-on-start</td>
+                <td>Clones repository during startup</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="section">
+        <h2>7. Config Repository Structure</h2>
+
+<pre>
+config-repo
+   |
+   |-- account-service.properties
+   |-- loan-service.properties
+   |-- card-service.properties
+   |-- application.properties
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>8. Running Config Server</h2>
+
+<pre>
+mvn spring-boot:run
+</pre>
+
+        <h3>Access URL</h3>
+
+<pre>
+http://localhost:8888/account-service/default
+</pre>
+
+        <h3>Sample Response</h3>
+
+<pre>
+{
+  "name": "account-service",
+  "profiles": ["default"],
+  "propertySources": [
+    {
+      "name": "https://github.com/...",
+      "source": {
+        "server.port": "9091"
+      }
+    }
+  ]
+}
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>9. Client Side Configuration</h2>
+
+        <h3>bootstrap.properties</h3>
+
+<pre>
+spring.application.name=account-service
+spring.cloud.config.uri=http://localhost:8888
+</pre>
+
+        <h3>application.properties</h3>
+
+<pre>
+spring.profiles.active=default
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>10. Naming Convention</h2>
+
+<pre>
+{application-name}-{profile}.properties
+</pre>
+
+        <h3>Examples</h3>
+
+<pre>
+account-service-dev.properties
+account-service-test.properties
+account-service-prod.properties
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>11. Dynamic Refresh</h2>
+
+        <h3>Expose Refresh Endpoint</h3>
+
+<pre>
+management.endpoints.web.exposure.include=refresh
+</pre>
+
+        <h3>Refresh API</h3>
+
+<pre>
+POST /actuator/refresh
+</pre>
+
+        <h3>@RefreshScope Example</h3>
+
+<pre>
+@RestController
+@RefreshScope
+public class TestController {
+
+    @Value("${message}")
+    private String message;
+
+    @GetMapping("/msg")
+    public String getMessage() {
+        return message;
+    }
+}
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>12. Native Mode (Without Git)</h2>
+
+<pre>
+spring.profiles.active=native
+spring.cloud.config.server.native.searchLocations=file:///D:/configs
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>13. Webhook Monitor Concept</h2>
+
+        <h3>Problem with Manual Refresh</h3>
+
+        <p>
+            Whenever GitHub configuration changes,
+            developers must manually call:
+        </p>
+
+<pre>
+POST /actuator/refresh
+</pre>
+
+        <p>
+            Doing this manually for many services becomes difficult.
+        </p>
+
+        <h3>Solution</h3>
+
+        <ul>
+            <li>GitHub Webhook</li>
+            <li>Config Monitor Endpoint</li>
+            <li>Automatic Refresh</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+        <h2>14. Monitor Endpoint</h2>
+
+        <h3>What is /monitor?</h3>
+
+        <p>
+            Config Server exposes:
+        </p>
+
+<pre>
+/monitor
+</pre>
+
+        <p>
+            This endpoint listens for GitHub webhook events.
+        </p>
+
+        <h3>Enable Monitor Endpoint</h3>
+
+<pre>
+management.endpoints.web.exposure.include=*
+</pre>
+
+        <h3>Monitor API</h3>
+
+<pre>
+POST http://localhost:8888/monitor
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>15. Ngrok Setup</h2>
+
+        <h3>Why Ngrok?</h3>
+
+        <p>
+            GitHub cannot access localhost directly.
+        </p>
+
+        <p>
+            Ngrok provides a public URL for local applications.
+        </p>
+
+        <h3>Start Config Server</h3>
+
+<pre>
+http://localhost:8888
+</pre>
+
+        <h3>Run Ngrok</h3>
+
+<pre>
+ngrok http 8888
+</pre>
+
+        <h3>Example Public URL</h3>
+
+<pre>
+https://abc123.ngrok-free.app
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>16. GitHub Webhook Configuration</h2>
+
+        <h3>GitHub Steps</h3>
+
+        <ol>
+            <li>Open GitHub Repository</li>
+            <li>Go to Settings</li>
+            <li>Select Webhooks</li>
+            <li>Click Add Webhook</li>
+        </ol>
+
+        <h3>Webhook URL</h3>
+
+<pre>
+https://abc123.ngrok-free.app/monitor
+</pre>
+
+        <h3>Content Type</h3>
+
+<pre>
+application/json
+</pre>
+
+        <h3>Select Events</h3>
+
+<pre>
+Just the push event
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>17. Complete Webhook Flow</h2>
+
+        <div class="diagram">
+Developer Pushes Code
+            |
+            v
+GitHub Repository
+            |
+            v
+GitHub Webhook
+            |
+            v
+Ngrok Public URL
+            |
+            v
+Config Server /monitor
+            |
+            v
+Refresh Triggered
+            |
+            v
+Microservices Reload Configurations
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>18. Real-Time Example</h2>
+
+        <h3>Initial Config</h3>
+
+<pre>
+message=Version1
+</pre>
+
+        <h3>Application Response</h3>
+
+<pre>
+Version1
+</pre>
+
+        <h3>Update GitHub Config</h3>
+
+<pre>
+message=Version2
+</pre>
+
+        <p>
+            Push changes to GitHub.
+        </p>
+
+        <p>
+            GitHub webhook automatically calls:
+        </p>
+
+<pre>
+/monitor
+</pre>
+
+        <p>
+            Updated response:
+        </p>
+
+<pre>
+Version2
+</pre>
+
+        <p>
+            No restart required.
+        </p>
+
+    </div>
+
+    <div class="section">
+        <h2>19. Difference Between Refresh and Monitor</h2>
+
+        <table>
+            <tr>
+                <th>/refresh</th>
+                <th>/monitor</th>
+            </tr>
+
+            <tr>
+                <td>Manual API call</td>
+                <td>Automatic webhook trigger</td>
+            </tr>
+
+            <tr>
+                <td>User triggers refresh</td>
+                <td>GitHub triggers refresh</td>
+            </tr>
+
+            <tr>
+                <td>Actuator endpoint</td>
+                <td>Webhook endpoint</td>
+            </tr>
+
+            <tr>
+                <td>Used locally</td>
+                <td>Used in automation</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="section">
+        <h2>20. Common Issues</h2>
+
+        <h3>502 Bad Gateway in Ngrok</h3>
+
+        <ul>
+            <li>Config Server not running</li>
+            <li>Wrong port configured</li>
+            <li>Application crashed</li>
+            <li>Ngrok connected to wrong port</li>
+        </ul>
+
+        <h3>Correct Command</h3>
+
+<pre>
+ngrok http 8888
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>21. Best Practices</h2>
+
+        <ul>
+            <li>Store configs in separate Git repository</li>
+            <li>Never store passwords directly</li>
+            <li>Use profiles properly</li>
+            <li>Protect Config Server using security</li>
+            <li>Use actuator refresh carefully</li>
+            <li>Enable monitoring and logging</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+        <h2>22. Advantages</h2>
+
+        <ul>
+            <li>Centralized configuration management</li>
+            <li>Easy maintenance</li>
+            <li>Reusable configurations</li>
+            <li>Environment management</li>
+            <li>Dynamic refresh</li>
+            <li>Scalability</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+        <h2>23. Disadvantages</h2>
+
+        <ul>
+            <li>Additional server maintenance</li>
+            <li>Config Server becomes critical dependency</li>
+            <li>Git availability required</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+        <h2>24. Typical Microservices Setup</h2>
+
+        <div class="diagram">
+Eureka Server
+      |
+Gateway
+      |
+Config Server
+      |
+------------------------------------
+|            |             |
+v            v             v
+Account     Loan         Card
+Service     Service      Service
+        </div>
+
+    </div>
+
+    <div class="section">
+        <h2>25. Important URLs</h2>
+
+        <table>
+            <tr>
+                <th>Purpose</th>
+                <th>URL</th>
+            </tr>
+
+            <tr>
+                <td>Config Fetch</td>
+                <td>http://localhost:8888/account-service/default</td>
+            </tr>
+
+            <tr>
+                <td>Refresh Endpoint</td>
+                <td>POST /actuator/refresh</td>
+            </tr>
+
+            <tr>
+                <td>Monitor Endpoint</td>
+                <td>POST /monitor</td>
+            </tr>
+
+            <tr>
+                <td>Ngrok Public URL</td>
+                <td>https://your-ngrok-url/monitor</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="section">
+        <h2>26. Interview Questions</h2>
+
+        <h3>What is Config Server?</h3>
+        <p>
+            Config Server provides centralized configuration management
+            for microservices.
+        </p>
+
+        <h3>Why bootstrap.properties?</h3>
+        <p>
+            Because Config Server details are required before application startup.
+        </p>
+
+        <h3>Difference between bootstrap.properties and application.properties?</h3>
+
+        <table>
+            <tr>
+                <th>bootstrap.properties</th>
+                <th>application.properties</th>
+            </tr>
+
+            <tr>
+                <td>Loads first</td>
+                <td>Loads later</td>
+            </tr>
+
+            <tr>
+                <td>External config connection</td>
+                <td>Business configuration</td>
+            </tr>
+
+            <tr>
+                <td>Config Server connection</td>
+                <td>Application settings</td>
+            </tr>
+        </table>
+
+        <h3>What is @RefreshScope?</h3>
+
+        <p>
+            Reloads updated property values without restarting the application.
+        </p>
+
+        <h3>Why Ngrok?</h3>
+
+        <p>
+            GitHub cannot access localhost directly.
+        </p>
+
+        <h3>What does /monitor do?</h3>
+
+        <p>
+            Listens for webhook events and refreshes configuration automatically.
+        </p>
+
+    </div>
+
+    <div class="section">
+        <h2>27. Important Spring Cloud Dependency Management</h2>
+
+<pre>
+&lt;dependencyManagement&gt;
+    &lt;dependencies&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-dependencies&lt;/artifactId&gt;
+            &lt;version&gt;2025.0.0&lt;/version&gt;
+            &lt;type&gt;pom&lt;/type&gt;
+            &lt;scope&gt;import&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+    &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;
+</pre>
+
+    </div>
+
+    <div class="section">
+        <h2>28. Final Summary</h2>
+
+        <p>
+            Spring Cloud Config Server centralizes configuration management
+            for all microservices.
+        </p>
+
+        <p>
+            Using GitHub + Config Server + Webhook Monitor + Ngrok,
+            applications can automatically refresh configurations
+            without restarting services.
+        </p>
+
+        <div class="highlight">
+            Config Server is one of the most important components
+            in a Spring Boot Microservices Architecture.
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

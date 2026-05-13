@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RabbitMQ Installation Guide for Windows</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            padding: 0;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: #1f4e79;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid #1f4e79;
+            padding-bottom: 15px;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: #c7254e;
+        }
+
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            overflow-x: auto;
+            border-radius: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #1f4e79;
+            color: white;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 6px solid #ffcc00;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 6px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .diagram {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        svg {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            background: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>RabbitMQ Installation Guide for Windows</h1>
+
+    <h2>Introduction</h2>
+    <p>
+        RabbitMQ is an open-source message broker software that enables applications,
+        systems, and services to communicate with each other using messages.
+        It supports multiple messaging protocols and is widely used in distributed systems,
+        microservices architecture, asynchronous processing, and event-driven applications.
+    </p>
+
+    <h2>Why RabbitMQ is Needed</h2>
+    <ul>
+        <li>Decouples microservices communication</li>
+        <li>Supports asynchronous message processing</li>
+        <li>Improves application scalability</li>
+        <li>Provides reliable message delivery</li>
+        <li>Useful for background jobs and event-driven systems</li>
+    </ul>
+
+    <h2>Architecture Diagram</h2>
+
+    <div class="diagram">
+        <svg width="900" height="300" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="50" y="100" width="180" height="80" fill="#d9edf7" stroke="#31708f" stroke-width="2"/>
+            <text x="90" y="145" font-size="18">Producer Application</text>
+
+            <rect x="360" y="100" width="180" height="80" fill="#dff0d8" stroke="#3c763d" stroke-width="2"/>
+            <text x="420" y="145" font-size="18">RabbitMQ Server</text>
+
+            <rect x="670" y="100" width="180" height="80" fill="#fcf8e3" stroke="#8a6d3b" stroke-width="2"/>
+            <text x="725" y="145" font-size="18">Consumer App</text>
+
+            <line x1="230" y1="140" x2="360" y2="140" stroke="#000" stroke-width="3"/>
+            <polygon points="360,140 345,132 345,148" fill="#000"/>
+
+            <line x1="540" y1="140" x2="670" y2="140" stroke="#000" stroke-width="3"/>
+            <polygon points="670,140 655,132 655,148" fill="#000"/>
+
+        </svg>
+    </div>
+
+    <h2>Prerequisites</h2>
+    <ul>
+        <li>Windows 10 / Windows 11</li>
+        <li>Administrator privileges</li>
+        <li>Internet connection</li>
+    </ul>
+
+    <h2>Step 1: Install Erlang OTP</h2>
+
+    <h3>What is Erlang?</h3>
+    <p>
+        RabbitMQ is built on top of Erlang OTP runtime.
+        Therefore, Erlang must be installed before installing RabbitMQ.
+    </p>
+
+    <h3>Erlang Download Links</h3>
+
+    <div class="links">
+        <ul>
+            <li>
+                Erlang Official Downloads Page:
+                <br>
+                <a href="https://www.erlang.org/downloads" target="_blank">
+                    https://www.erlang.org/downloads
+                </a>
+            </li>
+
+            <li>
+                Direct Erlang Windows 64-bit Installer:
+                <br>
+                <a href="https://github.com/erlang/otp/releases" target="_blank">
+                    https://github.com/erlang/otp/releases
+                </a>
+            </li>
+
+            <li>
+                Erlang Official Website:
+                <br>
+                <a href="https://www.erlang.org/" target="_blank">
+                    https://www.erlang.org/
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Installation Steps</h3>
+
+    <ol>
+        <li>Open Erlang download page.</li>
+        <li>Download latest Windows 64-bit installer (.exe).</li>
+        <li>Run installer as Administrator.</li>
+        <li>Keep default installation location.</li>
+        <li>Complete installation.</li>
+    </ol>
+
+    <h3>Verify Erlang Installation</h3>
+
+    <p>Open Command Prompt and execute:</p>
+
+    <pre>erl</pre>
+
+    <div class="success">
+        If installation is successful, Erlang shell will open.
+    </div>
+
+    <h2>Step 2: Install RabbitMQ Server</h2>
+
+    <h3>RabbitMQ Download Links</h3>
+
+    <div class="links">
+        <ul>
+
+            <li>
+                RabbitMQ Official Download Page:
+                <br>
+                <a href="https://www.rabbitmq.com/download.html" target="_blank">
+                    https://www.rabbitmq.com/download.html
+                </a>
+            </li>
+
+            <li>
+                RabbitMQ Windows Installation Guide:
+                <br>
+                <a href="https://www.rabbitmq.com/install-windows.html" target="_blank">
+                    https://www.rabbitmq.com/install-windows.html
+                </a>
+            </li>
+
+            <li>
+                Direct RabbitMQ Windows Installer Page:
+                <br>
+                <a href="https://github.com/rabbitmq/rabbitmq-server/releases" target="_blank">
+                    https://github.com/rabbitmq/rabbitmq-server/releases
+                </a>
+            </li>
+
+            <li>
+                RabbitMQ Official Website:
+                <br>
+                <a href="https://www.rabbitmq.com/" target="_blank">
+                    https://www.rabbitmq.com/
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <h3>Installation Steps</h3>
+
+    <ol>
+        <li>Download RabbitMQ Windows installer.</li>
+        <li>Run installer as Administrator.</li>
+        <li>Proceed with default settings.</li>
+        <li>Complete installation.</li>
+        <li>RabbitMQ service starts automatically.</li>
+    </ol>
+
+    <h2>RabbitMQ Installation Flow Diagram</h2>
+
+    <div class="diagram">
+        <svg width="1000" height="220" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="20" y="70" width="160" height="60" fill="#e1f5fe" stroke="#0277bd" stroke-width="2"/>
+            <text x="60" y="105" font-size="16">Install Erlang</text>
+
+            <rect x="250" y="70" width="180" height="60" fill="#f1f8e9" stroke="#558b2f" stroke-width="2"/>
+            <text x="285" y="105" font-size="16">Install RabbitMQ</text>
+
+            <rect x="500" y="70" width="220" height="60" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+            <text x="525" y="105" font-size="16">Enable Management Plugin</text>
+
+            <rect x="790" y="70" width="180" height="60" fill="#ede7f6" stroke="#5e35b1" stroke-width="2"/>
+            <text x="835" y="105" font-size="16">Access Dashboard</text>
+
+            <line x1="180" y1="100" x2="250" y2="100" stroke="#000" stroke-width="3"/>
+            <polygon points="250,100 235,92 235,108" fill="#000"/>
+
+            <line x1="430" y1="100" x2="500" y2="100" stroke="#000" stroke-width="3"/>
+            <polygon points="500,100 485,92 485,108" fill="#000"/>
+
+            <line x1="720" y1="100" x2="790" y2="100" stroke="#000" stroke-width="3"/>
+            <polygon points="790,100 775,92 775,108" fill="#000"/>
+
+        </svg>
+    </div>
+
+    <h2>Step 3: Enable RabbitMQ Management Plugin</h2>
+
+    <p>
+        The management plugin provides a browser-based dashboard for monitoring and managing RabbitMQ.
+    </p>
+
+    <h3>Command</h3>
+
+    <pre>rabbitmq-plugins enable rabbitmq_management</pre>
+
+    <h3>Expected Output</h3>
+
+    <pre>
+The following plugins have been enabled:
+
+rabbitmq_management
+rabbitmq_management_agent
+rabbitmq_web_dispatch
+    </pre>
+
+    <h2>Step 4: Restart RabbitMQ Service</h2>
+
+    <h3>Using Command Prompt</h3>
+
+    <pre>
+net stop RabbitMQ
+net start RabbitMQ
+    </pre>
+
+    <h3>Using Windows Services</h3>
+
+    <ol>
+        <li>Press Windows + R</li>
+        <li>Type <code>services.msc</code></li>
+        <li>Locate RabbitMQ service</li>
+        <li>Restart service manually</li>
+    </ol>
+
+    <h2>Step 5: Open RabbitMQ Dashboard</h2>
+
+    <p>Open browser:</p>
+
+    <pre>http://localhost:15672</pre>
+
+    <h3>Default Login Credentials</h3>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Password</th>
+        </tr>
+
+        <tr>
+            <td>guest</td>
+            <td>guest</td>
+        </tr>
+    </table>
+
+    <h2>Important Ports</h2>
+
+    <table>
+        <tr>
+            <th>Port</th>
+            <th>Purpose</th>
+        </tr>
+
+        <tr>
+            <td>5672</td>
+            <td>RabbitMQ Server Communication</td>
+        </tr>
+
+        <tr>
+            <td>15672</td>
+            <td>Management Dashboard</td>
+        </tr>
+    </table>
+
+    <h2>Verify RabbitMQ Service</h2>
+
+    <p>Execute:</p>
+
+    <pre>rabbitmqctl status</pre>
+
+    <div class="success">
+        RabbitMQ server details and status information will be displayed.
+    </div>
+
+    <h2>Common Issues</h2>
+
+    <h3>RabbitMQ not detecting Erlang</h3>
+
+    <p>Configure environment variables manually.</p>
+
+    <h3>Set ERLANG_HOME</h3>
+
+    <pre>
+C:\Program Files\Erlang OTP\erl-28.0
+    </pre>
+
+    <h3>Add to PATH</h3>
+
+    <pre>
+%ERLANG_HOME%\bin
+    </pre>
+
+    <div class="note">
+        Restart Command Prompt after updating environment variables.
+    </div>
+
+    <h2>Useful Documentation Links</h2>
+
+    <div class="links">
+        <ul>
+
+            <li>
+                RabbitMQ Tutorials:
+                <br>
+                <a href="https://www.rabbitmq.com/getstarted.html" target="_blank">
+                    https://www.rabbitmq.com/getstarted.html
+                </a>
+            </li>
+
+            <li>
+                RabbitMQ Plugins Documentation:
+                <br>
+                <a href="https://www.rabbitmq.com/plugins.html" target="_blank">
+                    https://www.rabbitmq.com/plugins.html
+                </a>
+            </li>
+
+            <li>
+                RabbitMQ Management Plugin Documentation:
+                <br>
+                <a href="https://www.rabbitmq.com/management.html" target="_blank">
+                    https://www.rabbitmq.com/management.html
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+    <h2>Best Practices</h2>
+
+    <ul>
+        <li>Always install compatible Erlang version for RabbitMQ.</li>
+        <li>Enable management plugin for monitoring.</li>
+        <li>Use strong credentials in production.</li>
+        <li>Monitor queues regularly.</li>
+        <li>Configure persistence for critical messages.</li>
+    </ul>
+
+    <h2>Common Mistakes</h2>
+
+    <ul>
+        <li>Installing incompatible Erlang version.</li>
+        <li>Forgetting to enable management plugin.</li>
+        <li>Not restarting RabbitMQ service after plugin installation.</li>
+        <li>Incorrect environment variable configuration.</li>
+    </ul>
+
+    <h2>Interview Questions</h2>
+
+    <ol>
+        <li>What is RabbitMQ?</li>
+        <li>Why is Erlang required for RabbitMQ?</li>
+        <li>What is RabbitMQ Management Plugin?</li>
+        <li>Which ports are used by RabbitMQ?</li>
+        <li>How do you verify RabbitMQ status?</li>
+        <li>How do you restart RabbitMQ service?</li>
+        <li>What are exchanges and queues in RabbitMQ?</li>
+    </ol>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        RabbitMQ installation on Windows requires Erlang OTP installation first,
+        followed by RabbitMQ server installation and enabling the management plugin.
+        Once configured correctly, RabbitMQ becomes a powerful messaging system
+        for enterprise applications and microservices architecture.
+    </p>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+package tes.your.coding.arrays;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class ArrayManipulations {
+	public static void reverseUsingStreams()
+	{
+		int arr[]= {8,9,7,6,5};
+		IntStream.range(0, arr.length).map(i->arr[arr.length-i-1]).forEach(System.out::println);
+	}
+	
+	public static void maxElementInArray(int arr[])
+	{
+		Arrays.stream(arr).max().getAsInt();
+		Arrays.stream(arr).sorted();
+		Arrays.stream(arr).boxed().sorted(Comparator.reverseOrder()).forEach(System.out::println);
+		Arrays.stream(arr).boxed().sorted(Comparator.reverseOrder()).findFirst();
+		Arrays.stream(arr).boxed().sorted(Comparator.reverseOrder()).skip(1).findFirst();
+		//Arrays.stream(arr).boxed().sorted(Comparator::reverseOrder).forEach(System.out::println);
+	}
+	
+	public static String reverseAGivenNo(int no)
+	{
+		
+		return Arrays.stream(String.valueOf(no).split("")).reduce("",(a,b)->b+a);
+		
+		
+	}
+	public static int[] reverseAnArray(int arr[], int i, int j)
+	{
+		
+		while(i<j)
+		{
+			int temp=arr[i];
+			arr[i]=arr[j];
+			arr[j]=temp;
+			i++;
+			j--;
+		}
+		
+		return arr;
+	}
+	
+	public static void shiftArrayRight(int arr[], int k)
+	{
+		int n=arr.length;
+		reverseAnArray(arr,n-k,n-1);
+		reverseAnArray(arr, 0, n-k-1);
+		reverseAnArray(arr, 0, n-1);
+		/*
+		 * reverseAnArray(arr, 0, n-k); reverseAnArray(arr, 0, n-1);
+		 */
+		
+		for(int i:arr)
+		{
+			System.out.print(i);
+		}
+		
+	}
+	
+	public static void reverseBlock(int arr[], int k)
+	{
+		for(int i=0;i<arr.length;i+=k)
+		{
+			int min=Math.min(arr.length, i+k);
+			reverseAnArray(arr, i, min-1);
+		}
+		for(int i:arr)
+		{
+			System.out.print(i);
+		}
+	}
+	
+	public static void shiftArrayleft(int arr[], int k)
+	{
+		int n=arr.length;
+		reverseAnArray(arr, 0,k-1);
+		reverseAnArray(arr, k,n-1);
+		reverseAnArray(arr, 0, n-1);
+		for(int i:arr)
+		{
+			System.out.print(i);
+		}
+		
+	}
+
+	
+	public static void concatTwoArray(int arr1[], int arr2[])
+	{
+		Stream.concat(Arrays.stream(arr1).boxed(), Arrays.stream(arr2).boxed())
+		.forEach(System.out::println);
+	}
+	
+public static void main(String[] args) {
+	int arr[]= {1,2,3,4,5,6,7,8};
+	//System.out.println(Arrays.toString(reverseAnArray(arr,0,arr.length-1)));
+	shiftArrayRight(arr,2);
+	int arr1[]= {1,2,3,4,5,6,7,8};
+	System.out.println();
+	shiftArrayleft(arr1,2);
+	System.out.println();
+	reverseAGivenNo(124);
+	System.out.println(reverseAGivenNo(123));
+	int arr3[]= {1,2,3,4,5,6,7,8};
+	reverseBlock(arr3,3);
+	int a1[]= {1,2,4};
+	int a2[]= {6,7,8};
+	concatTwoArray(a1,a2);
+	System.out.println();
+	reverseUsingStreams();
+}
+}

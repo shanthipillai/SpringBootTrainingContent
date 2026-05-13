@@ -1,0 +1,22 @@
+package com.bank.account.feign;
+
+import java.util.List;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.bank.account.dto.Loan;
+
+
+@FeignClient(name="loan-service",
+
+fallback = LoanClientUnavailable.class
+)
+
+
+
+public interface LoanClient {
+	@GetMapping("/loans/account/{accountId}")
+    public List<Loan> getLoans(@PathVariable int accountId);
+}

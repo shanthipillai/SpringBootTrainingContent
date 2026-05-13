@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ngrok Complete Notes</title>
+
+    <style>
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.7;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: #1f4e79;
+        }
+
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid #1f4e79;
+            padding-bottom: 15px;
+        }
+
+        code {
+            background: #f0f0f0;
+            padding: 3px 6px;
+            border-radius: 4px;
+            color: #c7254e;
+        }
+
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #1f4e79;
+            color: white;
+        }
+
+        .note {
+            background: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 6px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .links a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        .diagram {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        svg {
+            border: 1px solid #ccc;
+            background: white;
+            max-width: 100%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Ngrok Complete Notes</h1>
+
+    <h2>Introduction</h2>
+
+    <p>
+        ngrok is a secure tunneling tool that exposes your local application
+        to the internet using a public URL.
+    </p>
+
+    <p>
+        It helps developers test webhooks, APIs, mobile backends,
+        and remote demos without deploying applications to production servers.
+    </p>
+
+    <h2>What is Ngrok?</h2>
+
+    <p>
+        ngrok creates a secure public URL for your local application.
+    </p>
+
+    <p>Example:</p>
+
+    <p>Your Spring Boot application runs locally:</p>
+
+    <pre>http://localhost:8080</pre>
+
+    <p>ngrok converts it into:</p>
+
+    <pre>https://abcd1234.ngrok-free.app</pre>
+
+    <div class="success">
+        Anyone on the internet can now access your local application securely.
+    </div>
+
+    <h2>Official Links</h2>
+
+    <div class="links">
+
+        <ul>
+
+            <li>
+                Ngrok Official Website:
+                <br>
+                <a href="https://ngrok.com/" target="_blank">
+                    https://ngrok.com/
+                </a>
+            </li>
+
+            <li>
+                Ngrok Downloads:
+                <br>
+                <a href="https://ngrok.com/download" target="_blank">
+                    https://ngrok.com/download
+                </a>
+            </li>
+
+            <li>
+                Ngrok Documentation:
+                <br>
+                <a href="https://ngrok.com/docs" target="_blank">
+                    https://ngrok.com/docs
+                </a>
+            </li>
+
+            <li>
+                Create Ngrok Account:
+                <br>
+                <a href="https://dashboard.ngrok.com/signup" target="_blank">
+                    https://dashboard.ngrok.com/signup
+                </a>
+            </li>
+
+            <li>
+                Ngrok Auth Token Page:
+                <br>
+                <a href="https://dashboard.ngrok.com/get-started/your-authtoken" target="_blank">
+                    https://dashboard.ngrok.com/get-started/your-authtoken
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <h2>Why Do We Use Ngrok?</h2>
+
+    <ul>
+        <li>Webhook testing</li>
+        <li>Sharing local applications</li>
+        <li>API testing</li>
+        <li>Remote demos</li>
+        <li>Mobile backend testing</li>
+        <li>Temporary internet access for localhost</li>
+    </ul>
+
+    <h2>Real-Time Example</h2>
+
+    <p>
+        Suppose your Spring Boot application is running locally:
+    </p>
+
+    <pre>http://localhost:8080</pre>
+
+    <p>
+        Normally only your system can access localhost.
+    </p>
+
+    <p>
+        External services like GitHub cannot access localhost directly.
+    </p>
+
+    <h3>Using ngrok</h3>
+
+    <pre>ngrok http 8080</pre>
+
+    <p>ngrok generates:</p>
+
+    <pre>https://abc123.ngrok-free.app</pre>
+
+    <div class="success">
+        Now GitHub, browsers, Postman, and external systems can access your local application.
+    </div>
+
+    <h2>Architecture Diagram</h2>
+
+    <div class="diagram">
+
+        <svg width="1000" height="300" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="40" y="100" width="220" height="80" fill="#d9edf7" stroke="#31708f" stroke-width="2"/>
+            <text x="85" y="145" font-size="18">Internet User / GitHub</text>
+
+            <rect x="390" y="100" width="220" height="80" fill="#dff0d8" stroke="#3c763d" stroke-width="2"/>
+            <text x="465" y="145" font-size="18">Ngrok Tunnel</text>
+
+            <rect x="740" y="100" width="220" height="80" fill="#fcf8e3" stroke="#8a6d3b" stroke-width="2"/>
+            <text x="775" y="145" font-size="18">Local Spring Boot App</text>
+
+            <line x1="260" y1="140" x2="390" y2="140" stroke="#000" stroke-width="3"/>
+            <polygon points="390,140 375,132 375,148" fill="#000"/>
+
+            <line x1="610" y1="140" x2="740" y2="140" stroke="#000" stroke-width="3"/>
+            <polygon points="740,140 725,132 725,148" fill="#000"/>
+
+        </svg>
+
+    </div>
+
+    <h2>Installation Steps (Windows)</h2>
+
+    <h3>Step 1: Download Ngrok</h3>
+
+    <p>Open:</p>
+
+    <a href="https://ngrok.com/download" target="_blank">
+        https://ngrok.com/download
+    </a>
+
+    <p>Download Windows ZIP file.</p>
+
+    <h3>Step 2: Extract ZIP</h3>
+
+    <p>Extract ZIP to:</p>
+
+    <pre>C:\ngrok</pre>
+
+    <p>You will see:</p>
+
+    <pre>ngrok.exe</pre>
+
+    <h3>Step 3: Create Account</h3>
+
+    <p>Open:</p>
+
+    <a href="https://dashboard.ngrok.com/signup" target="_blank">
+        https://dashboard.ngrok.com/signup
+    </a>
+
+    <p>Sign up using:</p>
+
+    <ul>
+        <li>Google</li>
+        <li>GitHub</li>
+        <li>Email</li>
+    </ul>
+
+    <h3>Step 4: Get Authentication Token</h3>
+
+    <p>Open dashboard:</p>
+
+    <a href="https://dashboard.ngrok.com/get-started/your-authtoken" target="_blank">
+        https://dashboard.ngrok.com/get-started/your-authtoken
+    </a>
+
+    <p>You will see command:</p>
+
+    <pre>ngrok config add-authtoken YOUR_TOKEN</pre>
+
+    <h3>Step 5: Configure Token</h3>
+
+    <p>Open Command Prompt inside ngrok folder and run:</p>
+
+    <pre>ngrok config add-authtoken YOUR_TOKEN</pre>
+
+    <p>Example:</p>
+
+    <pre>ngrok config add-authtoken 2abxxxxxxxxxxxxx</pre>
+
+    <div class="success">
+        Success message:
+        <br><br>
+        Authtoken saved
+    </div>
+
+    <h2>Running Ngrok</h2>
+
+    <h3>Start Spring Boot Application</h3>
+
+    <pre>localhost:8080</pre>
+
+    <h3>Run ngrok</h3>
+
+    <pre>ngrok http 8080</pre>
+
+    <h3>Output</h3>
+
+    <pre>
+Forwarding https://abcd1234.ngrok-free.app -> http://localhost:8080
+    </pre>
+
+    <div class="success">
+        Your local application is now publicly accessible.
+    </div>
+
+    <h2>Testing in Browser</h2>
+
+    <pre>https://abcd1234.ngrok-free.app</pre>
+
+    <p>
+        If your Spring Boot application works locally,
+        it will also work through ngrok.
+    </p>
+
+    <h2>Spring Boot Example</h2>
+
+    <h3>Controller Example</h3>
+
+    <pre>
+@RestController
+public class TestController {
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "Welcome";
+    }
+}
+    </pre>
+
+    <h3>Local URL</h3>
+
+    <pre>http://localhost:8080/hello</pre>
+
+    <h3>Ngrok URL</h3>
+
+    <pre>https://abcd1234.ngrok-free.app/hello</pre>
+
+    <h3>Output</h3>
+
+    <pre>Welcome</pre>
+
+    <h2>Ngrok Dashboard</h2>
+
+    <p>While ngrok is running, open:</p>
+
+    <pre>http://127.0.0.1:4040</pre>
+
+    <h3>Dashboard Features</h3>
+
+    <ul>
+        <li>Request monitoring</li>
+        <li>Response inspection</li>
+        <li>Headers</li>
+        <li>Error details</li>
+        <li>Request body</li>
+        <li>Replay requests</li>
+    </ul>
+
+    <div class="note">
+        Very useful for debugging APIs and webhooks.
+    </div>
+
+    <h2>Using Ngrok with GitHub Webhooks</h2>
+
+    <h3>Why?</h3>
+
+    <p>
+        GitHub cannot access localhost directly.
+    </p>
+
+    <p>
+        So we expose local server using ngrok.
+    </p>
+
+    <h3>Example</h3>
+
+    <p>Spring Boot endpoint:</p>
+
+    <pre>http://localhost:8080/monitor</pre>
+
+    <p>Run:</p>
+
+    <pre>ngrok http 8080</pre>
+
+    <p>Generated URL:</p>
+
+    <pre>https://xyz.ngrok-free.app</pre>
+
+    <p>Webhook URL:</p>
+
+    <pre>https://xyz.ngrok-free.app/monitor</pre>
+
+    <h2>Webhook Flow Diagram</h2>
+
+    <div class="diagram">
+
+        <svg width="900" height="300" xmlns="http://www.w3.org/2000/svg">
+
+            <rect x="60" y="110" width="180" height="80" fill="#d9edf7" stroke="#31708f" stroke-width="2"/>
+            <text x="115" y="155" font-size="18">GitHub</text>
+
+            <rect x="360" y="110" width="180" height="80" fill="#dff0d8" stroke="#3c763d" stroke-width="2"/>
+            <text x="415" y="155" font-size="18">Ngrok URL</text>
+
+            <rect x="650" y="110" width="220" height="80" fill="#fcf8e3" stroke="#8a6d3b" stroke-width="2"/>
+            <text x="685" y="155" font-size="18">Spring Boot App</text>
+
+            <line x1="240" y1="150" x2="360" y2="150" stroke="#000" stroke-width="3"/>
+            <polygon points="360,150 345,142 345,158" fill="#000"/>
+
+            <line x1="540" y1="150" x2="650" y2="150" stroke="#000" stroke-width="3"/>
+            <polygon points="650,150 635,142 635,158" fill="#000"/>
+
+        </svg>
+
+    </div>
+
+    <h2>Common Commands</h2>
+
+    <table>
+
+        <tr>
+            <th>Command</th>
+            <th>Description</th>
+        </tr>
+
+        <tr>
+            <td><code>ngrok http 8080</code></td>
+            <td>Expose HTTP application</td>
+        </tr>
+
+        <tr>
+            <td><code>ngrok http --region=ap 8080</code></td>
+            <td>Use Asia-Pacific region</td>
+        </tr>
+
+        <tr>
+            <td><code>ngrok tcp 3306</code></td>
+            <td>Create TCP tunnel</td>
+        </tr>
+
+    </table>
+
+    <h2>Supported Regions</h2>
+
+    <table>
+
+        <tr>
+            <th>Region Code</th>
+            <th>Region</th>
+        </tr>
+
+        <tr><td>us</td><td>United States</td></tr>
+        <tr><td>eu</td><td>Europe</td></tr>
+        <tr><td>ap</td><td>Asia Pacific</td></tr>
+        <tr><td>au</td><td>Australia</td></tr>
+        <tr><td>sa</td><td>South America</td></tr>
+        <tr><td>jp</td><td>Japan</td></tr>
+        <tr><td>in</td><td>India</td></tr>
+
+    </table>
+
+    <h2>TCP Tunnel</h2>
+
+    <pre>ngrok tcp 3306</pre>
+
+    <p>Used for:</p>
+
+    <ul>
+        <li>MySQL access</li>
+        <li>SSH tunneling</li>
+        <li>Database access</li>
+    </ul>
+
+    <h2>Important Note</h2>
+
+    <div class="note">
+
+        Free ngrok URLs change every restart.
+
+        <br><br>
+
+        Example:
+
+        <br><br>
+
+        Today:
+        <pre>https://abc.ngrok-free.app</pre>
+
+        Tomorrow:
+        <pre>https://xyz.ngrok-free.app</pre>
+
+        Update webhook URLs after restart.
+
+    </div>
+
+    <h2>Common Errors</h2>
+
+    <h3>1. ERR_NGROK_8012</h3>
+
+    <p><strong>Meaning:</strong></p>
+
+    <p>Application is not running on localhost.</p>
+
+    <p><strong>Solution:</strong></p>
+
+    <ul>
+        <li>Start Spring Boot application</li>
+        <li>Verify correct port number</li>
+    </ul>
+
+    <h3>2. 502 Bad Gateway</h3>
+
+    <p><strong>Meaning:</strong></p>
+
+    <p>ngrok connected but backend application failed.</p>
+
+    <p><strong>Possible Reasons:</strong></p>
+
+    <ul>
+        <li>Application stopped</li>
+        <li>Wrong port</li>
+        <li>Endpoint error</li>
+        <li>Controller exception</li>
+    </ul>
+
+    <h3>3. Authentication Failed</h3>
+
+    <p><strong>Reason:</strong></p>
+
+    <p>Authtoken not configured.</p>
+
+    <p><strong>Solution:</strong></p>
+
+    <pre>ngrok config add-authtoken YOUR_TOKEN</pre>
+
+    <h2>Advantages of ngrok</h2>
+
+    <ul>
+        <li>Easy setup</li>
+        <li>Secure HTTPS support</li>
+        <li>Webhook testing</li>
+        <li>Request monitoring</li>
+        <li>Useful for API testing</li>
+        <li>Remote sharing</li>
+    </ul>
+
+    <h2>Limitations of Free Version</h2>
+
+    <ul>
+        <li>URL changes every restart</li>
+        <li>Limited sessions</li>
+        <li>Limited advanced features</li>
+    </ul>
+
+    <h2>Interview Question</h2>
+
+    <h3>Difference Between localhost and ngrok</h3>
+
+    <table>
+
+        <tr>
+            <th>localhost</th>
+            <th>ngrok</th>
+        </tr>
+
+        <tr>
+            <td>Accessible only inside local machine</td>
+            <td>Accessible publicly</td>
+        </tr>
+
+        <tr>
+            <td>No internet access</td>
+            <td>Internet accessible</td>
+        </tr>
+
+        <tr>
+            <td>Used for development</td>
+            <td>Used for testing and sharing</td>
+        </tr>
+
+        <tr>
+            <td>Example: localhost:8080</td>
+            <td>Example: ngrok-free.app</td>
+        </tr>
+
+    </table>
+
+    <h2>Short Summary</h2>
+
+    <p>
+        ngrok helps expose your local application securely to the internet
+        using a temporary public URL.
+    </p>
+
+    <h3>Main Command</h3>
+
+    <pre>ngrok http 8080</pre>
+
+    <h3>Main Use Cases</h3>
+
+    <ul>
+        <li>GitHub webhooks</li>
+        <li>API testing</li>
+        <li>Remote demos</li>
+        <li>Sharing localhost applications</li>
+    </ul>
+
+    <h2>Conclusion</h2>
+
+    <p>
+        ngrok is one of the most powerful developer tools for exposing local applications
+        to the internet securely and quickly.
+    </p>
+
+    <p>
+        It is widely used for webhook integrations, API testing,
+        remote access, debugging, and demonstration purposes.
+    </p>
+
+</div>
+
+</body>
+</html>

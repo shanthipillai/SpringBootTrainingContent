@@ -1,0 +1,4 @@
+spring.application.name=GatewayServer
+server.port=8072
+
+eureka.client.service-url.defaultZone=http://localhost:8557/eureka/
