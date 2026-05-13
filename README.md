@@ -8,23 +8,25 @@ This repository is used to organize and share **training materials, notes, prese
 ---
 
 ## 📢 Upcoming Training Sessions
-- 🧩 **Spring MVC Project**  
-  End-to-end web application using controllers, services, and views.
 
-- 🌐 **Microservices**  
-  Architecture for building scalable, independently deployable services.
+- 🛡️ **Resilience4j**  
+  Fault tolerance library for Circuit Breaker, Retry, Rate Limiter, and Bulkhead patterns.
 
-- 🔗 **FeignClient**  
-  Declarative REST client for communication between microservices.
+- ⚡ **WebFlux**  
+  Reactive programming framework for building asynchronous and non-blocking applications.
 
-- 📡 **Eureka**  
-  Service discovery server for registering and locating microservices.
+- 🔐 **Spring Security**  
+  Authentication and authorization framework for securing Spring Boot applications and APIs.
 
-- ⚙️ **ConfigServer**  
-  Centralized configuration management for all services.
+- 🧪 **JUnit Testing**  
+  Unit and integration testing framework for validating application functionality.
 
-- 🚪 **Gateway**  
-  API Gateway for routing, filtering, and securing requests.
+- 💾 **Redis**  
+  In-memory data store used for caching, session management, and fast data access.
+
+- ⚛️ **React + Spring Boot Project**  
+  Full-stack application development using React frontend and Spring Boot backend integration.
+
 ---
 
 ## 📬 Postman Collections
