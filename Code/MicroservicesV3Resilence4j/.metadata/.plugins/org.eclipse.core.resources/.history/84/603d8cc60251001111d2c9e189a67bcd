@@ -1,0 +1,53 @@
+server.port=8089
+
+spring.application.name=GATEWAY-SERVER
+
+# ==========================================
+# GATEWAY ROUTES
+# ==========================================
+
+# ACCOUNT SERVICE
+spring.cloud.gateway.routes[0].id=account-service
+spring.cloud.gateway.routes[0].uri=lb://ACCOUNT-SERVICE
+spring.cloud.gateway.routes[0].predicates[0]=Path=/accounts/**
+spring.cloud.gateway.routes[0].filters[0].name=CircuitBreaker
+spring.cloud.gateway.routes[0].filters[0].args.name=accountCircuitBreaker
+spring.cloud.gateway.routes[0].filters[0].args.fallbackUri=forward:/fallback/account
+
+# CARD SERVICE
+spring.cloud.gateway.routes[1].id=card-service
+spring.cloud.gateway.routes[1].uri=lb://CARD-SERVICE
+spring.cloud.gateway.routes[1].predicates[0]=Path=/cards/**
+spring.cloud.gateway.routes[1].filters[0].name=CircuitBreaker
+spring.cloud.gateway.routes[1].filters[0].args.name=cardCircuitBreaker
+spring.cloud.gateway.routes[1].filters[0].args.fallbackUri=forward:/fallback/card
+
+# LOAN SERVICE
+spring.cloud.gateway.routes[2].id=loan-service
+spring.cloud.gateway.routes[2].uri=lb://LOAN-SERVICE
+spring.cloud.gateway.routes[2].predicates[0]=Path=/loans/**
+spring.cloud.gateway.routes[2].filters[0].name=CircuitBreaker
+spring.cloud.gateway.routes[2].filters[0].args.name=loanCircuitBreaker
+spring.cloud.gateway.routes[2].filters[0].args.fallbackUri=forward:/fallback/loan
+
+# ==========================================
+# ACTUATOR
+# ==========================================
+
+management.endpoints.web.exposure.include=*
+
+# ==========================================
+# RESILIENCE4J DEFAULT CONFIG
+# ==========================================
+
+resilience4j.circuitbreaker.configs.default.slidingWindowSize=5
+resilience4j.circuitbreaker.configs.default.failureRateThreshold=50
+resilience4j.circuitbreaker.configs.default.waitDurationInOpenState=10s
+
+# ==========================================
+# CIRCUIT BREAKER INSTANCES
+# ==========================================
+
+resilience4j.circuitbreaker.instances.accountCircuitBreaker.baseConfig=default
+resilience4j.circuitbreaker.instances.cardCircuitBreaker.baseConfig=default
+resilience4j.circuitbreaker.instances.loanCircuitBreaker.baseConfig=default

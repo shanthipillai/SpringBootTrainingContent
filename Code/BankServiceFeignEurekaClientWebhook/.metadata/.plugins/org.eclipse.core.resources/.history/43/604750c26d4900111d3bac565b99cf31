@@ -1,0 +1,8 @@
+spring.application.name=card-service
+server.port=8081
+
+#   === Client DB - ORACLE =====
+
+
+
+spring.config.import=optional:configserver:http://localhost:8071

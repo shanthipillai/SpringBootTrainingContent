@@ -1,0 +1,109 @@
+package com.gateway.server.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.gateway.server.dto.Account;
+import com.gateway.server.dto.Card;
+import com.gateway.server.dto.Loan;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import reactor.core.publisher.Mono;
+
+@Service
+public class CustomerIntegrationService {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    // ACCOUNT
+
+    @CircuitBreaker(
+            name = "accountCircuitBreaker",
+            fallbackMethod = "accountFallback"
+    )
+    public Mono<Account> getAccount(String userId) {
+
+        System.out.println("📡 Calling ACCOUNT-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://ACCOUNT-SERVICE/accounts/user/" + userId)
+                .retrieve()
+                .bodyToMono(Account.class);
+    }
+
+    // CARDS
+
+    @CircuitBreaker(
+            name = "cardCircuitBreaker",
+            fallbackMethod = "cardFallback"
+    )
+    public Mono<List<Card>> getCards(Long accountId) {
+
+        System.out.println("💳 Calling CARD-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://CARD-SERVICE/cards/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Card.class)
+                .collectList();
+    }
+
+    // LOANS
+
+    @CircuitBreaker(
+            name = "loanCircuitBreaker",
+            fallbackMethod = "loanFallback"
+    )
+    public Mono<List<Loan>> getLoans(Long accountId) {
+
+        System.out.println("🏦 Calling LOAN-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://LOAN-SERVICE/loans/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Loan.class)
+                .collectList();
+    }
+
+    // FALLBACKS
+
+    public Mono<Account> accountFallback(
+            String userId,
+            Exception ex
+    ) {
+
+        System.out.println("⚠️ ACCOUNT FALLBACK");
+
+        Account account = new Account();
+        account.setAccountId(0L);
+
+        return Mono.just(account);
+    }
+
+    public Mono<List<Card>> cardFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println("⚠️ CARD FALLBACK");
+
+        return Mono.just(List.of());
+    }
+
+    public Mono<List<Loan>> loanFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println("⚠️ LOAN FALLBACK");
+
+        return Mono.just(List.of());
+    }
+}

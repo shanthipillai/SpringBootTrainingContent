@@ -1,0 +1,181 @@
+package com.gateway.server.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.gateway.server.dto.Account;
+import com.gateway.server.dto.Card;
+import com.gateway.server.dto.CustomerDetails;
+import com.gateway.server.dto.Loan;
+
+import reactor.core.publisher.Mono;
+
+@Service
+public class CustomerService {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    public Mono<CustomerDetails> fetchCustomerDetails(String userId) {
+
+        long startTime = System.currentTimeMillis();
+
+        WebClient webClient = webClientBuilder.build();
+
+        System.out.println("🚀 Entry Thread: "
+                + Thread.currentThread().getName());
+
+        // =====================================================
+        // ACCOUNT SERVICE
+        // =====================================================
+
+        Mono<Account> accountMono = webClient.get()
+                .uri("http://ACCOUNT-SERVICE/accounts/user/" + userId)
+                .retrieve()
+                .bodyToMono(Account.class)
+
+                .doOnSubscribe(sub ->
+                        System.out.println(
+                                "📡 Calling ACCOUNT-SERVICE | Thread: "
+                                        + Thread.currentThread().getName())
+                )
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ ACCOUNT-SERVICE Response | Thread: "
+                                        + Thread.currentThread().getName())
+                )
+
+                .onErrorResume(ex -> {
+
+                    System.out.println(
+                            "⚠️ ACCOUNT SERVICE DOWN - FALLBACK EXECUTED");
+
+                    System.out.println("❌ Error: "
+                            + ex.getMessage());
+
+                    Account fallbackAccount = new Account();
+
+                    fallbackAccount.setAccountId(0L);
+                    fallbackAccount.setUserId("SERVICE_DOWN");
+                    fallbackAccount.setStatus("UNAVAILABLE");
+
+                    return Mono.just(fallbackAccount);
+                })
+
+                .cache();
+
+        // =====================================================
+        // CARD SERVICE
+        // =====================================================
+
+        Mono<List<Card>> cardsMono = accountMono.flatMap(account -> {
+
+            System.out.println(
+                    "➡️ Inside cards flatMap | Thread: "
+                            + Thread.currentThread().getName());
+
+            return webClient.get()
+                    .uri("http://CARD-SERVICE/cards/account/"
+                            + account.getAccountId())
+                    .retrieve()
+                    .bodyToFlux(Card.class)
+                    .collectList()
+
+                    .doOnSubscribe(sub ->
+                            System.out.println(
+                                    "💳 Calling CARD-SERVICE | Thread: "
+                                            + Thread.currentThread().getName())
+                    )
+
+                    .doOnSuccess(res ->
+                            System.out.println(
+                                    "✅ CARD-SERVICE Response | Thread: "
+                                            + Thread.currentThread().getName())
+                    )
+
+                    .onErrorResume(ex -> {
+
+                        System.out.println(
+                                "⚠️ CARD SERVICE DOWN - FALLBACK EXECUTED");
+
+                        System.out.println("❌ Error: "
+                                + ex.getMessage());
+
+                        return Mono.just(List.of());
+                    });
+        });
+
+        // =====================================================
+        // LOAN SERVICE
+        // =====================================================
+
+        Mono<List<Loan>> loansMono = accountMono.flatMap(account -> {
+
+            System.out.println(
+                    "➡️ Inside loans flatMap | Thread: "
+                            + Thread.currentThread().getName());
+
+            return webClient.get()
+                    .uri("http://LOAN-SERVICE/loans/account/"
+                            + account.getAccountId())
+                    .retrieve()
+                    .bodyToFlux(Loan.class)
+                    .collectList()
+
+                    .doOnSubscribe(sub ->
+                            System.out.println(
+                                    "🏦 Calling LOAN-SERVICE | Thread: "
+                                            + Thread.currentThread().getName())
+                    )
+
+                    .doOnSuccess(res ->
+                            System.out.println(
+                                    "✅ LOAN-SERVICE Response | Thread: "
+                                            + Thread.currentThread().getName())
+                    )
+
+                  ;
+        });
+
+        // =====================================================
+        // COMBINE ALL RESPONSES
+        // =====================================================
+
+        return Mono.zip(accountMono, cardsMono, loansMono)
+
+                .map(tuple -> {
+
+                    System.out.println(
+                            "🧠 Mapping Response | Thread: "
+                                    + Thread.currentThread().getName());
+
+                    CustomerDetails details =
+                            new CustomerDetails();
+
+                    details.setAccount(tuple.getT1());
+                    details.setCards(tuple.getT2());
+                    details.setLoans(tuple.getT3());
+
+                    return details;
+                })
+
+                .doOnSuccess(result -> {
+
+                    long endTime =
+                            System.currentTimeMillis();
+
+                    System.out.println(
+                            "✅ Total Time Taken: "
+                                    + (endTime - startTime)
+                                    + " ms");
+
+                    System.out.println(
+                            "🏁 Final Thread: "
+                                    + Thread.currentThread().getName());
+                });
+    }
+}

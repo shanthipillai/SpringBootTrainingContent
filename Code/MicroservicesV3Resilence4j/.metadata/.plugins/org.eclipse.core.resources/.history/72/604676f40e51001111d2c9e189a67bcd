@@ -1,0 +1,180 @@
+package com.gateway.server.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.gateway.server.dto.Account;
+import com.gateway.server.dto.Card;
+import com.gateway.server.dto.Loan;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import reactor.core.publisher.Mono;
+
+@Service
+public class CustomerIntegrationService {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    // =====================================================
+    // ACCOUNT SERVICE
+    // =====================================================
+
+    @Retry(
+            name = "accountRetry",
+            fallbackMethod = "accountFallback"
+    )
+    @CircuitBreaker(
+            name = "accountCircuitBreaker",
+            fallbackMethod = "accountFallback"
+    )
+    public Mono<Account> getAccount(String userId) {
+
+        System.out.println(
+                "📡 Calling ACCOUNT-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://ACCOUNT-SERVICE/accounts/user/" + userId)
+                .retrieve()
+                .bodyToMono(Account.class)
+
+                .doOnError(ex ->
+                        System.out.println(
+                                "❌ ACCOUNT RETRY : "
+                                        + ex.getMessage())
+                )
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ ACCOUNT-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // CARD SERVICE
+    // =====================================================
+
+    @Retry(
+            name = "cardRetry",
+            fallbackMethod = "cardFallback"
+    )
+    @CircuitBreaker(
+            name = "cardCircuitBreaker",
+            fallbackMethod = "cardFallback"
+    )
+    public Mono<List<Card>> getCards(Long accountId) {
+
+        System.out.println(
+                "💳 Calling CARD-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://CARD-SERVICE/cards/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Card.class)
+                .collectList()
+
+                .doOnError(ex ->
+                        System.out.println(
+                                "❌ CARD RETRY : "
+                                        + ex.getMessage())
+                )
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ CARD-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // LOAN SERVICE
+    // =====================================================
+
+    @Retry(
+            name = "loanRetry",
+            fallbackMethod = "loanFallback"
+    )
+    @CircuitBreaker(
+            name = "loanCircuitBreaker",
+            fallbackMethod = "loanFallback"
+    )
+    public Mono<List<Loan>> getLoans(Long accountId) {
+
+        System.out.println(
+                "🏦 Calling LOAN-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://LOAN-SERVICE/loans/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Loan.class)
+                .collectList()
+
+                .doOnError(ex ->
+                        System.out.println(
+                                "❌ LOAN RETRY : "
+                                        + ex.getMessage())
+                )
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ LOAN-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // ACCOUNT FALLBACK
+    // =====================================================
+
+    public Mono<Account> accountFallback(
+            String userId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ ACCOUNT FALLBACK EXECUTED");
+
+        Account account = new Account();
+
+        account.setAccountId(0L);
+        account.setUserId("SERVICE_DOWN");
+        account.setStatus("UNAVAILABLE");
+
+        return Mono.just(account);
+    }
+
+    // =====================================================
+    // CARD FALLBACK
+    // =====================================================
+
+    public Mono<List<Card>> cardFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ CARD FALLBACK EXECUTED");
+
+        return Mono.just(List.of());
+    }
+
+    // =====================================================
+    // LOAN FALLBACK
+    // =====================================================
+
+    public Mono<List<Loan>> loanFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ LOAN FALLBACK EXECUTED");
+
+        return Mono.just(List.of());
+    }
+}

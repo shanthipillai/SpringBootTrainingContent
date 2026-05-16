@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resilience4j Circuit Breaker Notes</title>
+
+    <style>
+
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #222;
+            line-height: 1.7;
+        }
+
+        .container{
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h1{
+            text-align: center;
+            color: #0d47a1;
+            margin-bottom: 10px;
+        }
+
+        h2{
+            background-color: #0d47a1;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 40px;
+        }
+
+        h3{
+            color: #1565c0;
+        }
+
+        p{
+            font-size: 17px;
+        }
+
+        .card{
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 2px 10px rgba(0,0,0,0.1);
+        }
+
+        pre{
+            background: #1e1e1e;
+            color: #00ff90;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code{
+            font-family: Consolas;
+        }
+
+        table{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td{
+            border: 1px solid #ccc;
+        }
+
+        th{
+            background-color: #1976d2;
+            color: white;
+            padding: 12px;
+        }
+
+        td{
+            padding: 12px;
+            background-color: white;
+        }
+
+        ul li{
+            margin-bottom: 10px;
+        }
+
+        .diagram{
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .diagram img{
+            width: 90%;
+            max-width: 700px;
+            border-radius: 10px;
+            box-shadow: 0px 3px 10px rgba(0,0,0,0.2);
+        }
+
+        .highlight{
+            background: #fff3cd;
+            padding: 10px;
+            border-left: 5px solid orange;
+            margin-top: 20px;
+        }
+
+        .summary{
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Resilience4j – Circuit Breaker Notes</h1>
+
+    <div class="card">
+
+        <h2>What is Resilience4j?</h2>
+
+        <p>
+            Resilience4j is a lightweight fault tolerance library used in Spring Boot microservices
+            to make applications more resilient and stable during failures.
+        </p>
+
+        <h3>Features</h3>
+
+        <ul>
+            <li>Circuit Breaker</li>
+            <li>Retry</li>
+            <li>Bulkhead</li>
+            <li>Rate Limiter</li>
+            <li>Time Limiter</li>
+        </ul>
+
+        <p>
+            It is the modern replacement for Netflix Hystrix.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>What is Circuit Breaker?</h2>
+
+        <p>
+            A Circuit Breaker prevents repeated calls to a failing service.
+        </p>
+
+        <h3>Example Scenario</h3>
+
+        <ul>
+            <li>Loan Service calls Payment Service</li>
+            <li>Payment Service goes down</li>
+        </ul>
+
+        <div class="highlight">
+            Without Circuit Breaker → Loan Service keeps calling the failed service repeatedly.
+            <br><br>
+            With Circuit Breaker → Calls are stopped temporarily after repeated failures.
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Real-Time Flow</h2>
+
+<pre>
+Client
+   |
+   v
+Loan Service
+   |
+Circuit Breaker
+   |
+Payment Service
+</pre>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Circuit Breaker States</h2>
+
+        <h3>1. CLOSED State</h3>
+
+        <ul>
+            <li>Normal state</li>
+            <li>All requests are allowed</li>
+            <li>Failures are monitored</li>
+        </ul>
+
+        <h3>2. OPEN State</h3>
+
+        <ul>
+            <li>Requests are blocked</li>
+            <li>No call goes to downstream service</li>
+            <li>Fails immediately</li>
+        </ul>
+
+        <h3>3. HALF_OPEN State</h3>
+
+        <ul>
+            <li>Allows limited test requests</li>
+            <li>Checks whether service recovered</li>
+        </ul>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Circuit Breaker State Diagram</h2>
+
+        <div class="diagram">
+            <img src="https://images.openai.com/static-rsc-4/LkV1Jnx0lUYlWoTXvOCwmtojeUcdjNv6mp2SyOXHla2w9A20UIymhNeCbWdNhTB1oXW3J2ABQVDCmZIkw1148wX48GPFocEebzlOjMHkUUvv70gOArlzt7ykxmZjg1UI2KVHqyLA8kwdFXjVpNtCQq0FeQTTspUl3RgZjQJuHxvnmiGWoEx1w31gMivOQBPU?purpose=fullsize">
+        </div>
+
+        <div class="diagram">
+            <img src="https://images.openai.com/static-rsc-4/WlzTt3oePirsplLKH6nY0jSgTaCz_O39hHmj-1Duv14_86FFKhpKS4iGWuTvQZ1Cq0ohoxXIQV_D6D45ju31v8di6sDcoIBJJbQhW4n6rEtl8DwIz5xehC0sRRt2uHkKpp4Y0t24h99BQMPwe_vX6ZYbUX_9VjI0aiiW7NFAsBeOgffXkE4RUdIr6mjMH99M?purpose=fullsize">
+        </div>
+
+        <div class="diagram">
+            <img src="https://images.openai.com/static-rsc-4/S-rca5U5wKPFT0VvDH6XJ0RvhoIDf_wFLxOAb3kgKRi5ZykpFEnyStFdVD_c6et-mnt0BGrQkE5PChmwOfxX4dd-TUnQMzaBvGj_2NisBsctRnK7dteU6CgBQXbX9UKfh1m-XtWIe74cQtpIeBmtbWlRsPlRtnIMfteZofriVP8FUEYoMDOQvCXYJSyzcMDE?purpose=fullsize">
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Important Properties</h2>
+
+        <table>
+
+            <tr>
+                <th>Property</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>failureRateThreshold</td>
+                <td>Failure percentage to open circuit</td>
+            </tr>
+
+            <tr>
+                <td>slidingWindowSize</td>
+                <td>Number of requests monitored</td>
+            </tr>
+
+            <tr>
+                <td>waitDurationInOpenState</td>
+                <td>Time circuit stays OPEN</td>
+            </tr>
+
+            <tr>
+                <td>permittedNumberOfCallsInHalfOpenState</td>
+                <td>Test calls allowed in HALF_OPEN</td>
+            </tr>
+
+            <tr>
+                <td>minimumNumberOfCalls</td>
+                <td>Minimum requests before calculating failure rate</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Maven Dependency</h2>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.resilience4j&lt;/groupId&gt;
+    &lt;artifactId&gt;resilience4j-spring-boot3&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+    </div>
+
+    <div class="card">
+
+        <h2>application.yml Configuration</h2>
+
+<pre>
+resilience4j:
+  circuitbreaker:
+    instances:
+      paymentService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+</pre>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Service Example</h2>
+
+<pre>
+@Service
+public class PaymentService {
+
+    @CircuitBreaker(
+        name = "paymentService",
+        fallbackMethod = "fallbackMethod"
+    )
+    public String makePayment() {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        return restTemplate.getForObject(
+                "http://localhost:8082/payment",
+                String.class);
+    }
+
+    public String fallbackMethod(Exception ex) {
+        return "Payment Service is temporarily unavailable";
+    }
+}
+</pre>
+
+    </div>
+
+    <div class="card">
+
+        <h2>How It Works</h2>
+
+        <p>
+            Suppose:
+        </p>
+
+        <ul>
+            <li>slidingWindowSize = 10</li>
+            <li>failureRateThreshold = 50</li>
+        </ul>
+
+        <p>
+            If 5 out of 10 requests fail,
+            then Circuit Breaker becomes OPEN.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Request Flow Visualization</h2>
+
+<pre>
+Requests → Success → CLOSED
+
+Requests → Many Failures
+                  |
+                  v
+                OPEN
+                  |
+          waitDurationInOpenState
+                  |
+                  v
+              HALF_OPEN
+            /            \
+      Success          Failure
+         |                 |
+         v                 v
+      CLOSED             OPEN
+</pre>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Benefits of Circuit Breaker</h2>
+
+        <ul>
+            <li>Prevents cascading failures</li>
+            <li>Improves response time</li>
+            <li>Avoids unnecessary remote calls</li>
+            <li>Helps services recover</li>
+            <li>Improves system stability</li>
+        </ul>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Common Real-Time Use Cases</h2>
+
+        <table>
+
+            <tr>
+                <th>Service</th>
+                <th>Why Circuit Breaker?</th>
+            </tr>
+
+            <tr>
+                <td>Payment Gateway</td>
+                <td>Third-party failures</td>
+            </tr>
+
+            <tr>
+                <td>Notification Service</td>
+                <td>Avoid blocking main flow</td>
+            </tr>
+
+            <tr>
+                <td>Inventory Service</td>
+                <td>Prevent cascading failures</td>
+            </tr>
+
+            <tr>
+                <td>External APIs</td>
+                <td>Timeout handling</td>
+            </tr>
+
+            <tr>
+                <td>Banking APIs</td>
+                <td>Fast failure response</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Retry vs Circuit Breaker</h2>
+
+        <table>
+
+            <tr>
+                <th>Retry</th>
+                <th>Circuit Breaker</th>
+            </tr>
+
+            <tr>
+                <td>Reattempts requests</td>
+                <td>Stops requests</td>
+            </tr>
+
+            <tr>
+                <td>Handles temporary failures</td>
+                <td>Prevents overload</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Actuator Endpoints</h2>
+
+<pre>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</pre>
+
+<pre>
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+</pre>
+
+        <h3>Useful Endpoints</h3>
+
+        <table>
+
+            <tr>
+                <th>Endpoint</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>/actuator/health</td>
+                <td>Application health</td>
+            </tr>
+
+            <tr>
+                <td>/actuator/circuitbreakers</td>
+                <td>Circuit breaker list</td>
+            </tr>
+
+            <tr>
+                <td>/actuator/circuitbreakerevents</td>
+                <td>Circuit breaker events</td>
+            </tr>
+
+            <tr>
+                <td>/actuator/metrics</td>
+                <td>Metrics</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Behind the Scenes</h2>
+
+        <ul>
+            <li>Sliding Window Algorithm</li>
+            <li>Failure Percentage Calculation</li>
+            <li>State Machine</li>
+        </ul>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Interview Questions</h2>
+
+        <h3>What problem does Circuit Breaker solve?</h3>
+
+        <p>
+            Prevents repeated calls to failing services.
+        </p>
+
+        <h3>What is HALF_OPEN state?</h3>
+
+        <p>
+            Limited test requests are allowed to check whether the service recovered.
+        </p>
+
+    </div>
+
+    <div class="summary">
+
+        <h2>Quick Summary</h2>
+
+<pre>
+CLOSED
+  |
+Failures exceed threshold
+  v
+OPEN
+  |
+Wait time completed
+  v
+HALF_OPEN
+  |
+Success -> CLOSED
+Failure -> OPEN
+</pre>
+
+    </div>
+
+</div>
+
+</body>
+</html>

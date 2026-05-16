@@ -1,0 +1,222 @@
+package com.gateway.server.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import com.gateway.server.dto.Account;
+import com.gateway.server.dto.Card;
+import com.gateway.server.dto.CustomerDetails;
+import com.gateway.server.dto.Loan;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import reactor.core.publisher.Mono;
+
+@Service
+public class CustomerService {
+
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
+    // =====================================================
+    // MAIN METHOD
+    // =====================================================
+
+    public Mono<CustomerDetails> fetchCustomerDetails(String userId) {
+
+        long startTime = System.currentTimeMillis();
+
+        System.out.println("🚀 Entry Thread : "
+                + Thread.currentThread().getName());
+
+        // ACCOUNT
+        Mono<Account> accountMono =
+                getAccount(userId).cache();
+
+        // CARDS
+        Mono<List<Card>> cardsMono =
+                accountMono.flatMap(account ->
+                        getCards(account.getAccountId())
+                );
+
+        // LOANS
+        Mono<List<Loan>> loansMono =
+                accountMono.flatMap(account ->
+                        getLoans(account.getAccountId())
+                );
+
+        // COMBINE ALL
+        return Mono.zip(accountMono, cardsMono, loansMono)
+
+                .map(tuple -> {
+
+                    System.out.println(
+                            "🧠 Mapping Response | Thread : "
+                                    + Thread.currentThread().getName());
+
+                    CustomerDetails details =
+                            new CustomerDetails();
+
+                    details.setAccount(tuple.getT1());
+                    details.setCards(tuple.getT2());
+                    details.setLoans(tuple.getT3());
+
+                    return details;
+                })
+
+                .doOnSuccess(result -> {
+
+                    long endTime =
+                            System.currentTimeMillis();
+
+                    System.out.println(
+                            "✅ Total Time Taken : "
+                                    + (endTime - startTime)
+                                    + " ms");
+
+                    System.out.println(
+                            "🏁 Final Thread : "
+                                    + Thread.currentThread().getName());
+                });
+    }
+
+    // =====================================================
+    // ACCOUNT SERVICE
+    // =====================================================
+
+    @CircuitBreaker(
+            name = "accountCircuitBreaker",
+            fallbackMethod = "accountFallback"
+    )
+    public Mono<Account> getAccount(String userId) {
+
+        System.out.println(
+                "📡 Calling ACCOUNT-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://ACCOUNT-SERVICE/accounts/user/" + userId)
+                .retrieve()
+                .bodyToMono(Account.class)
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ ACCOUNT-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // CARD SERVICE
+    // =====================================================
+
+    @CircuitBreaker(
+            name = "cardCircuitBreaker",
+            fallbackMethod = "cardFallback"
+    )
+    public Mono<List<Card>> getCards(Long accountId) {
+
+        System.out.println(
+                "💳 Calling CARD-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://CARD-SERVICE/cards/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Card.class)
+                .collectList()
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ CARD-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // LOAN SERVICE
+    // =====================================================
+
+    @CircuitBreaker(
+            name = "loanCircuitBreaker",
+            fallbackMethod = "loanFallback"
+    )
+    public Mono<List<Loan>> getLoans(Long accountId) {
+
+        System.out.println(
+                "🏦 Calling LOAN-SERVICE");
+
+        return webClientBuilder.build()
+                .get()
+                .uri("http://LOAN-SERVICE/loans/account/" + accountId)
+                .retrieve()
+                .bodyToFlux(Loan.class)
+                .collectList()
+
+                .doOnSuccess(res ->
+                        System.out.println(
+                                "✅ LOAN-SERVICE Response")
+                );
+    }
+
+    // =====================================================
+    // ACCOUNT FALLBACK
+    // =====================================================
+
+    public Mono<Account> accountFallback(
+            String userId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ ACCOUNT FALLBACK EXECUTED");
+
+        System.out.println(
+                "❌ Error : " + ex.getMessage());
+
+        Account fallbackAccount =
+                new Account();
+
+        fallbackAccount.setAccountId(0L);
+        fallbackAccount.setUserId("SERVICE_DOWN");
+        fallbackAccount.setStatus("UNAVAILABLE");
+
+        return Mono.just(fallbackAccount);
+    }
+
+    // =====================================================
+    // CARD FALLBACK
+    // =====================================================
+
+    public Mono<List<Card>> cardFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ CARD FALLBACK EXECUTED");
+
+        System.out.println(
+                "❌ Error : " + ex.getMessage());
+
+        return Mono.just(List.of());
+    }
+
+    // =====================================================
+    // LOAN FALLBACK
+    // =====================================================
+
+    public Mono<List<Loan>> loanFallback(
+            Long accountId,
+            Exception ex
+    ) {
+
+        System.out.println(
+                "⚠️ LOAN FALLBACK EXECUTED");
+
+        System.out.println(
+                "❌ Error : " + ex.getMessage());
+
+        return Mono.just(List.of());
+    }
+}

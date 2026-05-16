@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring WebClient Notes</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0d6efd;
+        }
+
+        pre {
+            background: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: Consolas, monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background: #0d6efd;
+            color: white;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Spring WebClient Notes</h1>
+
+    <div class="section">
+        <h2>What is WebClient?</h2>
+
+        <p>
+            WebClient is a non-blocking, reactive HTTP client introduced in Spring WebFlux.
+        </p>
+
+        <p>It is used to:</p>
+
+        <ul>
+            <li>Call external REST APIs</li>
+            <li>Consume microservices</li>
+            <li>Send GET, POST, PUT, DELETE requests</li>
+            <li>Work asynchronously using Mono and Flux</li>
+        </ul>
+
+        <p>
+            It replaces older:
+        </p>
+
+        <ul>
+            <li>RestTemplate (traditional synchronous client)</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Dependency</h2>
+
+        <h3>Maven</h3>
+
+<pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-webflux&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+    </div>
+
+    <div class="section">
+        <h2>Creating WebClient</h2>
+
+        <h3>Method 1 — Simple Creation</h3>
+
+<pre><code>
+WebClient webClient = WebClient.create();
+</code></pre>
+
+        <h3>Method 2 — With Base URL</h3>
+
+<pre><code>
+WebClient webClient = WebClient.builder()
+        .baseUrl("https://fakestoreapi.com")
+        .build();
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>GET API Example</h2>
+
+        <h3>Service Class</h3>
+
+<pre><code>
+@Service
+public class ProductService {
+
+    private final WebClient webClient;
+
+    public ProductService(WebClient.Builder builder) {
+        this.webClient = builder
+                .baseUrl("https://fakestoreapi.com")
+                .build();
+    }
+
+    public List&lt;Product&gt; getProducts() {
+
+        Product[] products = webClient.get()
+                .uri("/products")
+                .retrieve()
+                .bodyToMono(Product[].class)
+                .block();
+
+        return Arrays.asList(products);
+    }
+}
+</code></pre>
+
+        <h3>Controller</h3>
+
+<pre><code>
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public List&lt;Product&gt; getProducts() {
+        return productService.getProducts();
+    }
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Reactive Version</h2>
+
+        <h3>Returning Flux</h3>
+
+<pre><code>
+public Flux&lt;Product&gt; getProductsReactive() {
+
+    return webClient.get()
+            .uri("/products")
+            .retrieve()
+            .bodyToFlux(Product.class);
+}
+</code></pre>
+
+        <h3>Controller</h3>
+
+<pre><code>
+@GetMapping("/flux")
+public Flux&lt;Product&gt; getProductsFlux() {
+    return productService.getProductsReactive();
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Mono vs Flux</h2>
+
+        <table>
+            <tr>
+                <th>Type</th>
+                <th>Meaning</th>
+            </tr>
+
+            <tr>
+                <td>Mono</td>
+                <td>0 or 1 object</td>
+            </tr>
+
+            <tr>
+                <td>Flux</td>
+                <td>Multiple objects</td>
+            </tr>
+        </table>
+
+        <p>Examples:</p>
+
+        <ul>
+            <li>Single User → Mono&lt;User&gt;</li>
+            <li>List of Products → Flux&lt;Product&gt;</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+
+        <h2>POST Request Example</h2>
+
+<pre><code>
+public Product addProduct(Product product) {
+
+    return webClient.post()
+            .uri("/products")
+            .bodyValue(product)
+            .retrieve()
+            .bodyToMono(Product.class)
+            .block();
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>PUT Request Example</h2>
+
+<pre><code>
+public Product updateProduct(int id, Product product) {
+
+    return webClient.put()
+            .uri("/products/{id}", id)
+            .bodyValue(product)
+            .retrieve()
+            .bodyToMono(Product.class)
+            .block();
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>DELETE Request Example</h2>
+
+<pre><code>
+public String deleteProduct(int id) {
+
+    webClient.delete()
+            .uri("/products/{id}", id)
+            .retrieve()
+            .bodyToMono(Void.class)
+            .block();
+
+    return "Deleted Successfully";
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Important Methods</h2>
+
+        <table>
+            <tr>
+                <th>Method</th>
+                <th>Purpose</th>
+            </tr>
+
+            <tr>
+                <td>get()</td>
+                <td>HTTP GET</td>
+            </tr>
+
+            <tr>
+                <td>post()</td>
+                <td>HTTP POST</td>
+            </tr>
+
+            <tr>
+                <td>put()</td>
+                <td>HTTP PUT</td>
+            </tr>
+
+            <tr>
+                <td>delete()</td>
+                <td>HTTP DELETE</td>
+            </tr>
+
+            <tr>
+                <td>uri()</td>
+                <td>API endpoint</td>
+            </tr>
+
+            <tr>
+                <td>retrieve()</td>
+                <td>Fetch response</td>
+            </tr>
+
+            <tr>
+                <td>bodyToMono()</td>
+                <td>Convert response to Mono</td>
+            </tr>
+
+            <tr>
+                <td>bodyToFlux()</td>
+                <td>Convert response to Flux</td>
+            </tr>
+
+            <tr>
+                <td>block()</td>
+                <td>Converts async → sync</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Difference Between RestTemplate and WebClient</h2>
+
+        <table>
+
+            <tr>
+                <th>RestTemplate</th>
+                <th>WebClient</th>
+            </tr>
+
+            <tr>
+                <td>Synchronous</td>
+                <td>Asynchronous</td>
+            </tr>
+
+            <tr>
+                <td>Blocking</td>
+                <td>Non-blocking</td>
+            </tr>
+
+            <tr>
+                <td>Old approach</td>
+                <td>Modern approach</td>
+            </tr>
+
+            <tr>
+                <td>Less efficient for large traffic</td>
+                <td>Better scalability</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Error Handling</h2>
+
+<pre><code>
+public Flux&lt;Product&gt; getProducts() {
+
+    return webClient.get()
+            .uri("/products")
+            .retrieve()
+            .onStatus(HttpStatusCode::is4xxClientError,
+                    response -> Mono.error(new RuntimeException("Client Error")))
+            .onStatus(HttpStatusCode::is5xxServerError,
+                    response -> Mono.error(new RuntimeException("Server Error")))
+            .bodyToFlux(Product.class);
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Timeout Example</h2>
+
+<pre><code>
+HttpClient httpClient = HttpClient.create()
+        .responseTimeout(Duration.ofSeconds(5));
+
+WebClient webClient = WebClient.builder()
+        .clientConnector(new ReactorClientHttpConnector(httpClient))
+        .build();
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Logging Request & Response</h2>
+
+<pre><code>
+@Bean
+public WebClient webClient() {
+
+    return WebClient.builder()
+            .filter(ExchangeFilterFunction.ofRequestProcessor(request -> {
+
+                System.out.println("Request URL : " + request.url());
+
+                return Mono.just(request);
+            }))
+            .build();
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>WebClient Configuration Bean</h2>
+
+<pre><code>
+@Configuration
+public class WebClientConfig {
+
+    @Bean
+    public WebClient webClient() {
+
+        return WebClient.builder()
+                .baseUrl("https://fakestoreapi.com")
+                .build();
+    }
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Using Bean in Service</h2>
+
+<pre><code>
+@Service
+public class ProductService {
+
+    @Autowired
+    private WebClient webClient;
+
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>retrieve() vs exchangeToMono()</h2>
+
+        <table>
+
+            <tr>
+                <th>retrieve()</th>
+                <th>exchangeToMono()</th>
+            </tr>
+
+            <tr>
+                <td>Simple response handling</td>
+                <td>Full response control</td>
+            </tr>
+
+            <tr>
+                <td>Easy to use</td>
+                <td>Advanced handling</td>
+            </tr>
+
+            <tr>
+                <td>Commonly used</td>
+                <td>Used for custom logic</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="section">
+
+        <h2>exchangeToMono Example</h2>
+
+<pre><code>
+public Mono&lt;String&gt; getData() {
+
+    return webClient.get()
+            .uri("/products")
+            .exchangeToMono(response -> {
+
+                if (response.statusCode().is2xxSuccessful()) {
+                    return response.bodyToMono(String.class);
+                }
+
+                return Mono.error(new RuntimeException("Failed"));
+            });
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Retry Example</h2>
+
+<pre><code>
+public Flux&lt;Product&gt; getProducts() {
+
+    return webClient.get()
+            .uri("/products")
+            .retrieve()
+            .bodyToFlux(Product.class)
+            .retry(3);
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>WebClient + Resilience4j</h2>
+
+<pre><code>
+@CircuitBreaker(name = "product-service", fallbackMethod = "fallbackMethod")
+public Flux&lt;Product&gt; getProducts() {
+
+    return webClient.get()
+            .uri("/products")
+            .retrieve()
+            .bodyToFlux(Product.class);
+}
+
+public Flux&lt;Product&gt; fallbackMethod(Exception ex) {
+
+    return Flux.just(new Product(0, "Fallback Product"));
+}
+</code></pre>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Advantages of WebClient</h2>
+
+        <ul>
+            <li>Reactive programming support</li>
+            <li>Better performance</li>
+            <li>Non-blocking</li>
+            <li>Supports streaming</li>
+            <li>Easy integration with Spring Cloud</li>
+            <li>Good for Microservices</li>
+        </ul>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Common Interview Questions</h2>
+
+        <h3>1. Why WebClient over RestTemplate?</h3>
+        <p>Because WebClient is non-blocking and reactive.</p>
+
+        <h3>2. What is Mono?</h3>
+        <p>A publisher that emits 0 or 1 item.</p>
+
+        <h3>3. What is Flux?</h3>
+        <p>A publisher that emits multiple items.</p>
+
+        <h3>4. What is block()?</h3>
+        <p>Converts async reactive flow into synchronous flow.</p>
+
+        <h3>5. Is WebClient part of Spring MVC?</h3>
+        <p>No. It belongs to Spring WebFlux.</p>
+
+    </div>
+
+    <div class="section">
+
+        <h2>Real-Time Use Cases</h2>
+
+        <ul>
+            <li>Calling Payment Service</li>
+            <li>Calling Order Service</li>
+            <li>API Gateway communication</li>
+            <li>Microservice-to-Microservice communication</li>
+            <li>Third-party API integration</li>
+        </ul>
+
+    </div>
+
+</div>
+
+</body>
+</html>
