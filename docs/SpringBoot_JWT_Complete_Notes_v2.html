@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Spring Boot JWT Complete Notes v2</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px;line-height:1.8;color:#222;max-width:1200px}
+h1,h2,h3{color:#0B5394}
+.box{background:#f4f8ff;border-left:6px solid #0B5394;padding:15px;margin:15px 0}
+pre{background:#f7f7f7;padding:12px;border-radius:6px;overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #ccc;padding:8px}
+th{background:#d9eaff}
+</style>
+</head>
+<body>
+
+<h1>Spring Boot JWT (JSON Web Token) Complete Notes</h1>
+
+<div class="box">
+Comprehensive notes covering JWT architecture, token generation, parsing, validation, filter flow, lifecycle, and JWT vs Session Management.
+</div>
+
+<h2>JWT Structure</h2>
+<pre>Header.Payload.Signature</pre>
+
+<h2>Building JWT Token</h2>
+<pre>
+public String generateToken(String username){
+ return Jwts.builder()
+     .subject(username)
+     .issuedAt(new Date())
+     .expiration(new Date(System.currentTimeMillis()+3600000))
+     .signWith(getSigningKey())
+     .compact();
+}
+</pre>
+
+<h2>Adding Custom Claims</h2>
+<pre>
+.claim("role","ADMIN")
+.claim("department","IT")
+</pre>
+
+<h2>Parsing JWT Token</h2>
+<pre>
+public String extractUsername(String token){
+ return Jwts.parser()
+     .verifyWith(getSigningKey())
+     .build()
+     .parseSignedClaims(token)
+     .getPayload()
+     .getSubject();
+}
+</pre>
+
+<h2>JWT Validation</h2>
+<pre>
+public boolean validateToken(String token,String username){
+ return extractUsername(token).equals(username)
+        && !isTokenExpired(token);
+}
+</pre>
+
+<h2>JWT Lifecycle</h2>
+<pre>
+User Login
+   |
+AuthenticationManager
+   |
+Generate JWT
+   |
+Client Stores Token
+   |
+Authorization Header
+   |
+JWT Filter
+   |
+Validate Token
+   |
+Controller
+</pre>
+
+<h1>JWT vs Session Management</h1>
+
+<h2>Session Management</h2>
+<p>Server creates and stores user session information. Client sends only Session ID.</p>
+
+<pre>
+User Login
+    |
+Server Creates Session
+    |
+Session ID Generated
+    |
+Client Stores Session ID
+    |
+Every Request Sends Session ID
+</pre>
+
+<h2>JWT Authentication</h2>
+<p>Server generates a signed token. No user session is stored on the server.</p>
+
+<pre>
+User Login
+    |
+Generate JWT
+    |
+Client Stores JWT
+    |
+Authorization Header
+    |
+Server Validates JWT
+</pre>
+
+<h2>Architecture Comparison</h2>
+
+<h3>Session Authentication</h3>
+<pre>
+Client ---- Login ----> Server
+                         |
+                   Store Session
+                         |
+                   Session Storage
+
+Client -- Session ID --> Server
+</pre>
+
+<h3>JWT Authentication</h3>
+<pre>
+Client ---- Login ----> Server
+                         |
+                    Generate JWT
+
+Client ---- JWT -----> Server
+No Session Storage Required
+</pre>
+
+<h2>Detailed Comparison</h2>
+
+<table>
+<tr>
+<th>Feature</th>
+<th>JWT</th>
+<th>Session</th>
+</tr>
+<tr><td>Storage Location</td><td>Client Side</td><td>Server Side</td></tr>
+<tr><td>State</td><td>Stateless</td><td>Stateful</td></tr>
+<tr><td>Scalability</td><td>High</td><td>Limited</td></tr>
+<tr><td>Server Memory Usage</td><td>Low</td><td>High</td></tr>
+<tr><td>Microservices Support</td><td>Excellent</td><td>Difficult</td></tr>
+<tr><td>Load Balancer Friendly</td><td>Yes</td><td>No</td></tr>
+<tr><td>Logout Handling</td><td>Difficult</td><td>Easy</td></tr>
+<tr><td>Token Expiration</td><td>Built Into Token</td><td>Session Timeout</td></tr>
+<tr><td>REST APIs</td><td>Best Choice</td><td>Less Preferred</td></tr>
+<tr><td>Distributed Systems</td><td>Excellent</td><td>Complex</td></tr>
+</table>
+
+<h2>Why JWT is Stateless?</h2>
+<pre>
+{
+ "sub":"shanthi",
+ "role":"ADMIN",
+ "exp":1750000000
+}
+</pre>
+
+<p>The server validates the token signature and does not maintain session state.</p>
+
+<h2>Session Example</h2>
+<pre>
+HttpSession session = request.getSession();
+session.setAttribute("username","shanthi");
+</pre>
+
+<h2>JWT Example</h2>
+<pre>
+String token = jwtService.generateToken("shanthi");
+jwtService.validateToken(token, username);
+</pre>
+
+<h2>When To Use Session?</h2>
+<ul>
+<li>Traditional Web Applications</li>
+<li>Banking Portals</li>
+<li>JSP / Thymeleaf Applications</li>
+<li>Small Applications</li>
+</ul>
+
+<h2>When To Use JWT?</h2>
+<ul>
+<li>REST APIs</li>
+<li>React Applications</li>
+<li>Angular Applications</li>
+<li>Mobile Apps</li>
+<li>Microservices</li>
+<li>Cloud-Native Systems</li>
+<li>Spring Boot APIs</li>
+</ul>
+
+<h2>Interview Questions</h2>
+<ol>
+<li>What is JWT?</li>
+<li>How JWT is generated?</li>
+<li>How JWT is parsed?</li>
+<li>How JWT is validated?</li>
+<li>Difference between JWT and Session?</li>
+<li>Why JWT is Stateless?</li>
+<li>Why Session is Stateful?</li>
+<li>JWT vs Session in Microservices?</li>
+</ol>
+
+</body>
+</html>
