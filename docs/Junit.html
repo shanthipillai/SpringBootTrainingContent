@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JUnit 5 Testing Notes</title>
+
+<style>
+    body{
+        font-family: Arial, sans-serif;
+        line-height: 1.7;
+        margin: 40px;
+        background-color:#f5f7fa;
+        color:#333;
+    }
+
+    h1,h2,h3{
+        color:#0d47a1;
+    }
+
+    table{
+        width:100%;
+        border-collapse: collapse;
+        margin:20px 0;
+        background:white;
+    }
+
+    table,th,td{
+        border:1px solid #ccc;
+    }
+
+    th{
+        background:#1976d2;
+        color:white;
+        padding:10px;
+    }
+
+    td{
+        padding:10px;
+    }
+
+    pre{
+        background:#272822;
+        color:#f8f8f2;
+        padding:15px;
+        overflow:auto;
+        border-radius:5px;
+    }
+
+    code{
+        font-family: Consolas, monospace;
+    }
+
+    .section{
+        background:white;
+        padding:20px;
+        margin-bottom:20px;
+        border-radius:8px;
+        box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .flow{
+        background:#eef6ff;
+        border-left:5px solid #1976d2;
+        padding:15px;
+        margin:15px 0;
+    }
+</style>
+</head>
+<body>
+
+<h1>JUnit 5 Testing Complete Notes</h1>
+
+<div class="section">
+<h2>What is JUnit?</h2>
+
+<p>
+JUnit is the most popular testing framework for Java applications.
+It is used to perform unit testing and verify whether the application
+behavior matches the expected output.
+</p>
+
+<h3>Uses of JUnit</h3>
+
+<ul>
+<li>Test individual methods and classes</li>
+<li>Verify expected output</li>
+<li>Prevent bugs during development</li>
+<li>Support Test Driven Development (TDD)</li>
+<li>Improve application quality</li>
+<li>Enable automated testing</li>
+</ul>
+
+<h3>JUnit 5 Modules</h3>
+
+<ul>
+<li><b>JUnit Platform</b></li>
+<li><b>JUnit Jupiter</b></li>
+<li><b>JUnit Vintage</b></li>
+</ul>
+</div>
+
+<div class="section">
+<h2>Why Do We Need Unit Testing?</h2>
+
+<h3>Without Testing</h3>
+
+<pre><code>
+public int add(int a, int b) {
+    return a + b;
+}
+</code></pre>
+
+<p>If someone accidentally changes the logic:</p>
+
+<pre><code>
+public int add(int a, int b) {
+    return a - b;
+}
+</code></pre>
+
+<p>
+The application may fail and produce incorrect results.
+Unit tests immediately detect such changes.
+</p>
+</div>
+
+<div class="section">
+<h2>JUnit Maven Dependency</h2>
+
+<pre><code>
+&lt;dependency&gt;
+    &lt;groupId&gt;org.junit.jupiter&lt;/groupId&gt;
+    &lt;artifactId&gt;junit-jupiter&lt;/artifactId&gt;
+    &lt;version&gt;5.10.2&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+</div>
+
+<div class="section">
+<h2>Basic JUnit Test</h2>
+
+<h3>Calculator Class</h3>
+
+<pre><code>
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+}
+</code></pre>
+
+<h3>Test Class</h3>
+
+<pre><code>
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class CalculatorTest {
+
+    @Test
+    void testAdd() {
+
+        Calculator calculator = new Calculator();
+
+        int result = calculator.add(10, 20);
+
+        assertEquals(30, result);
+    }
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Common JUnit Annotations</h2>
+
+<table>
+<tr>
+<th>Annotation</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>@Test</td>
+<td>Marks a test method</td>
+</tr>
+
+<tr>
+<td>@BeforeEach</td>
+<td>Runs before every test</td>
+</tr>
+
+<tr>
+<td>@AfterEach</td>
+<td>Runs after every test</td>
+</tr>
+
+<tr>
+<td>@BeforeAll</td>
+<td>Runs once before all tests</td>
+</tr>
+
+<tr>
+<td>@AfterAll</td>
+<td>Runs once after all tests</td>
+</tr>
+
+<tr>
+<td>@Disabled</td>
+<td>Skips a test</td>
+</tr>
+
+<tr>
+<td>@DisplayName</td>
+<td>Custom test name</td>
+</tr>
+
+<tr>
+<td>@ParameterizedTest</td>
+<td>Runs same test with multiple inputs</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>Lifecycle Annotations</h2>
+
+<pre><code>
+public class EmployeeTest {
+
+    @BeforeAll
+    static void beforeAll() {
+        System.out.println("Before All");
+    }
+
+    @BeforeEach
+    void beforeEach() {
+        System.out.println("Before Each");
+    }
+
+    @Test
+    void test1() {
+        System.out.println("Test 1");
+    }
+
+    @Test
+    void test2() {
+        System.out.println("Test 2");
+    }
+
+    @AfterEach
+    void afterEach() {
+        System.out.println("After Each");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        System.out.println("After All");
+    }
+}
+</code></pre>
+
+<h3>Execution Order</h3>
+
+<div class="flow">
+Before All<br><br>
+
+Before Each<br>
+Test 1<br>
+After Each<br><br>
+
+Before Each<br>
+Test 2<br>
+After Each<br><br>
+
+After All
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Assertion Methods</h2>
+
+<h3>assertEquals()</h3>
+
+<pre><code>
+assertEquals(100, amount);
+</code></pre>
+
+<h3>assertNotEquals()</h3>
+
+<pre><code>
+assertNotEquals(100, amount);
+</code></pre>
+
+<h3>assertTrue()</h3>
+
+<pre><code>
+assertTrue(age > 18);
+</code></pre>
+
+<h3>assertFalse()</h3>
+
+<pre><code>
+assertFalse(list.isEmpty());
+</code></pre>
+
+<h3>assertNull()</h3>
+
+<pre><code>
+assertNull(employee);
+</code></pre>
+
+<h3>assertNotNull()</h3>
+
+<pre><code>
+assertNotNull(employee);
+</code></pre>
+
+<h3>assertSame()</h3>
+
+<pre><code>
+assertSame(emp1, emp2);
+</code></pre>
+
+<h3>assertNotSame()</h3>
+
+<pre><code>
+assertNotSame(emp1, emp2);
+</code></pre>
+
+<h3>assertArrayEquals()</h3>
+
+<pre><code>
+int[] expected = {1,2,3};
+int[] actual = {1,2,3};
+
+assertArrayEquals(expected, actual);
+</code></pre>
+
+<h3>assertThrows()</h3>
+
+<pre><code>
+assertThrows(
+    ArithmeticException.class,
+    () -> {
+        int result = 10 / 0;
+    }
+);
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Grouped Assertions</h2>
+
+<pre><code>
+assertAll(
+    () -> assertEquals("Shanthi", employee.getName()),
+    () -> assertEquals(101, employee.getId()),
+    () -> assertEquals(50000, employee.getSalary())
+);
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Testing Exceptions</h2>
+
+<h3>Service Class</h3>
+
+<pre><code>
+public int divide(int a, int b) {
+    return a / b;
+}
+</code></pre>
+
+<h3>Test Class</h3>
+
+<pre><code>
+@Test
+void testDivideByZero() {
+
+    assertThrows(
+        ArithmeticException.class,
+        () -> service.divide(10, 0)
+    );
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Parameterized Tests</h2>
+
+<h3>ValueSource Example</h3>
+
+<pre><code>
+@ParameterizedTest
+@ValueSource(ints = {1,2,3,4,5})
+void testPositiveNumbers(int number) {
+
+    assertTrue(number > 0);
+}
+</code></pre>
+
+<h3>CSV Source Example</h3>
+
+<pre><code>
+@ParameterizedTest
+@CsvSource({
+    "10,20,30",
+    "5,5,10",
+    "100,50,150"
+})
+void testAddition(
+        int a,
+        int b,
+        int expected) {
+
+    assertEquals(
+        expected,
+        calculator.add(a,b)
+    );
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Nested Tests</h2>
+
+<pre><code>
+@Nested
+class AdditionTests {
+
+    @Test
+    void testAdd() {
+
+        assertEquals(
+            30,
+            calculator.add(10,20)
+        );
+    }
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Repeated Tests</h2>
+
+<pre><code>
+@RepeatedTest(5)
+void repeatTest() {
+    System.out.println("Running...");
+}
+</code></pre>
+
+<p>Runs the same test 5 times.</p>
+
+</div>
+
+<div class="section">
+
+<h2>Timeout Testing</h2>
+
+<pre><code>
+assertTimeout(
+    Duration.ofSeconds(2),
+    () -> {
+        Thread.sleep(1000);
+    }
+);
+</code></pre>
+
+<p>
+The test passes because execution finishes within 2 seconds.
+</p>
+
+</div>
+
+<div class="section">
+
+<h2>Spring Boot JUnit Testing</h2>
+
+<h3>Service Testing Example</h3>
+
+<pre><code>
+@SpringBootTest
+class EmployeeServiceTest {
+
+    @Autowired
+    EmployeeService service;
+
+    @Test
+    void testFindAll() {
+
+        List&lt;Employee&gt; employees =
+                service.findAll();
+
+        assertNotNull(employees);
+    }
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Mockito Integration</h2>
+
+<h3>Service Class</h3>
+
+<pre><code>
+@Service
+public class EmployeeService {
+
+    @Autowired
+    EmployeeRepository repository;
+
+    public List&lt;Employee&gt; getAllEmployees() {
+        return repository.findAll();
+    }
+}
+</code></pre>
+
+<h3>Test Class</h3>
+
+<pre><code>
+@ExtendWith(MockitoExtension.class)
+class EmployeeServiceTest {
+
+    @Mock
+    EmployeeRepository repository;
+
+    @InjectMocks
+    EmployeeService service;
+
+    @Test
+    void testGetAllEmployees() {
+
+        List&lt;Employee&gt; employees =
+            List.of(
+                new Employee(1,"John")
+            );
+
+        when(repository.findAll())
+                .thenReturn(employees);
+
+        List&lt;Employee&gt; result =
+                service.getAllEmployees();
+
+        assertEquals(1, result.size());
+
+        verify(repository, times(1))
+                .findAll();
+    }
+}
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>Mock vs InjectMocks</h2>
+
+<table>
+
+<tr>
+<th>Annotation</th>
+<th>Purpose</th>
+</tr>
+
+<tr>
+<td>@Mock</td>
+<td>Creates fake object</td>
+</tr>
+
+<tr>
+<td>@InjectMocks</td>
+<td>Injects mocks into class under test</td>
+</tr>
+
+<tr>
+<td>@Spy</td>
+<td>Partial mock</td>
+</tr>
+
+<tr>
+<td>@Captor</td>
+<td>Captures arguments</td>
+</tr>
+
+</table>
+
+</div>
+
+<div class="section">
+
+<h2>Verify Methods</h2>
+
+<pre><code>
+verify(repository).findAll();
+
+verify(repository, times(1))
+        .findAll();
+
+verify(repository, never())
+        .deleteById(1);
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>JUnit Testing Best Practices</h2>
+
+<h3>AAA Pattern</h3>
+
+<h4>Arrange</h4>
+
+<pre><code>
+when(repository.findAll())
+        .thenReturn(data);
+</code></pre>
+
+<h4>Act</h4>
+
+<pre><code>
+List&lt;Employee&gt; result =
+        service.findAll();
+</code></pre>
+
+<h4>Assert</h4>
+
+<pre><code>
+assertEquals(2, result.size());
+</code></pre>
+
+<h3>Naming Convention</h3>
+
+<pre><code>
+testMethodName_WhenCondition_ExpectedResult()
+</code></pre>
+
+<h3>Example</h3>
+
+<pre><code>
+getEmployeeById_WhenIdExists_ReturnEmployee()
+</code></pre>
+
+</div>
+
+<div class="section">
+
+<h2>JUnit Interview Questions</h2>
+
+<h3>1. What is JUnit?</h3>
+
+<p>
+JUnit is a Java testing framework used for unit testing.
+</p>
+
+<h3>2. Difference Between JUnit 4 and JUnit 5</h3>
+
+<table>
+
+<tr>
+<th>JUnit 4</th>
+<th>JUnit 5</th>
+</tr>
+
+<tr>
+<td>@RunWith</td>
+<td>@ExtendWith</td>
+</tr>
+
+<tr>
+<td>Older architecture</td>
+<td>Modular architecture</td>
+</tr>
+
+<tr>
+<td>Less flexible</td>
+<td>More flexible</td>
+</tr>
+
+</table>
+
+<h3>3. What is Mockito?</h3>
+
+<p>
+Mockito is a framework used to create mock objects for testing.
+</p>
+
+<h3>4. Difference Between Mock and Spy?</h3>
+
+<table>
+
+<tr>
+<th>Mock</th>
+<th>Spy</th>
+</tr>
+
+<tr>
+<td>Entire object mocked</td>
+<td>Partial mocking</td>
+</tr>
+
+<tr>
+<td>Real methods not executed</td>
+<td>Real methods can execute</td>
+</tr>
+
+</table>
+
+<h3>5. What is TDD?</h3>
+
+<p>
+Test Driven Development is a development methodology where tests are written before the actual code.
+</p>
+
+<h3>TDD Process</h3>
+
+<div class="flow">
+Write Test<br>
+↓<br>
+Run Test (Fail)<br>
+↓<br>
+Write Code<br>
+↓<br>
+Run Test (Pass)<br>
+↓<br>
+Refactor
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>JUnit Testing Flow</h2>
+
+<div class="flow">
+Write Test<br>
+↓<br>
+Run Test<br>
+↓<br>
+Fail<br>
+↓<br>
+Write Business Logic<br>
+↓<br>
+Run Test<br>
+↓<br>
+Pass<br>
+↓<br>
+Refactor
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Summary</h2>
+
+<ul>
+<li>JUnit is the most popular Java testing framework.</li>
+<li>JUnit 5 consists of Platform, Jupiter, and Vintage.</li>
+<li>Assertions validate expected results.</li>
+<li>Lifecycle annotations manage test execution flow.</li>
+<li>Parameterized tests execute with multiple inputs.</li>
+<li>Mockito helps mock dependencies.</li>
+<li>Spring Boot testing is supported through @SpringBootTest.</li>
+<li>TDD improves code quality and reliability.</li>
+<li>JUnit is widely used in Java and Spring Boot interviews.</li>
+</ul>
+
+</div>
+
+</body>
+</html>
